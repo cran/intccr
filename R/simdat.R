@@ -1,4 +1,4 @@
-#' Simulated 200 interval censored data with 2 covariates.
+#' A simulated dataset consisting of 200 interval-censored observations and 2 covariates.
 #'
 #' A dataset containing the last time prior to the event, the first time after the event, cause of failure, and covariates.
 #'

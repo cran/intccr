@@ -2,19 +2,29 @@
 % Please edit documentation in R/surv2.R
 \name{Surv2}
 \alias{Surv2}
-\title{Survival object}
+\title{Creating data frame}
 \usage{
 Surv2(v, u, event)
 }
 \arguments{
-\item{v}{The last observation time prior to the failure; \eqn{0\le v \le u}.}
+\item{v}{the last observation time prior to the failure; \eqn{0\le v \le u}.}
 
-\item{u}{The first observation time after the failure; \eqn{u \ge 0}.}
+\item{u}{the first observation time after the failure; \eqn{u \ge 0}.}
 
-\item{event}{The cause of failure indicator. If observation is righ-censored, \code{event=0}, otherwise \code{event= 1 or 2}, where \code{1} represents first cause of failure
-, and \code{2} represents second cause of failure. The current version of package only allows for two causes of failure.}
+\item{event}{the cause of failure indicator. If observation is righ-censored, \code{event=0}; otherwise, \code{event= 1 or 2}, where \code{1} represents the first cause of failure, and \code{2} represents the second cause of failure. The current version of package only allows for two causes of failure.}
+}
+\value{
+data frame
 }
 \description{
-\code{Surv2} generates survival object for a given cause of failure.
+\code{Surv2} generates the survival object to be treated as the response from \code{ciregic}.
+}
+\details{
+\code{Surv2} provides the response data frame to be used by \code{ciregic}.
+}
+\examples{
+attach(simdat)
+Surv2(v, u, c)
+
 }
 \keyword{Surv2}

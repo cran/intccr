@@ -11,18 +11,24 @@
 
 \item{...}{further arguments}
 }
+\value{
+the estimated bootstrap variance-covariance matrix
+}
 \description{
 \code{vcov} method for class \code{summary.ciregic}
 }
 \details{
-\code{vcov} returns the variance-covariance matrix of the fitted semiparametric regression model
+\code{vcov} returns the variance-covariance matrix of the fitted semiparametric regression model.
 }
 \examples{
 ## Continuing the ciregic(...) example
+\dontshow{
 fit <- ciregic(Surv2(v, u, c) ~ z1 + z2, data = simdat,
-               alpha = c(1,1), nboot = 0, do.par = FALSE)
+               alpha = c(1, 1), nboot = 0, do.par = FALSE)
+}
 vcov(summary(fit))
+
 }
 \seealso{
-The fitted semiparametric regression on cumulative incidence function with interval-censored competing risks data \code{\link[intccr]{ciregic}}, summary of the fitted semiparametric regression model \code{\link[intccr]{summary.ciregic}}, and values of predicted cumulative incidence functions \code{\link[intccr]{predict.ciregic}}
+The fitted semiparametric regression on cumulative incidence function with interval-censored competing risks data \code{\link[intccr]{ciregic}}, summary of the fitted semiparametric regression model \code{\link[intccr]{summary.ciregic}}, and values of the predicted cumulative incidence functions \code{\link[intccr]{predict.ciregic}}
 }

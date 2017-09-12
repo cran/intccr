@@ -13,7 +13,7 @@
 }
 \value{
 The function \code{\link[intccr]{summary.ciregic}} returns a list of summary statistics of the model from \code{object}.
-\item{varnames}{a vector containing variable names}
+\item{varnames}{the vector containing variable names}
 \item{coefficients}{the vector of the regression coefficient estimates}
 \item{se}{a bootstrap standard error of the coefficients}
 \item{z}{z value of the estimated coefficients}
@@ -24,16 +24,18 @@ The function \code{\link[intccr]{summary.ciregic}} returns a list of summary sta
 \code{summary} method for class \code{ciregic}
 }
 \details{
-\code{summary.ciregic} returns the coefficients, bootstrap standard errors, and etc. Additionaly, 'significance star' is included.
+\code{summary.ciregic} returns the coefficients, bootstrap standard errors, and etc. Additionally, 'significance star' is included.
 }
 \examples{
 ## Continuing the ciregic(...) example
+\dontshow{
 fit <- ciregic(Surv2(v, u, c) ~ z1 + z2, data = simdat,
-               alpha = c(1,1), nboot = 0, do.par = FALSE)
+               alpha = c(1, 1), nboot = 0, do.par = FALSE)
+}
 sfit <- summary(fit)
 sfit
 
 }
 \seealso{
-The fitted semiparametric regression on cumulative incidence function with interval-censored competing risks data \code{\link[intccr]{ciregic}} and values of predicted cumulative incidence functions \code{\link[intccr]{predict.ciregic}}
+The fitted semiparametric regression on cumulative incidence function with interval-censored competing risks data \code{\link[intccr]{ciregic}} and values of the predicted cumulative incidence functions \code{\link[intccr]{predict.ciregic}}
 }

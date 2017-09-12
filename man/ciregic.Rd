@@ -7,38 +7,35 @@
 ciregic(formula, data, alpha, nboot, do.par)
 }
 \arguments{
-\item{formula}{A formula object relating the survival object \code{Surv2(v, u, event)} to a set of covariates.}
+\item{formula}{the formula object relating the survival object \code{Surv2(v, u, event)} to a set of covariates.}
 
-\item{data}{Data frame to be used.}
+\item{data}{data frame to be used.}
 
 \item{alpha}{\eqn{\alpha=(\alpha1, \alpha2)} contains parameters that define the link functions from class of generalized odds-rate transformation models. The components \eqn{\alpha1} and \eqn{\alpha2} should both be \eqn{\ge 0}. If \eqn{\alpha1 = 0} the user assumes a proportional subdistribution hazards or Fine-Gray model for cause of failure 1. If \eqn{\alpha2 = 1} the user assumes a proportional odds model for cause of failure 2.}
 
-\item{nboot}{The number of bootstrap samples for estimating variances and covariances of the estimated regression coefficients. If \code{nboot = 0} \code{ciregic} does dot perform bootstrap estimation of the variance matrix of the regression parameter estimates and returns \code{NA} in the place of the estimated variance matrix of the regression parameter estimates.}
+\item{nboot}{the number of bootstrap samples for estimating variances and covariances of the estimated regression coefficients. If \code{nboot = 0}, \code{ciregic} does not perform bootstrap estimation of the variance-covariance matrix of the regression parameter estimates and returns \code{NA} in the place of the estimated variance-covariance matrix of the regression parameter estimates.}
 
-\item{do.par}{Using parallel computing for bootstrap. If \code{TRUE}, parallel computing will be used during the bootstrap estimation of the variance-covariance matrix for the regression parameter estimates.}
+\item{do.par}{the option to use parallel computing for bootstrap. If \code{TRUE}, parallel computing will be used during the bootstrap estimation of the variance-covariance matrix for the regression parameter estimates.}
 }
 \value{
 \code{ciregic} provides an object of class \code{ciregic} with components
-\item{varnames}{a vector containing variable names}
+\item{varnames}{the vector containing variable names}
 \item{coefficients}{the vector of the regression coefficient estimates}
 \item{gamma}{the vector of the estimated coefficients for the B-splines}
 \item{vcov}{the variance-covariance matrix of the estimated regression coefficients}
-\item{alpha}{a vector of the link function parameters}
-\item{loglikelihood}{loglikelihood of the fitted model}
-\item{convergence}{an indicator of convegence}
-\item{tms}{a vector of the minimum and maximum observation times}
-\item{Bv}{a list containing the B-splines basis functions evaluated at \code{v}}
-\item{numboot}{number of converged bootstrap}
+\item{alpha}{the vector of the link function parameters}
+\item{loglikelihood}{the loglikelihood of the fitted model}
+\item{convergence}{the indicator of convegence}
+\item{tms}{the vector of the minimum and maximum observation times}
+\item{Bv}{the list containing the B-splines basis functions evaluated at \code{v}}
+\item{numboot}{the number of converged bootstrap}
 \item{call}{the matched call}
 }
 \description{
-\code{ciregic} performs semiparametric regression on cumulative incidence function with interval-censored competing risks data.
+\code{ciregic} performs semiparametric regression on cumulative incidence function with interval-censored competing risks data. It fits the proportional subdistribution hazards model (Fine-Gray model), the proportional odds model, and other models that belong to the class of semiparametric generalized odds rate transformation models.
 }
 \details{
-The formula for the model has the form \code{response ~ predictors}, in which \code{predictors} consist of a vector of a predictor for \code{response}.
-The response is a \code{Surv2(v, u, event)} object where \code{v} is the last observation time prior to the failure, \code{u} is the first observation time after the failure, and \code{event} is the event or censoring indicator. \code{event} should include 0, 1 or 2, denoting right-censoring, failure from cause 1 and failure from cause 2, respectively. If \code{event=0} (i.e. right-censored observation) then \code{u} is not included in any calculation as it corresponds to \eqn{\infty}.
-The user can provide any value in \code{u} for the right-censored cases, even \code{NA}. The function fits a large class of models that belong to the class of generalized odds rate transofmation models which includes the proportional subdistribution hazards or Fine-Gray model and the proportional odds model. The parameter \eqn{\alpha=(\alpha1, \alpha2)}
-defines the link function/model to be fitted for cause of failure 1 and 2, respectively. A value of \code{0} corresponds the Fine-Gray model and a value of \code{1} corresponds to the proportional odds model. For example, if \eqn{\alpha=(0,1)} then the function \code{ciregic} fits the Fine-Gray model for cause 1 and the proportional odds model for cause 2.
+The formula for the model has the form \code{response ~ predictors}. The response is a \code{Surv2(v, u, event)} object where \code{v} is the last observation time prior to the failure, \code{u} is the first observation time after the failure, and \code{event} is the event or censoring indicator. \code{event} should include 0, 1 or 2, denoting right-censoring, failure from cause 1 and failure from cause 2, respectively. If \code{event=0} (i.e. right-censored observation) then \code{u} is not included in any calculation as it corresponds to \eqn{\infty}. The user can provide any value in \code{u} for the right-censored cases, even \code{NA}. The function fits models that belong to the class of generalized odds rate transformation models which includes the proportional subdistribution hazards or Fine-Gray model and the proportional odds model. The parameter \eqn{\alpha=(\alpha1, \alpha2)} defines the link function/model to be fitted for cause of failure 1 and 2, respectively. A value of \code{0} corresponds to the Fine-Gray model and a value of \code{1} corresponds to the proportional odds model. For example, if \eqn{\alpha=(0,1)} then the function \code{ciregic} fits the Fine-Gray model for cause 1 and the proportional odds model for cause 2.
 }
 \examples{
 ## Set seed in order to have reproducibility of the bootstrap standard error estimate
@@ -46,20 +43,21 @@ set.seed(1234)
 
 ## Estimation of regression parameters only. No bootstrap variance estimation.
 fit <- ciregic(Surv2(v, u, c) ~ z1 + z2, data = simdat,
-               alpha = c(1,1), nboot = 0, do.par = FALSE)
+               alpha = c(1, 1), nboot = 0, do.par = FALSE)
 fit
-\donttest{
+\dontrun{
 ## Bootstrap variance estimation based on 50 replications
 fit <- ciregic(Surv2(v, u, c) ~ z1 + z2, data = simdat,
-               alpha = c(1,1), nboot = 50, do.par = FALSE)
+               alpha = c(1, 1), nboot = 50, do.par = FALSE)
 }
-## Note that the user can use parallel computing to dencrease
-## the computation time of the bootstrap variance estimation (e.g. nboot = 50)
+## Note that the user can use parallel computing to decrease
+## the computation time of the bootstrap variance-covariance
+## estimation (e.g. nboot = 50)
 
 ## Summarize semiparametric regression model
 summary(fit)
 
-## Predict and plot cumulative incidence function evaluated at z1=1 and z2=0.5
+## Predict and draw plot the cumulative incidence function evaluated at z1=1 and z2=0.5
 t <- seq(from = 0, to = 2.8, by = 2.8/99)
 pred <- predict(object = fit, covp = c(1, 0.5), times = t)
 pred
@@ -68,11 +66,11 @@ points(pred$t, pred$cif2, type = "l", col = 2)
 
 }
 \references{
-{Bakoyannis, G., Yu, M., and Yiannoutsos C. T. (2017). Semiparametric regression on cumulative incidence function with interval-censored competing risks data. \emph{Statistics in Medicine}, In press.}
+{Bakoyannis, G., Yu, M., and Yiannoutsos C. T. (2017). Semiparametric regression on cumulative incidence function with interval-censored competing risks data. \emph{Statistics in Medicine}, \strong{36}:3683-3707.}
 
 {Fine, J. P. and Gray, R. J. (1999). A proportional hazards model for the subdistribution of a competing risk. \emph{Journal of the American Statistical Association}, \strong{94}:496-509.}
 }
 \seealso{
-\code{\link[intccr]{summary.ciregic}} for summarized results and \code{\link[intccr]{predict.ciregic}} for value of predicted cumulative incidence functions. \code{coef} and \code{vcov} are the generic functions.
+\code{\link[intccr]{summary.ciregic}} for the summarized results and \code{\link[intccr]{predict.ciregic}} for value of the predicted cumulative incidence functions. \code{coef} and \code{vcov} are the generic functions.
 }
 \keyword{ciregic}

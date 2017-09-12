@@ -1,11 +1,15 @@
-#' Survival object
-#'
-#' \code{Surv2} generates survival object for a given cause of failure.
-#' @param v The last observation time prior to the failure; \eqn{0\le v \le u}.
-#' @param u The first observation time after the failure; \eqn{u \ge 0}.
-#' @param event The cause of failure indicator. If observation is righ-censored, \code{event=0}, otherwise \code{event= 1 or 2}, where \code{1} represents first cause of failure
-#' , and \code{2} represents second cause of failure. The current version of package only allows for two causes of failure.
+#' Creating data frame
+#' @description \code{Surv2} generates the survival object to be treated as the response from \code{ciregic}.
+#' @param v the last observation time prior to the failure; \eqn{0\le v \le u}.
+#' @param u the first observation time after the failure; \eqn{u \ge 0}.
+#' @param event the cause of failure indicator. If observation is righ-censored, \code{event=0}; otherwise, \code{event= 1 or 2}, where \code{1} represents the first cause of failure, and \code{2} represents the second cause of failure. The current version of package only allows for two causes of failure.
 #' @keywords Surv2
+#' @details \code{Surv2} provides the response data frame to be used by \code{ciregic}.
+#' @return data frame
+#' @examples
+#' attach(simdat)
+#' Surv2(v, u, c)
+#'
 #' @export
 
 Surv2<-function(v, u, event){

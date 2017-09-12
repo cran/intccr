@@ -18,27 +18,29 @@
 \value{
 The function \code{predict.ciregic} returns a list of predicted values of the model from \code{object}.
 \item{t}{time points}
-\item{cif1}{predicted value of cumulative incidence function for cause 1}
-\item{cif2}{predicted value of cumulative incidence function for cause 2}
+\item{cif1}{the predicted value of cumulative incidence function for cause 1}
+\item{cif2}{the predicted value of cumulative incidence function for cause 2}
 }
 \description{
-\code{predict} method for class \code{ciregic}
+\code{predict} method for class \code{ciregic}. It provides the predicted cumulative incidence function for a given covariate pattern and timepoint(s).
 }
 \details{
-\code{predict.ciregic} returns the predicted values for times
+\code{predict.ciregic} returns the predicted cumulative incidence function for a given covariate pattern and timepoint(s).
 }
 \examples{
 ## Continuing the ciregic(...) example
+\dontshow{
 fit <- ciregic(Surv2(v, u, c) ~ z1 + z2, data = simdat,
-               alpha = c(1,1), nboot = 0, do.par = FALSE)
+               alpha = c(1, 1), nboot = 0, do.par = FALSE)
+}
 pfit <- predict(object = fit, covp = c(1, 0.5), times = c(0.1, 0.15, 0.5, 0.7))
 pfit
 mint <- fit$tms[1]
 maxt <- fit$tms[2]
 pfit1 <- predict(object = fit, covp = c(1, 0.5),
                  times = seq(mint, maxt, by = (maxt-mint)/99))
-plot(pfit1$t, pfit1$cif1, ylim = c(0,1), type = "l")
-lines(pfit1$t, pfit1$cif2, ylim = c(0,1), lty = 2, col = 2)
+plot(pfit1$t, pfit1$cif1, ylim = c(0, 1), type = "l")
+lines(pfit1$t, pfit1$cif2, ylim = c(0, 1), lty = 2, col = 2)
 }
 \seealso{
 The fitted semiparametric regression on cumulative incidence function with interval-censored competing risks data \code{\link[intccr]{ciregic}} and summary of the fitted semiparametric regression model \code{\link[intccr]{summary.ciregic}}

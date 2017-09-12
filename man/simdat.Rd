@@ -3,7 +3,7 @@
 \docType{data}
 \name{simdat}
 \alias{simdat}
-\title{Simulated 200 interval censored data with 2 covariates.}
+\title{A simulated dataset consisting of 200 interval-censored observations and 2 covariates.}
 \format{A data frame with 200 rows and 5 variables.}
 \usage{
 data(simdat)

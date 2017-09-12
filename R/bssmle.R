@@ -1,11 +1,24 @@
-#' bssmle
-#' @param formula A formula object relating survival object \code{Surv2(v, u, event)} to a set of covariates
-#' @param data Data frame to be used.
-#' @param alpha \eqn{\alpha=(\alpha1, \alpha2)} contains parameters that that define the link functions from class of generalized odds-rate transformation models. The components \eqn{\alpha1} and \eqn{\alpha2} should both be \eqn{\ge 0}. If \eqn{\alpha1 = 0} the user assumes a proportional subdistribution hazards or Fine-Gray model for cause of failure 1. If \eqn{\alpha2 = 1} the user assumes a proportional odds model for cause of failure 2.
+#' B-spline Sieve Maximum Likelihood Estimation
+#' @description Routine that performs B-spline sieve maximum likelihood estimation with linear and nonlinear inequality constraints
+#' @param formula the formula object relating survival object \code{Surv2(v, u, event)} to a set of covariates.
+#' @param data data frame to be used.
+#' @param alpha \eqn{\alpha=(\alpha1, \alpha2)} contains parameters that define the link functions from class of generalized odds-rate transformation models. The components \eqn{\alpha1} and \eqn{\alpha2} should both be \eqn{\ge 0}. If \eqn{\alpha1 = 0}, the user assumes a proportional subdistribution hazards or Fine-Gray model for cause of failure 1. If \eqn{\alpha2 = 1}, the user assumes a proportional odds model for cause of failure 2.
 #' @keywords bssmle
 #' @import stats
 #' @import splines
 #' @import alabama
+#' @details \code{bssmle} is the function that performs B-spline sieve maximum likelihood estimation.
+#' @return \code{bssmle} returns a list:
+#' \item{beta}{the vector of the estimated coefficients for the B-splines}
+#' \item{varnames}{the vector containing variable names}
+#' \item{alpha}{the vector of the link function parameters}
+#' \item{loglikelihood}{the loglikelihood of the fitted model}
+#' \item{convergence}{the indicator of convegence}
+#' \item{tms}{the vector of the minimum and maximum observation times}
+#' \item{Bv}{the list containing the B-splines basis functions evaluated at \code{v}}
+#' @examples
+#' est <- intccr:::bssmle(Surv2(v, u, c) ~ z1 + z2, data = simdat, alpha = c(1, 1))
+
 
 bssmle<-function(formula, data, alpha){
 
@@ -25,7 +38,7 @@ bssmle<-function(formula, data, alpha){
   ## B-spline basis matrix
   t <- c(Tv, Tu[delta > 0])
   nk <- floor(length(t)^(1/3))
-  max <- nk+1
+  max <- nk + 1
   knots <- quantile(t, seq(0, 1, by = 1 / (nk + 1)))[2:max]
   Bv <- bs(Tv, knots = knots, degree = 3, intercept = TRUE, Boundary.knots = c(min(t), max(t)))
   #Tu <- Tu*(Tu<=max(t))+max(t)*(Tu>max(t)) # Take care of the right-censored observations
@@ -144,13 +157,13 @@ bssmle<-function(formula, data, alpha){
 
     # ci1u and ci2u are not involved in the
     # likelihood when d==0. These values
-    # will be modified to avoid the problen of
+    # will be modified to avoid the problem of
     # 0*log(ci1u-ci1v)=NaN and 0*log(ci2u-ci2v)=NaN
     # (both should be 0 here)
     ci1u[ci1u == ci1v & d == 0] <- ci1u[ci1u == ci1v & d == 0] + 0.001
     ci2u[ci2u == ci2v & d == 0] <- ci2u[ci2u == ci2v & d == 0] + 0.001
 
-    #Create derivative matrix w.r.t. theta
+    # Create derivative matrix w.r.t. theta
     # Upper time
     zero <- matrix(rep(0, times = (length(Tu) * q)), ncol = q)
     dB1u <- Bu
@@ -307,14 +320,13 @@ bssmle<-function(formula, data, alpha){
     beta <- NA
   }
   if(min(!is.na(beta)) == 1){
-    res<-list()
-    res[[1]] <- beta
-    res[[2]] <- colnames(Z)
-    res[[3]] <- alpha
-    res[[4]] <- -est$value
-    res[[5]] <- ifelse(est$convergence == 0, "Converged","Did not converge")
-    res[[6]] <- c(min(t), max(t))
-    res[[7]] <- Bv
+    res<-list(beta = beta,
+              varnames = colnames(Z),
+              alpha = alpha,
+              loglikelihood = -est$value,
+              convergence = ifelse(est$convergence == 0, "Converged","Did not converge"),
+              tms = c(min(t), max(t)),
+              Bv = Bv)
     res
   } else {
     NA
