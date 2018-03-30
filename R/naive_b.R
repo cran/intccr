@@ -1,20 +1,21 @@
-#' Initial values
-#' @description Initial values for the maximization of the sieve likelihood
+#' Initial values for the sieve maximum likelihood estimation
+#' @description The function \code{naive_b} provides a vector of initial values for the B-spline sieve maximum likelihood estimation.
+#' @author Giorgos Bakoyannis, \email{gbakogia at iu dot edu}
+#' @author Jun Park, \email{jp84 at iu dot edu}
 #' @param data data frame to be used.
 #' @param v the last observation time prior to the failure.
 #' @param u the first observation time after the failure.
-#' @param c the event or censoring indicator. \code{event} should include 0, 1 or 2, denoting right-censoring, failure from cause 1 and failure from cause 2, respectively. If \code{event}=0 (i.e. right-censored observation) then \code{u} is not included in any calculation as it corresponds to \eqn{\infty}.
-#' @param q the dimension of design matrix.
-#' @import splines
+#' @param c an indicator of cause of failure. If observation is righ-censored, \code{event = 0}; otherwise, \code{event = 1} or \code{2}, where \code{1} represents the first cause of failure, and \code{2} represents the second cause of failure. The current version of package only allows for two causes of failure.
+#' @param q a dimension of design matrix.
 #' @keywords naive_b
-#' @details \code{naive_b} provides the initial value for the optimization procedure.
-#' @return the initial values of B-spline estimation
+#' @importFrom splines bs
+#' @details The function \code{naive_b} provides initial values for the optimization procedure.
+#' @return Initial values of B-spline estimation
 #' \item{b}{a vector of the initial values to be used in the optimization process}
 #' @examples
 #' attach(simdat)
 #' intccr:::naive_b(data = simdat, v = v, u = u, c = c, q = 2)
 #'
-
 
 naive_b <- function(data, v, u, c, q){
   t <- c(v, u[c > 0])

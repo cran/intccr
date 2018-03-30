@@ -13,12 +13,12 @@
 }
 \value{
 The function \code{\link[intccr]{summary.ciregic}} returns a list of summary statistics of the model from \code{object}.
-\item{varnames}{the vector containing variable names}
-\item{coefficients}{the vector of the regression coefficient estimates}
+\item{varnames}{a vector containing variable names}
+\item{coefficients}{a vector of the regression coefficient estimates}
 \item{se}{a bootstrap standard error of the coefficients}
 \item{z}{z value of the estimated coefficients}
 \item{p}{p value of the estimated coefficients}
-\item{call}{the matched call}
+\item{call}{a matched call}
 }
 \description{
 \code{summary} method for class \code{ciregic}

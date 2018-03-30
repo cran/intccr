@@ -2,7 +2,7 @@
 % Please edit documentation in R/naive_b.R
 \name{naive_b}
 \alias{naive_b}
-\title{Initial values}
+\title{Initial values for the sieve maximum likelihood estimation}
 \usage{
 naive_b(data, v, u, c, q)
 }
@@ -13,23 +13,28 @@ naive_b(data, v, u, c, q)
 
 \item{u}{the first observation time after the failure.}
 
-\item{c}{the event or censoring indicator. \code{event} should include 0, 1 or 2, denoting right-censoring, failure from cause 1 and failure from cause 2, respectively. If \code{event}=0 (i.e. right-censored observation) then \code{u} is not included in any calculation as it corresponds to \eqn{\infty}.}
+\item{c}{an indicator of cause of failure. If observation is righ-censored, \code{event = 0}; otherwise, \code{event = 1} or \code{2}, where \code{1} represents the first cause of failure, and \code{2} represents the second cause of failure. The current version of package only allows for two causes of failure.}
 
-\item{q}{the dimension of design matrix.}
+\item{q}{a dimension of design matrix.}
 }
 \value{
-the initial values of B-spline estimation
+Initial values of B-spline estimation
 \item{b}{a vector of the initial values to be used in the optimization process}
 }
 \description{
-Initial values for the maximization of the sieve likelihood
+The function \code{naive_b} provides a vector of initial values for the B-spline sieve maximum likelihood estimation.
 }
 \details{
-\code{naive_b} provides the initial value for the optimization procedure.
+The function \code{naive_b} provides initial values for the optimization procedure.
 }
 \examples{
 attach(simdat)
 intccr:::naive_b(data = simdat, v = v, u = u, c = c, q = 2)
 
+}
+\author{
+Giorgos Bakoyannis, \email{gbakogia at iu dot edu}
+
+Jun Park, \email{jp84 at iu dot edu}
 }
 \keyword{naive_b}

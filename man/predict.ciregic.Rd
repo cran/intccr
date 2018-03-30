@@ -9,7 +9,7 @@
 \arguments{
 \item{object}{an object of class \code{ciregic}, which is a result of a call to \code{ciregic}}
 
-\item{covp}{the desired covariate values}
+\item{covp}{a desired covariate values}
 
 \item{times}{time points that user wants to predict value of cumulative incidence function}
 

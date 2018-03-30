@@ -3,13 +3,13 @@
 \docType{data}
 \name{simdat}
 \alias{simdat}
-\title{A simulated dataset consisting of 200 interval-censored observations and 2 covariates.}
+\title{A simulated data consisting of 200 interval-censored observations with 2 covariates.}
 \format{A data frame with 200 rows and 5 variables.}
 \usage{
-data(simdat)
+simdat
 }
 \description{
-A dataset containing the last time prior to the event, the first time after the event, cause of failure, and covariates.
+Data containing the last time point prior to the event, the first time point after the event, cause of failure, and covariates.
 }
 \examples{
 simdat

@@ -1,78 +1,70 @@
 #' Bootstrap varince-covariance estimation
 #' @description Bootstrap varince estimation for the estimated regression coefficients
-#' @param formula the formula object relating survival object \code{Surv2(v, u, event)} to a set of covariates
-#' @param data data frame to be used
+#' @author Giorgos Bakoyannis, \email{gbakogia at iu dot edu}
+#' @author Jun Park, \email{jp84 at iu dot edu}
+#' @param formula a formula object relating survival object \code{Surv2(v, u, event)} to a set of covariates
+#' @param data a data frame to be used
 #' @param alpha \eqn{\alpha=(\alpha1, \alpha2)} contains parameters that that define the link functions from class of generalized odds-rate transformation models. The components \eqn{\alpha1} and \eqn{\alpha2} should both be \eqn{\ge 0}. If \eqn{\alpha1 = 0}, the user assumes a proportional subdistribution hazards or Fine-Gray model for cause of failure 1. If \eqn{\alpha2 = 1}, the user assumes a proportional odds model for cause of failure 2.
-#' @param nboot the number of bootstrap samples for estimating variances and covariances of the estimated regression coefficients. If \code{nboot = 0}, \code{ciregic} does dot perform bootstrap estimation of the variance matrix of the regression parameter estimates and returns \code{NA} in the place of the estimated variance matrix of the regression parameter estimates.
 #' @param do.par using parallel computing for bootstrap. If \code{TRUE}, parallel computing will be used during the bootstrap estimation of the variance-covariance matrix for the regression parameter estimates.
+#' @param nboot a number of bootstrap samples for estimating variances and covariances of the estimated regression coefficients. If \code{nboot = 0}, \code{ciregic} does dot perform bootstrap estimation of the variance matrix of the regression parameter estimates and returns \code{NA} in the place of the estimated variance matrix of the regression parameter estimates.
 #' @keywords bssmle_se
-#' @import parallel
-#' @import foreach
-#' @import doParallel
-#' @import utils
-#' @details \code{bssmle_se} is the function to estimate bootstrap standard errors for the estimated regression coefficients from the function \code{bssmle}.
-#' @return \code{bssmle_se} returns components
-#' \item{numboot}{the number of bootstrap with successful convergence}
-#' \item{Sigma}{the estimated bootstrap variance-covariance matrix of the estimated regression coefficients}
+#' @import foreach parallel numDeriv
+#' @importFrom doParallel registerDoParallel
+#' @importFrom utils txtProgressBar setTxtProgressBar
+#' @details The function \code{bssmle_se} estimates bootstrap standard errors for the estimated regression coefficients from the function \code{bssmle}.
+#' @return The function \code{bssmle_se} returns a list of components:
+#' \item{numboot}{a number of bootstrap converged}
+#' \item{Sigma}{an estimated bootstrap variance-covariance matrix of the estimated regression coefficients}
 #' @examples
 #' intccr:::bssmle_se(Surv2(v, u, c) ~ z1 + z2, data = simdat,
-#'                    nboot = 1, alpha = c(1, 1), do.par = FALSE)
+#'                    alpha = c(1, 1), do.par = FALSE, nboot = 1)
 
-
-bssmle_se<-function(formula, data, nboot, alpha, do.par){
-
-  tmp <- rep(NA, nboot)
+bssmle_se <- function(formula, data, alpha, do.par, nboot) {
+  tmp <- list()
   for(i in 1:nboot){
-    tempdir <- tempdir()
-    tmp[i] <- tempfile(pattern = "file", tmpdir = tempdir(), fileext = ".csv")
-    write.csv(data[sample(dim(data)[1], replace = TRUE), ], file = tmp[i], row.names = FALSE)
+    tmp[[i]] <- data[sample(dim(data)[1], replace = TRUE), ]
   }
-
+  j <- NULL
   if (!isTRUE(do.par)) {
-    first <- 1
-    for(j in 1:nboot){
-      #print(j)
-      par <- bssmle(formula, data = read.csv(tmp[j], header = TRUE), alpha)
-      unlink(tmp[j])
-      q <- length(par[[2]])
-      n <- (length(par[[1]]) - 2 * q) / 2
-      if(sum(is.na(par)) == 0){
-        if(first == 1){
-          pars <- par[[1]][(2 * n + 1):(2 * n + 2 * q)]
-          first <- 2
-        } else {
-          pars <- rbind(pars, par[[1]][(2 * n + 1):(2 * n + 2 * q)])
-        }
-      } else {
-        print("Non-convergence for 1 bootstrap dataset")
-      }
-    }
-    res <- pars
-  } else {
-    no.cores <- detectCores() - 1
-    clst <- makeCluster(no.cores)
-    clusterExport(clst, "Surv2")
-    registerDoParallel(clst)
     res.bt <- foreach(j = 1:nboot,
                       .combine = "rbind",
                       .export = c("naive_b", "bssmle"),
-                      .packages = c("splines", "stats", "alabama")) %dopar% {
-                        par <- bssmle(formula, data = read.csv(tmp[j], header = TRUE), alpha)
-                        unlink(tmp[j])
+                      .packages = c("splines", "stats", "alabama", "utils")) %do% {
+                        pb <- utils::txtProgressBar(max = nboot, style = 3)
+                        utils::setTxtProgressBar(pb, j)
+                        par <- bssmle(formula,
+                                      data = tmp[[j]],
+                                      alpha)
                         q <- length(par[[2]])
                         n <- (length(par[[1]]) - 2 * q) / 2
-                        if(sum(is.na(par)) == 0){
-                          pars <- par[[1]][(2 * n + 1):(2 * n + 2 * q)]
-                        } else {
-                          print("Non-convergence for 1 bootstrap dataset")
-                        }
+                        pars <- par[[1]][(2 * n + 1):(2 * n + 2 * q)]
                         return(pars)
                       }
-    stopCluster(clst)
+    close(pb)
+  } else {
+    no.cores <- parallel::detectCores() - 1
+    clst <- parallel::makeCluster(no.cores)
+    parallel::clusterExport(clst, "Surv2")
+    doParallel::registerDoParallel(clst)
+    res.bt <- foreach(j = 1:nboot,
+                      .combine = "rbind",
+                      .export = c("naive_b", "bssmle"),
+                      .packages = c("splines", "stats", "alabama", "utils")) %dopar% {
+                        #pb <- utils::txtProgressBar(max = nboot, style = 3)
+                        #utils::setTxtProgressBar(pb, j)
+                        par <- bssmle(formula,
+                                      data = tmp[[j]],
+                                      alpha)
+                        q <- length(par[[2]])
+                        n <- (length(par[[1]]) - 2 * q) / 2
+                        pars <- par[[1]][(2 * n + 1):(2 * n + 2 * q)]
+                        return(pars)
+                      }
+    #close(pb)
+    parallel::stopCluster(clst)
     rownames(res.bt) <- c()
-    res <- res.bt
   }
-  results <- list(numboot = nrow(res),
-                  Sigma = var(res))
-  results
+  result <- list(numboot = nrow(na.omit(res.bt)),
+                 Sigma = var(na.omit(res.bt)))
+  result
 }

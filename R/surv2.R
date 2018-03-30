@@ -1,10 +1,12 @@
 #' Creating data frame
-#' @description \code{Surv2} generates the survival object to be treated as the response from \code{ciregic}.
+#' @description The function \code{Surv2} generates the survival object to be treated as the response from \code{ciregic}.
+#' @author Giorgos Bakoyannis, \email{gbakogia at iu dot edu}
+#' @author Jun Park, \email{jp84 at iu dot edu}
 #' @param v the last observation time prior to the failure; \eqn{0\le v \le u}.
 #' @param u the first observation time after the failure; \eqn{u \ge 0}.
-#' @param event the cause of failure indicator. If observation is righ-censored, \code{event=0}; otherwise, \code{event= 1 or 2}, where \code{1} represents the first cause of failure, and \code{2} represents the second cause of failure. The current version of package only allows for two causes of failure.
+#' @param event an indicator of cause of failure. If observation is righ-censored, \code{event = 0}; otherwise, \code{event = 1} or \code{2}, where \code{1} represents the first cause of failure, and \code{2} represents the second cause of failure. The current version of package only allows for two causes of failure.
 #' @keywords Surv2
-#' @details \code{Surv2} provides the response data frame to be used by \code{ciregic}.
+#' @details The function \code{Surv2} provides a response data frame which is used in the function \code{ciregic}.
 #' @return data frame
 #' @examples
 #' attach(simdat)
@@ -12,7 +14,7 @@
 #'
 #' @export
 
-Surv2<-function(v, u, event){
+Surv2 <- function(v, u, event){
   if (missing(v) | missing(u))
     stop("Must have a lower and an upper time argument")
   if (missing(event))

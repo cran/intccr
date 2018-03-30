@@ -1,26 +1,28 @@
 #' B-spline Sieve Maximum Likelihood Estimation
 #' @description Routine that performs B-spline sieve maximum likelihood estimation with linear and nonlinear inequality constraints
-#' @param formula the formula object relating survival object \code{Surv2(v, u, event)} to a set of covariates.
-#' @param data data frame to be used.
-#' @param alpha \eqn{\alpha=(\alpha1, \alpha2)} contains parameters that define the link functions from class of generalized odds-rate transformation models. The components \eqn{\alpha1} and \eqn{\alpha2} should both be \eqn{\ge 0}. If \eqn{\alpha1 = 0}, the user assumes a proportional subdistribution hazards or Fine-Gray model for cause of failure 1. If \eqn{\alpha2 = 1}, the user assumes a proportional odds model for cause of failure 2.
+#' @author Giorgos Bakoyannis, \email{gbakogia at iu dot edu}
+#' @author Jun Park, \email{jp84 at iu dot edu}
+#' @param formula a formula object relating survival object \code{Surv2(v, u, event)} to a set of covariates.
+#' @param data a data frame to be used.
+#' @param alpha \eqn{\alpha = (\alpha1, \alpha2)} contains parameters that define the link functions from class of generalized odds-rate transformation models. The components \eqn{\alpha1} and \eqn{\alpha2} should both be \eqn{\ge 0}. If \eqn{\alpha1 = 0}, the user assumes a proportional subdistribution hazards or Fine-Gray model for cause of failure 1. If \eqn{\alpha2 = 1}, the user assumes a proportional odds model for cause of failure 2.
 #' @keywords bssmle
 #' @import stats
-#' @import splines
-#' @import alabama
-#' @details \code{bssmle} is the function that performs B-spline sieve maximum likelihood estimation.
-#' @return \code{bssmle} returns a list:
-#' \item{beta}{the vector of the estimated coefficients for the B-splines}
-#' \item{varnames}{the vector containing variable names}
-#' \item{alpha}{the vector of the link function parameters}
-#' \item{loglikelihood}{the loglikelihood of the fitted model}
-#' \item{convergence}{the indicator of convegence}
-#' \item{tms}{the vector of the minimum and maximum observation times}
-#' \item{Bv}{the list containing the B-splines basis functions evaluated at \code{v}}
+#' @importFrom alabama constrOptim.nl
+#' @importFrom splines bs
+#' @details The function \code{bssmle} performs B-spline sieve maximum likelihood estimation.
+#' @return The function \code{bssmle} returns a list of components:
+#' \item{beta}{a vector of the estimated coefficients for the B-splines}
+#' \item{varnames}{a vector containing variable names}
+#' \item{alpha}{a vector of the link function parameters}
+#' \item{loglikelihood}{a loglikelihood of the fitted model}
+#' \item{convergence}{an indicator of convegence}
+#' \item{tms}{a vector of the minimum and maximum observation times}
+#' \item{Bv}{a list containing the B-splines basis functions evaluated at \code{v}}
 #' @examples
 #' est <- intccr:::bssmle(Surv2(v, u, c) ~ z1 + z2, data = simdat, alpha = c(1, 1))
 
 
-bssmle<-function(formula, data, alpha){
+bssmle <- function(formula, data, alpha){
 
   ## Create time-window, event var and design matrix
   mf <- model.frame(formula = formula, data = data)
@@ -41,8 +43,7 @@ bssmle<-function(formula, data, alpha){
   max <- nk + 1
   knots <- quantile(t, seq(0, 1, by = 1 / (nk + 1)))[2:max]
   Bv <- bs(Tv, knots = knots, degree = 3, intercept = TRUE, Boundary.knots = c(min(t), max(t)))
-  #Tu <- Tu*(Tu<=max(t))+max(t)*(Tu>max(t)) # Take care of the right-censored observations
-  Tu <- Tu*(delta > 0) + max(t)*(delta == 0) #Return error: some 'x' values beyond boundary points
+  Tu[delta == 0] <- max(t)
   Bu <- predict(Bv, Tu)
 
   ## Generate auxiliary variables
@@ -103,22 +104,21 @@ bssmle<-function(formula, data, alpha){
     }
 
     # ci1u and ci2u are not involved in the
-    # likelihood when d==0. These values
-    # will be modified to avoid the problen of
-    # 0*log(ci1u-ci1v)=NaN and 0*log(ci2u-ci2v)=NaN
+    # likelihood when d == 0. These values
+    # will be modified to avoid the problem of
+    # 0*log(ci1u-ci1v) = NaN and 0*log(ci2u-ci2v) = NaN
     # (both should be 0 here)
     ci1u[ci1u == ci1v & d == 0] <- ci1u[ci1u == ci1v & d == 0] + 0.001
     ci2u[ci2u == ci2v & d == 0] <- ci2u[ci2u == ci2v & d == 0] + 0.001
 
     #Calculate the loglikelihood
     ill <- d1_1 * log(ci1u) + d2_1 * log(ci2u) +
-           d1 * log(ci1u - ci1v) + d2 * log(ci2u - ci2v) +
-           (1 - d) * log(1 - (ci1v + ci2v))
+      d1 * log(ci1u - ci1v) + d2 * log(ci2u - ci2v) +
+      (1 - d) * log(1 - (ci1v + ci2v))
 
     nll <- -sum(ill)
     nll
   }
-
 
   ## Define the function for the score
   Grad <- function(x) {
@@ -129,12 +129,12 @@ bssmle<-function(formula, data, alpha){
     b2 <- b[(2 * n + q+1):(2 * n + 2 * q)]
 
     #Create cumulative incidences
-    BS1u <- Bu %*% phi1
-    BS1v <- Bv %*% phi1
-    BS2u <- Bu %*% phi2
-    BS2v <- Bv %*% phi2
-    bz_1 <- Z %*% b1
-    bz_2 <- Z %*% b2
+    BS1u <- as.vector(Bu %*% phi1)
+    BS1v <- as.vector(Bv %*% phi1)
+    BS2u <- as.vector(Bu %*% phi2)
+    BS2v <- as.vector(Bv %*% phi2)
+    bz_1 <- as.vector(Z %*% b1)
+    bz_2 <- as.vector(Z %*% b2)
 
     if(a1 > 0){
       ci1v <- 1 - (1 + a1 * exp(BS1v + bz_1))^(-1/a1)
@@ -143,8 +143,6 @@ bssmle<-function(formula, data, alpha){
       ci1v <- 1 - exp(-exp(BS1v + bz_1))
       ci1u <- 1 - exp(-exp(BS1u + bz_1))
     }
-    ci1v <- unlist(as.data.frame(ci1v), use.names = FALSE)
-    ci1u <- unlist(as.data.frame(ci1u), use.names = FALSE)
     if(a2 > 0){
       ci2v <- 1 - (1 + a2 * exp(BS2v + bz_2))^(-1/a2)
       ci2u <- 1 - (1 + a2 * exp(BS2u + bz_2))^(-1/a2)
@@ -152,8 +150,6 @@ bssmle<-function(formula, data, alpha){
       ci2v <- 1 - exp(-exp(BS2v + bz_2))
       ci2u <- 1 - exp(-exp(BS2u + bz_2))
     }
-    ci2v <- unlist(as.data.frame(ci2v), use.names = FALSE)
-    ci2u <- unlist(as.data.frame(ci2u), use.names = FALSE)
 
     # ci1u and ci2u are not involved in the
     # likelihood when d==0. These values
@@ -188,8 +184,7 @@ bssmle<-function(formula, data, alpha){
       e1v <- exp(-exp(BS1v + bz_1)) * exp(BS1v + bz_1)
       e1u <- exp(-exp(BS1u + bz_1)) * exp(BS1u + bz_1)
     }
-    e1v <- unlist(as.data.frame(e1v), use.names = FALSE)
-    e1u <- unlist(as.data.frame(e1u), use.names = FALSE)
+
     if(a2 > 0){
       e2v <- (1 + a2 * exp(BS2v + bz_2))^(-(1 / a2) - 1) * exp(BS2v + bz_2)
       e2u <- (1 + a2 * exp(BS2u + bz_2))^(-(1 / a2) - 1) * exp(BS2u + bz_2)
@@ -197,14 +192,12 @@ bssmle<-function(formula, data, alpha){
       e2v <- exp(-exp(BS2v + bz_2)) * exp(BS2v + bz_2)
       e2u <- exp(-exp(BS2u + bz_2)) * exp(BS2u + bz_2)
     }
-    e2v <- unlist(as.data.frame(e2v), use.names = FALSE)
-    e2u <- unlist(as.data.frame(e2u), use.names = FALSE)
 
     iG <- (d1_1 / ci1u) * (e1u * dB1u) +
-          (d2_1 / ci2u) * (e2u * dB2u) +
-          (d1 / (ci1u - ci1v)) * (e1u * dB1u - e1v * dB1v) +
-          (d2 / (ci2u - ci2v)) * (e2u * dB2u - e2v * dB2v) +
-          ((1 - d) / (1 - ci1v - ci2v)) * (-e1v * dB1v - e2v * dB2v)
+      (d2_1 / ci2u) * (e2u * dB2u) +
+      (d1 / (ci1u - ci1v)) * (e1u * dB1u - e1v * dB1v) +
+      (d2 / (ci2u - ci2v)) * (e2u * dB2u - e2v * dB2v) +
+      ((1 - d) / (1 - ci1v - ci2v)) * (-e1v * dB1v - e2v * dB2v)
 
     G <- -colSums(iG)
     G
@@ -295,40 +288,45 @@ bssmle<-function(formula, data, alpha){
       line_i <- c(line, unlist(comb[i,]), unlist(comb[i,]))
       eta1 <- b1 %*% t(comb[i,])
       eta2 <- b2 %*% t(comb[i,])
-      # minmax<--line_i*(dcif1(eta1)+dcif2(eta2))
       minmax <- -line_i * (as.vector(dcif1(eta1)) + as.vector(dcif2(eta2)))
       ui <- rbind(ui, minmax)
     }
     unname(ui)
   }
 
-  est <- try(constrOptim.nl(par = b0,
-                            fn = nLL,
-                            gr = Grad,
-                            hin = eval_g0,
-                            hin.jac = eval_jac_g0,
-                            control.optim = list(maxit = 2000),
-                            control.outer = list(trace = FALSE)), silent = TRUE)
+  est <- try(alabama::constrOptim.nl(par = b0,
+                                     fn = nLL,
+                                     gr = Grad,
+                                     hin = eval_g0,
+                                     hin.jac = eval_jac_g0,
+                                     control.optim = list(maxit = 2000),
+                                     control.outer = list(trace = FALSE)), silent = TRUE)
   if(class(est) != "try-error"){
     if(est$convergence == 0){
       beta <- est$par
-      #print(-est$value)
     } else {
-      beta <- NA
+      beta <- rep(NA, length(b0))
     }
   } else {
-    beta <- NA
+    beta <- rep(NA, length(b0))
   }
+
   if(min(!is.na(beta)) == 1){
-    res<-list(beta = beta,
-              varnames = colnames(Z),
-              alpha = alpha,
-              loglikelihood = -est$value,
-              convergence = ifelse(est$convergence == 0, "Converged","Did not converge"),
-              tms = c(min(t), max(t)),
-              Bv = Bv)
+    res <- list(beta = beta,
+                varnames = colnames(Z),
+                alpha = alpha,
+                loglikelihood = -est$value,
+                convergence = ifelse(est$convergence == 0, "Converged", "Did not converge"),
+                tms = c(min(t), max(t)),
+                Bv = Bv)
     res
   } else {
-    NA
+    res <- list(beta = beta,
+                varnames = colnames(Z),
+                alpha = alpha,
+                loglikelihood = NA,
+                convergence = ifelse(est$convergence == 0, "Converged", "Did not converge"),
+                tms = c(min(t), max(t)))
+    res
   }
 }

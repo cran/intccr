@@ -12,7 +12,7 @@
 \item{...}{further arguments}
 }
 \value{
-the estimated bootstrap variance-covariance matrix
+The estimated bootstrap variance-covariance matrix
 }
 \description{
 \code{vcov} method for class \code{summary.ciregic}
