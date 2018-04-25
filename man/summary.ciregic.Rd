@@ -24,12 +24,14 @@ The function \code{\link[intccr]{summary.ciregic}} returns a list of summary sta
 \code{summary} method for class \code{ciregic}
 }
 \details{
-\code{summary.ciregic} returns the coefficients, bootstrap standard errors, and etc. Additionally, 'significance star' is included.
+The function \code{summary.ciregic} returns the coefficients, bootstrap standard errors, and etc. Additionally, 'significance star' is included.
 }
 \examples{
 ## Continuing the ciregic(...) example
 \dontshow{
-fit <- ciregic(Surv2(v, u, c) ~ z1 + z2, data = simdat,
+newdata <- dataprep(data = longdata, ID = "id", time = "t",
+                    event = "c", Z = c("z1", "z2"))
+fit <- ciregic(Surv2(v, u, c) ~ z1 + z2, data = newdata,
                alpha = c(1, 1), nboot = 0, do.par = FALSE)
 }
 sfit <- summary(fit)

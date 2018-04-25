@@ -18,12 +18,14 @@ The estimated bootstrap variance-covariance matrix
 \code{vcov} method for class \code{ciregic}
 }
 \details{
-\code{vcov} returns the variance-covariance matrix of the fitted semiparametric regression model.
+The function \code{vcov} returns the variance-covariance matrix of the fitted semiparametric regression model.
 }
 \examples{
 ## Continuing the ciregic(...) example
 \dontshow{
-fit <- ciregic(Surv2(v, u, c) ~ z1 + z2, data = simdat,
+newdata <- dataprep(data = longdata, ID = "id", time = "t",
+                    event = "c", Z = c("z1", "z2"))
+fit <- ciregic(Surv2(v, u, c) ~ z1 + z2, data = newdata,
                alpha = c(1, 1), nboot = 0, do.par = FALSE)
 }
 vcov(fit)

@@ -7,15 +7,15 @@
 dataprep(data, ID, time, event, Z)
 }
 \arguments{
-\item{data}{data frame}
+\item{data}{a data frame that includes the variables named in the \code{ID}, \code{time}, \code{event}, and \code{z} arguments}
 
-\item{ID}{individuals' ID.}
+\item{ID}{a variable indicating individuals' ID}
 
-\item{time}{time points}
+\item{time}{a variable indicating observed time points}
 
-\item{event}{a vector of event indicator. If observation is righ-censored, \code{event = 0}; otherwise, \code{event = 1} or \code{2}, where \code{1} represents the first cause of failure, and \code{2} represents the second cause of failure. The current version of package only allows for two causes of failure.}
+\item{event}{a vector of event indicator. If an observation is righ-censored, \code{event = 0}; otherwise, \code{event = 1} or \code{event = 2}, where \code{1} represents the first cause of failure, and \code{2} represents the second cause of failure. The current version of package only allows two causes of failure.}
 
-\item{Z}{a vector of variables' name}
+\item{Z}{a vector of variables indicating name of covariates}
 }
 \value{
 a data frame
@@ -28,7 +28,7 @@ The function \code{dataprep} provides a ready-to-use data format that can be dir
 }
 \examples{
 library(intccr)
-dataprep(data = longdat, ID = "id", time = "t", event = "c", Z = c("z1", "z2"))
+dataprep(data = longdata, ID = "id", time = "t", event = "c", Z = c("z1", "z2"))
 
 }
 \author{

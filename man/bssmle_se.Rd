@@ -9,13 +9,13 @@ bssmle_se(formula, data, alpha, do.par, nboot)
 \arguments{
 \item{formula}{a formula object relating survival object \code{Surv2(v, u, event)} to a set of covariates}
 
-\item{data}{a data frame to be used}
+\item{data}{a data frame that includes the variables named in the formula argument}
 
-\item{alpha}{\eqn{\alpha=(\alpha1, \alpha2)} contains parameters that that define the link functions from class of generalized odds-rate transformation models. The components \eqn{\alpha1} and \eqn{\alpha2} should both be \eqn{\ge 0}. If \eqn{\alpha1 = 0}, the user assumes a proportional subdistribution hazards or Fine-Gray model for cause of failure 1. If \eqn{\alpha2 = 1}, the user assumes a proportional odds model for cause of failure 2.}
+\item{alpha}{\eqn{\alpha = (\alpha1, \alpha2)} contains parameters that define the link functions from class of generalized odds-rate transformation models. The components \eqn{\alpha1} and \eqn{\alpha2} should both be \eqn{\ge 0}. If \eqn{\alpha1 = 0}, the user assumes a proportional subdistribution hazards model or Fine-Gray model for the cause of failure 1. If \eqn{\alpha2 = 1}, the user assumes a proportional odds model for the cause of failure 2.}
 
-\item{do.par}{using parallel computing for bootstrap. If \code{TRUE}, parallel computing will be used during the bootstrap estimation of the variance-covariance matrix for the regression parameter estimates.}
+\item{do.par}{using parallel computing for bootstrap calculation. If \code{do.par = TRUE}, parallel computing will be used during the bootstrap estimation of the variance-covariance matrix for the regression parameter estimates.}
 
-\item{nboot}{a number of bootstrap samples for estimating variances and covariances of the estimated regression coefficients. If \code{nboot = 0}, \code{ciregic} does dot perform bootstrap estimation of the variance matrix of the regression parameter estimates and returns \code{NA} in the place of the estimated variance matrix of the regression parameter estimates.}
+\item{nboot}{a number of bootstrap samples for estimating variances and covariances of the estimated regression coefficients. If \code{nboot = 0}, the function \code{ciregic} does dot perform bootstrap estimation of the variance matrix of the regression parameter estimates and returns \code{NA} in the place of the estimated variance matrix of the regression parameter estimates.}
 }
 \value{
 The function \code{bssmle_se} returns a list of components:
@@ -29,8 +29,8 @@ Bootstrap varince estimation for the estimated regression coefficients
 The function \code{bssmle_se} estimates bootstrap standard errors for the estimated regression coefficients from the function \code{bssmle}.
 }
 \examples{
-intccr:::bssmle_se(Surv2(v, u, c) ~ z1 + z2, data = simdat,
-                   alpha = c(1, 1), do.par = FALSE, nboot = 1)
+est.vcov <- intccr:::bssmle_se(Surv2(v, u, c) ~ z1 + z2, data = simdata,
+                               alpha = c(1, 1), do.par = FALSE, nboot = 1)
 }
 \author{
 Giorgos Bakoyannis, \email{gbakogia at iu dot edu}

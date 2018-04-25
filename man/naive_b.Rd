@@ -7,13 +7,13 @@
 naive_b(data, v, u, c, q)
 }
 \arguments{
-\item{data}{data frame to be used.}
+\item{data}{a data frame that includes the variables named in each argument}
 
 \item{v}{the last observation time prior to the failure.}
 
 \item{u}{the first observation time after the failure.}
 
-\item{c}{an indicator of cause of failure. If observation is righ-censored, \code{event = 0}; otherwise, \code{event = 1} or \code{2}, where \code{1} represents the first cause of failure, and \code{2} represents the second cause of failure. The current version of package only allows for two causes of failure.}
+\item{c}{an indicator of cause of failure. If an observation is righ-censored, \code{event = 0}; otherwise, \code{event = 1} or \code{event = 2}, where \code{1} represents the first cause of failure, and \code{2} represents the second cause of failure. The current version of package only allows for two causes of failure.}
 
 \item{q}{a dimension of design matrix.}
 }
@@ -28,9 +28,8 @@ The function \code{naive_b} provides a vector of initial values for the B-spline
 The function \code{naive_b} provides initial values for the optimization procedure.
 }
 \examples{
-attach(simdat)
-intccr:::naive_b(data = simdat, v = v, u = u, c = c, q = 2)
-
+attach(simdata)
+intccr:::naive_b(data = simdata, v = v, u = u, c = c, q = 2)
 }
 \author{
 Giorgos Bakoyannis, \email{gbakogia at iu dot edu}

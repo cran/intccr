@@ -11,7 +11,7 @@ Surv2(v, u, event)
 
 \item{u}{the first observation time after the failure; \eqn{u \ge 0}.}
 
-\item{event}{an indicator of cause of failure. If observation is righ-censored, \code{event = 0}; otherwise, \code{event = 1} or \code{2}, where \code{1} represents the first cause of failure, and \code{2} represents the second cause of failure. The current version of package only allows for two causes of failure.}
+\item{event}{an indicator of cause of failure. If an observation is righ-censored, \code{event = 0}; otherwise, \code{event = 1} or \code{event = 2}, where \code{1} represents the first cause of failure, and \code{2} represents the second cause of failure. The current version of package only allows for two causes of failure.}
 }
 \value{
 data frame
@@ -23,7 +23,7 @@ The function \code{Surv2} generates the survival object to be treated as the res
 The function \code{Surv2} provides a response data frame which is used in the function \code{ciregic}.
 }
 \examples{
-attach(simdat)
+attach(simdata)
 Surv2(v, u, c)
 
 }

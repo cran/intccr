@@ -2,11 +2,11 @@
 #' @description The function \code{ciregic} performs semiparametric regression on cumulative incidence function with interval-censored competing risks data. It fits the proportional subdistribution hazards model (Fine-Gray model), the proportional odds model, and other models that belong to the class of semiparametric generalized odds rate transformation models.
 #' @author Giorgos Bakoyannis, \email{gbakogia at iu dot edu}
 #' @author Jun Park, \email{jp84 at iu dot edu}
-#' @param formula a formula object relating the survival object \code{Surv2(v, u, event)} to a set of covariates.
-#' @param data a data frame to be used.
-#' @param alpha \eqn{\alpha = (\alpha1, \alpha2)} contains parameters that define the link functions from class of generalized odds-rate transformation models. The components \eqn{\alpha1} and \eqn{\alpha2} should both be \eqn{\ge 0}. If \eqn{\alpha1 = 0} the user assumes a proportional subdistribution hazards or Fine-Gray model for cause of failure 1. If \eqn{\alpha2 = 1} the user assumes a proportional odds model for cause of failure 2.
-#' @param do.par an option to use parallel computing for bootstrap. If \code{TRUE}, parallel computing will be used during the bootstrap estimation of the variance-covariance matrix for the regression parameter estimates.
-#' @param nboot a number of bootstrap samples for estimating variances and covariances of the estimated regression coefficients. If \code{nboot = 0}, \code{ciregic} does not perform bootstrap estimation of the variance-covariance matrix of the regression parameter estimates and returns \code{NA} in the place of the estimated variance-covariance matrix of the regression parameter estimates.
+#' @param formula a formula object relating the survival object \code{Surv2(v, u, event)} to a set of covariates
+#' @param data a data frame that includes the variables named in the formula argument
+#' @param alpha \eqn{\alpha = (\alpha1, \alpha2)} contains parameters that define the link functions from class of generalized odds-rate transformation models. The components \eqn{\alpha1} and \eqn{\alpha2} should both be \eqn{\ge 0}. If \eqn{\alpha1 = 0}, the user assumes a proportional subdistribution hazards model or Fine-Gray model for the cause of failure 1. If \eqn{\alpha2 = 1}, the user assumes a proportional odds model for the cause of failure 2.
+#' @param do.par an option to use parallel computing for bootstrap. If \code{do.par = TRUE}, parallel computing will be used during the bootstrap estimation of the variance-covariance matrix for the regression parameter estimates.
+#' @param nboot a number of bootstrap samples for estimating variances and covariances of the estimated regression coefficients. If \code{nboot = 0}, the function \code{ciregic} does not perform bootstrap estimation of the variance-covariance matrix of the regression parameter estimates and returns \code{NA} in the place of the estimated variance-covariance matrix of the regression parameter estimates.
 #' @return The function \code{ciregic} provides an object of class \code{ciregic} with components:
 #' \item{varnames}{a vector containing variable names}
 #' \item{coefficients}{a vector of the regression coefficient estimates}
@@ -23,7 +23,7 @@
 #' {Bakoyannis, G., Yu, M., and Yiannoutsos C. T. (2017). Semiparametric regression on cumulative incidence function with interval-censored competing risks data. \emph{Statistics in Medicine}, \strong{36}:3683-3707.}
 #' @references
 #' {Fine, J. P. and Gray, R. J. (1999). A proportional hazards model for the subdistribution of a competing risk. \emph{Journal of the American Statistical Association}, \strong{94}:496-509.}
-#' @details The formula for the model has the form \code{response ~ predictors}. The response is a \code{Surv2(v, u, event)} object where \code{v} is the last observation time prior to the failure, \code{u} is the first observation time after the failure, and \code{event} is the event or censoring indicator. \code{event} should include 0, 1 or 2, denoting right-censoring, failure from cause 1 and failure from cause 2, respectively. If \code{event=0} (i.e. right-censored observation) then \code{u} is not included in any calculation as it corresponds to \eqn{\infty}. The user can provide any value in \code{u} for the right-censored cases, even \code{NA}. The function fits models that belong to the class of generalized odds rate transformation models which includes the proportional subdistribution hazards or the Fine-Gray model and the proportional odds model. The parameter \eqn{\alpha=(\alpha1, \alpha2)} defines the link function/model to be fitted for cause of failure 1 and 2, respectively. A value of \code{0} corresponds to the Fine-Gray model and a value of \code{1} corresponds to the proportional odds model. For example, if \eqn{\alpha=(0,1)} then the function \code{ciregic} fits the Fine-Gray model for cause 1 and the proportional odds model for cause 2.
+#' @details The formula for the model has the form of \code{response ~ predictors}. The response in the formula is a \code{Surv2(v, u, event)} object where \code{v} is the last observation time prior to the failure, \code{u} is the first observation time after the failure, and \code{event} is the event or censoring indicator. \code{event} should include 0, 1 or 2, denoting right-censoring, failure from cause 1 and failure from cause 2, respectively. If \code{event=0} (i.e. right-censored observation) then \code{u} is not included in any calculation as it corresponds to \eqn{\infty}. The user can provide any value in \code{u} for the right-censored cases, even \code{NA}. The function \code{ciregic} fits models that belong to the class of generalized odds rate transformation models which includes the proportional subdistribution hazards or the Fine-Gray model and the proportional odds model. The parameter \eqn{\alpha=(\alpha1, \alpha2)} defines the link function/model to be fitted for cause of failure 1 and 2, respectively. A value of \code{0} corresponds to the Fine-Gray model and a value of \code{1} corresponds to the proportional odds model. For example, if \eqn{\alpha=(0,1)} then the function \code{ciregic} fits the Fine-Gray model for cause 1 and the proportional odds model for cause 2.
 #' @keywords ciregic
 #' @seealso \code{\link[intccr]{summary.ciregic}} for the summarized results and \code{\link[intccr]{predict.ciregic}} for value of the predicted cumulative incidence functions. \code{coef} and \code{vcov} are the generic functions. \code{\link[intccr]{dataprep}} for reshaping data from a long format to a suitable format to be used in the function \code{ciregic}.
 #' @examples
@@ -31,15 +31,23 @@
 #' set.seed(1234)
 #'
 #' ## Reshaping data from a long format to a suitable format
-#' newdat <- dataprep(data = longdat, ID = "id", time = "t", event = "c", Z = c("z1", "z2"))
+#' newdata <- dataprep(data = longdata, ID = "id", time = "t",
+#'                     event = "c", Z = c("z1", "z2"))
 #' ## Estimation of regression parameters only. No bootstrap variance estimation.
-#' fit <- ciregic(Surv2(v, u, c) ~ z1 + z2, data = newdat,
+#' ## with 'newdata'
+#' fit <- ciregic(Surv2(v, u, c) ~ z1 + z2, data = newdata,
 #'                alpha = c(1, 1), nboot = 0, do.par = FALSE)
 #' fit
 #'
+#' ## Estimation of regression parameters only. No bootstrap variance estimation.
+#' ## with 'simdata'
+#' fit.simdata <- ciregic(Surv2(v, u, c) ~ z1 + z2, data = simdata,
+#'                        alpha = c(1, 1), nboot = 0, do.par = FALSE)
+#' fit.simdata
+#'
 #' \dontrun{
 #' ## Bootstrap variance estimation based on 50 replications
-#' fit <- ciregic(Surv2(v, u, c) ~ z1 + z2, data = simdat,
+#' fit <- ciregic(Surv2(v, u, c) ~ z1 + z2, data = newdata,
 #'                alpha = c(1, 1), nboot = 50, do.par = FALSE)
 #' }
 #' ## Note that the user can use parallel computing to decrease
@@ -148,13 +156,15 @@ print.ciregic <- function(x, ...){
 #' @description \code{vcov} method for class \code{ciregic}
 #' @param object an object of class \code{ciregic}, which is a result of a call to \code{ciregic}
 #' @param ... further arguments
-#' @details \code{vcov} returns the variance-covariance matrix of the fitted semiparametric regression model.
+#' @details The function \code{vcov} returns the variance-covariance matrix of the fitted semiparametric regression model.
 #' @seealso The fitted semiparametric regression on cumulative incidence function with interval-censored competing risks data \code{\link[intccr]{ciregic}}, summary of the fitted semiparametric regression model \code{\link[intccr]{summary.ciregic}}, and values of predicted cumulative incidence functions \code{\link[intccr]{predict.ciregic}}
 #' @return The estimated bootstrap variance-covariance matrix
 #' @examples
 #' ## Continuing the ciregic(...) example
 #' \dontshow{
-#' fit <- ciregic(Surv2(v, u, c) ~ z1 + z2, data = simdat,
+#' newdata <- dataprep(data = longdata, ID = "id", time = "t",
+#'                     event = "c", Z = c("z1", "z2"))
+#' fit <- ciregic(Surv2(v, u, c) ~ z1 + z2, data = newdata,
 #'                alpha = c(1, 1), nboot = 0, do.par = FALSE)
 #' }
 #' vcov(fit)
@@ -170,7 +180,7 @@ vcov.ciregic <- function(object, ...){
 #' @description \code{summary} method for class \code{ciregic}
 #' @param object an object of class \code{ciregic}, which is a result of a call to \code{ciregic}
 #' @param ... further arguments
-#' @details \code{summary.ciregic} returns the coefficients, bootstrap standard errors, and etc. Additionally, 'significance star' is included.
+#' @details The function \code{summary.ciregic} returns the coefficients, bootstrap standard errors, and etc. Additionally, 'significance star' is included.
 #' @return The function \code{\link[intccr]{summary.ciregic}} returns a list of summary statistics of the model from \code{object}.
 #' \item{varnames}{a vector containing variable names}
 #' \item{coefficients}{a vector of the regression coefficient estimates}
@@ -182,7 +192,9 @@ vcov.ciregic <- function(object, ...){
 #' @examples
 #' ## Continuing the ciregic(...) example
 #' \dontshow{
-#' fit <- ciregic(Surv2(v, u, c) ~ z1 + z2, data = simdat,
+#' newdata <- dataprep(data = longdata, ID = "id", time = "t",
+#'                     event = "c", Z = c("z1", "z2"))
+#' fit <- ciregic(Surv2(v, u, c) ~ z1 + z2, data = newdata,
 #'                alpha = c(1, 1), nboot = 0, do.par = FALSE)
 #' }
 #' sfit <- summary(fit)
@@ -255,13 +267,15 @@ print.summary.ciregic <- function(x, ...){
 #' @description \code{vcov} method for class \code{summary.ciregic}
 #' @param object an object of class \code{summary.ciregic}, which is a result of a call to \code{ciregic}
 #' @param ... further arguments
-#' @details \code{vcov} returns the variance-covariance matrix of the fitted semiparametric regression model.
+#' @details The \code{vcov} returns the variance-covariance matrix of the fitted semiparametric regression model.
 #' @return The estimated bootstrap variance-covariance matrix
 #' @seealso The fitted semiparametric regression on cumulative incidence function with interval-censored competing risks data \code{\link[intccr]{ciregic}}, summary of the fitted semiparametric regression model \code{\link[intccr]{summary.ciregic}}, and values of the predicted cumulative incidence functions \code{\link[intccr]{predict.ciregic}}
 #' @examples
 #' ## Continuing the ciregic(...) example
 #' \dontshow{
-#' fit <- ciregic(Surv2(v, u, c) ~ z1 + z2, data = simdat,
+#' newdata <- dataprep(data = longdata, ID = "id", time = "t",
+#'                     event = "c", Z = c("z1", "z2"))
+#' fit <- ciregic(Surv2(v, u, c) ~ z1 + z2, data = newdata,
 #'                alpha = c(1, 1), nboot = 0, do.par = FALSE)
 #' }
 #' vcov(summary(fit))
@@ -275,7 +289,7 @@ vcov.summary.ciregic <- function(object, ...){
 #' Covariate-Specific Cumulative Incidence Prediction
 #' @description \code{predict} method for class \code{ciregic}. It provides the predicted cumulative incidence function for a given covariate pattern and timepoint(s).
 #' @param object an object of class \code{ciregic}, which is a result of a call to \code{ciregic}
-#' @param covp a desired covariate values
+#' @param covp a desired values for covariates
 #' @param times time points that user wants to predict value of cumulative incidence function
 #' @param ... further arguments
 #' @details \code{predict.ciregic} returns the predicted cumulative incidence function for a given covariate pattern and timepoint(s).
@@ -287,7 +301,9 @@ vcov.summary.ciregic <- function(object, ...){
 #' @examples
 #' ## Continuing the ciregic(...) example
 #' \dontshow{
-#' fit <- ciregic(Surv2(v, u, c) ~ z1 + z2, data = simdat,
+#' newdata <- dataprep(data = longdata, ID = "id", time = "t",
+#'                     event = "c", Z = c("z1", "z2"))
+#' fit <- ciregic(Surv2(v, u, c) ~ z1 + z2, data = newdata,
 #'                alpha = c(1, 1), nboot = 0, do.par = FALSE)
 #' }
 #' pfit <- predict(object = fit, covp = c(1, 0.5), times = c(0.1, 0.15, 0.5, 0.7))

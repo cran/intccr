@@ -7,11 +7,11 @@
 bssmle(formula, data, alpha)
 }
 \arguments{
-\item{formula}{a formula object relating survival object \code{Surv2(v, u, event)} to a set of covariates.}
+\item{formula}{a formula object relating survival object \code{Surv2(v, u, event)} to a set of covariates}
 
-\item{data}{a data frame to be used.}
+\item{data}{a data frame that includes the variables named in the formula argument}
 
-\item{alpha}{\eqn{\alpha = (\alpha1, \alpha2)} contains parameters that define the link functions from class of generalized odds-rate transformation models. The components \eqn{\alpha1} and \eqn{\alpha2} should both be \eqn{\ge 0}. If \eqn{\alpha1 = 0}, the user assumes a proportional subdistribution hazards or Fine-Gray model for cause of failure 1. If \eqn{\alpha2 = 1}, the user assumes a proportional odds model for cause of failure 2.}
+\item{alpha}{\eqn{\alpha = (\alpha1, \alpha2)} contains parameters that define the link functions from class of generalized odds-rate transformation models. The components \eqn{\alpha1} and \eqn{\alpha2} should both be \eqn{\ge 0}. If \eqn{\alpha1 = 0}, the user assumes a proportional subdistribution hazards model or Fine-Gray model for the cause of failure 1. If \eqn{\alpha2 = 1}, the user assumes a proportional odds model for the cause of failure 2.}
 }
 \value{
 The function \code{bssmle} returns a list of components:
@@ -30,7 +30,10 @@ Routine that performs B-spline sieve maximum likelihood estimation with linear a
 The function \code{bssmle} performs B-spline sieve maximum likelihood estimation.
 }
 \examples{
-est <- intccr:::bssmle(Surv2(v, u, c) ~ z1 + z2, data = simdat, alpha = c(1, 1))
+est.simdata <- intccr:::bssmle(Surv2(v, u, c) ~ z1 + z2, data = simdata, alpha = c(1, 1))
+newdata <- intccr::dataprep(data = longdata, ID = "id", time = "t",
+                            event = "c", Z = c("z1", "z2"))
+est.longdata <- intccr:::bssmle(Surv2(v, u, c) ~ z1 + z2, data = newdata, alpha = c(1, 1))
 }
 \author{
 Giorgos Bakoyannis, \email{gbakogia at iu dot edu}

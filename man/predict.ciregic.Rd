@@ -9,7 +9,7 @@
 \arguments{
 \item{object}{an object of class \code{ciregic}, which is a result of a call to \code{ciregic}}
 
-\item{covp}{a desired covariate values}
+\item{covp}{a desired values for covariates}
 
 \item{times}{time points that user wants to predict value of cumulative incidence function}
 
@@ -30,7 +30,9 @@ The function \code{predict.ciregic} returns a list of predicted values of the mo
 \examples{
 ## Continuing the ciregic(...) example
 \dontshow{
-fit <- ciregic(Surv2(v, u, c) ~ z1 + z2, data = simdat,
+newdata <- dataprep(data = longdata, ID = "id", time = "t",
+                    event = "c", Z = c("z1", "z2"))
+fit <- ciregic(Surv2(v, u, c) ~ z1 + z2, data = newdata,
                alpha = c(1, 1), nboot = 0, do.par = FALSE)
 }
 pfit <- predict(object = fit, covp = c(1, 0.5), times = c(0.1, 0.15, 0.5, 0.7))
