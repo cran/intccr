@@ -16,7 +16,8 @@
 #' \item{numboot}{a number of bootstrap converged}
 #' \item{Sigma}{an estimated bootstrap variance-covariance matrix of the estimated regression coefficients}
 #' @examples
-#' est.vcov <- intccr:::bssmle_se(Surv2(v, u, c) ~ z1 + z2, data = simdata,
+#' attach(simdata)
+#' est.vcov <- intccr:::bssmle_se(formula = Surv2(v, u, c) ~ z1 + z2, data = simdata,
 #'                                alpha = c(1, 1), do.par = FALSE, nboot = 1)
 
 bssmle_se <- function(formula, data, alpha, do.par, nboot) {

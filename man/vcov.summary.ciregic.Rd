@@ -25,7 +25,7 @@ The \code{vcov} returns the variance-covariance matrix of the fitted semiparamet
 \dontshow{
 newdata <- dataprep(data = longdata, ID = "id", time = "t",
                     event = "c", Z = c("z1", "z2"))
-fit <- ciregic(Surv2(v, u, c) ~ z1 + z2, data = newdata,
+fit <- ciregic(formula = Surv2(v, u, c) ~ z1 + z2, data = newdata,
                alpha = c(1, 1), nboot = 0, do.par = FALSE)
 }
 vcov(summary(fit))

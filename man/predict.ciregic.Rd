@@ -32,7 +32,7 @@ The function \code{predict.ciregic} returns a list of predicted values of the mo
 \dontshow{
 newdata <- dataprep(data = longdata, ID = "id", time = "t",
                     event = "c", Z = c("z1", "z2"))
-fit <- ciregic(Surv2(v, u, c) ~ z1 + z2, data = newdata,
+fit <- ciregic(formula = Surv2(v, u, c) ~ z1 + z2, data = newdata,
                alpha = c(1, 1), nboot = 0, do.par = FALSE)
 }
 pfit <- predict(object = fit, covp = c(1, 0.5), times = c(0.1, 0.15, 0.5, 0.7))

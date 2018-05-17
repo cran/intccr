@@ -29,7 +29,8 @@ Bootstrap varince estimation for the estimated regression coefficients
 The function \code{bssmle_se} estimates bootstrap standard errors for the estimated regression coefficients from the function \code{bssmle}.
 }
 \examples{
-est.vcov <- intccr:::bssmle_se(Surv2(v, u, c) ~ z1 + z2, data = simdata,
+attach(simdata)
+est.vcov <- intccr:::bssmle_se(formula = Surv2(v, u, c) ~ z1 + z2, data = simdata,
                                alpha = c(1, 1), do.par = FALSE, nboot = 1)
 }
 \author{

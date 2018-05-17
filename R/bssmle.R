@@ -55,7 +55,7 @@ bssmle <- function(formula, data, alpha){
   d1 <- (delta == 1 & Tv > 0)
   d2 <- (delta == 2 & Tv > 0)
   d1_1 <- (delta == 1 & Tv == 0)
-  d2_1 <- (delta==2 & Tv==0)
+  d2_1 <- (delta == 2 & Tv == 0)
   d <- (d1 + d1_1 + d2 + d2_1)
   a1 <- alpha[1]
   a2 <- alpha[2]
@@ -92,15 +92,15 @@ bssmle <- function(formula, data, alpha){
     bz_1 <- Z %*% b1
     bz_2 <- Z %*% b2
     if(a1 > 0){
-      ci1v <- 1 - (1 + a1 * exp(BS1v + bz_1))^(-1/a1)
-      ci1u <- 1 - (1 + a1 * exp(BS1u + bz_1))^(-1/a1)
+      ci1v <- 1 - (1 + a1 * exp(BS1v + bz_1))^(-1 / a1)
+      ci1u <- 1 - (1 + a1 * exp(BS1u + bz_1))^(-1 / a1)
     } else if(a1 == 0) {
       ci1v <- 1 - exp(-exp(BS1v + bz_1))
       ci1u <- 1 - exp(-exp(BS1u + bz_1))
     }
     if(a2 > 0){
-      ci2v <- 1 - (1 + a2 * exp(BS2v + bz_2))^(-1/a2)
-      ci2u <- 1 - (1 + a2 * exp(BS2u + bz_2))^(-1/a2)
+      ci2v <- 1 - (1 + a2 * exp(BS2v + bz_2))^(-1 / a2)
+      ci2u <- 1 - (1 + a2 * exp(BS2u + bz_2))^(-1 / a2)
     } else if(a2 == 0){
       ci2v <- 1 - exp(-exp(BS2v + bz_2))
       ci2u <- 1 - exp(-exp(BS2u + bz_2))
@@ -242,10 +242,10 @@ bssmle <- function(formula, data, alpha){
       ui <- c(ui, minmax)
     }
 
-    unname(ui)-0.0000001
+    unname(ui) - 0.0000001
   }
 
-  eval_jac_g0<-function(x){
+  eval_jac_g0 <- function(x){
     b1 <- x[(2 * n + 1):(2 * n + q)]
     b2 <- x[(2 * n + q + 1):(2 * n + 2 * q)]
     nBS <- 2 * n
