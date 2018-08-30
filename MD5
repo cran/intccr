@@ -1,8 +1,8 @@
-a789ead650d375211ab6c35b73ef5ffe *DESCRIPTION
+a5c63e4fd8d0a703a8743df5b4489bb9 *DESCRIPTION
 7f306fd33d5778a0b4de24481b0f592a *NAMESPACE
-b8348c8daae98f50bb7e04446834a65b *R/bssmle.R
-ca366552c6a9d62000df3c8222b74de3 *R/bssmle_se.R
-de2c00d675e78919f59429fb8e93f991 *R/ciregic.R
+037d36159ca907de68eeb1df5cd9d75e *R/bssmle.R
+7e6c4986cef67d1b983ca385d91eb11f *R/bssmle_se.R
+5348efc7be4406fe95357370c0d92f2d *R/ciregic.R
 2fb486c72054d80529135a3017b031e1 *R/dataprep.R
 309784dcab7b3f0386e51f1561c64341 *R/longdata.R
 1dfea5d46a5b3e7f1c5fc2e81a0b4704 *R/naive_b.R
@@ -13,9 +13,9 @@ bbd2a95aee0d87d39bb00b1b522ad2dc *R/simdata.R
 4aa3fc5663a20612431874c007b62399 *data/pseudo.HIV.long.rda
 78eae9bc04d386eec1aacef483a57454 *data/simdata.rda
 ed3ceca062c6d09bc223c791b5140141 *man/Surv2.Rd
-d1a6744f596ebea4c308203974c4a09a *man/bssmle.Rd
-d0258fccd0e4a73dadea453f60649da8 *man/bssmle_se.Rd
-20982349c705fdc118e6ee7dc00ff9c7 *man/ciregic.Rd
+53c074463a912e908975166cee443d29 *man/bssmle.Rd
+83ca7f49b640d2d2e8806341cff74c9d *man/bssmle_se.Rd
+2edcaf16eb1f8618826e8bb8f40a22cb *man/ciregic.Rd
 b1888fdc4ba620f037ae47b4e9aeba98 *man/dataprep.Rd
 b0c1db2255bad6d54bba7d1a1df204ad *man/longdata.Rd
 ed5fb50ba8bb0b512f5107441e5d4dd1 *man/naive_b.Rd
