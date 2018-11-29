@@ -8,6 +8,7 @@
 #' @param event a vector of event indicator. If an observation is righ-censored, \code{event = 0}; otherwise, \code{event = 1} or \code{event = 2}, where \code{1} represents the first cause of failure, and \code{2} represents the second cause of failure. The current version of package only allows two causes of failure.
 #' @param Z a vector of variables indicating name of covariates
 #' @keywords dataprep
+#' @importFrom utils capture.output
 #' @details The function \code{dataprep} provides a ready-to-use data format that can be directly used in the function \code{ciregic}. The returned data frame consists of \code{id}, \code{v}, \code{u}, \code{c}, and covariates as columns. The \code{v} and \code{u} indicate time window with the last observation time before the event and the first observation after the event. The \code{c} represents a type of event, for example, \code{c = 1} for the first cause of failure, \code{c = 2} for the second cause of failure, and \code{c = 0} for the right-censored. Individuals who have only one time record with right-censored event will be omitted because its time interval is \code{(0, Inf)}, and the lower bound \code{v} will be replaced by zero, for example \code{(0, v]}, if individuals are not right-censored and have only one time record.
 #' @return a data frame
 #' @examples
@@ -17,6 +18,14 @@
 #' @export
 
 dataprep <- function(data, ID, time, event, Z) {
+  tmiss <- sum(is.na(data[, time]))
+  if(tmiss > 0) {
+    print.df <- function(x) {
+      paste(capture.output(data[which(is.na(data[, time])), ]), collapse = "\n")
+    }
+    warning("The following records have missing visit times and will be discarded:\n\n", print.df(data))
+    data <- data[!is.na(data[, time]), ]
+  }
   uid <- sort(unique(data[, ID]))
   n <- length(uid)
   p <- length(Z)
@@ -40,6 +49,10 @@ dataprep <- function(data, ID, time, event, Z) {
       if(indc != 0){                # non-censored individual
         v[i] <- 0                   # lower bound is zero
         u[i] <- indt                # upper bound is its time record
+        c[i] <- indc
+      } else {
+        v[i] <- indt
+        u[i] <- Inf
         c[i] <- indc
       }
     } else {

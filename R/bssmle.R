@@ -322,7 +322,6 @@ bssmle <- function(formula, data, alpha){
                 convergence = ifelse(est$convergence == 0, "Converged", "Did not converge"),
                 tms = c(min(t), max(t)),
                 Bv = Bv)
-    res
   } else {
     res <- list(beta = beta,
                 varnames = colnames(Z),
@@ -330,6 +329,6 @@ bssmle <- function(formula, data, alpha){
                 loglikelihood = NA,
                 convergence = "Did not converge",
                 tms = c(min(t), max(t)))
-    res
   }
+  res
 }
