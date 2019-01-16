@@ -80,8 +80,7 @@ ciregic.default <- function(formula, data, alpha, do.par, nboot){
       beta <- est$beta[(2 * n + 1):(2 * n + 2 * q)]
       gamma <- est$beta[1:(2 * n)]
       temp <- paste(rep(est$varnames, 2), c(rep("cause 1", q), rep("cause 2", q)), sep = ",")
-      rownames(Sigma) <- temp
-      colnames(Sigma) <- temp
+      rownames(Sigma) <- colnames(Sigma) <- temp
     } else {
       Sigma <- NA
       numboot <- 0
@@ -133,9 +132,8 @@ ciregic.default <- function(formula, data, alpha, do.par, nboot){
 print.ciregic <- function(x, ...){
   if(x$convergence == "Did not converge"){
     print("Did not converge")
-    varnames <- x$varnames
-    coef <- matrix(x$coefficients, ncol = 2)
-    rownames(coef) <- x$varnames
+    coeff <- matrix(x$coefficients, ncol = 2)
+    rownames(coeff) <- x$varnames
 
     cat("Call:\n")
     print(x$call)
@@ -145,12 +143,11 @@ print.ciregic <- function(x, ...){
       cat("Failure cause", i)
       cat("\n")
       cat("Coefficients:\n")
-      print(coef[ ,i])
+      print(coeff[ ,i])
     }
   } else {
-    varnames <- x$varnames
-    coef <- matrix(x$coefficients, ncol = 2)
-    rownames(coef) <- x$varnames
+    coeff <- matrix(x$coefficients, ncol = 2)
+    rownames(coeff) <- x$varnames
 
     cat("Call:\n")
     print(x$call)
@@ -160,7 +157,7 @@ print.ciregic <- function(x, ...){
       cat("Failure cause", i)
       cat("\n")
       cat("Coefficients:\n")
-      print(coef[ ,i])
+      print(coeff[ ,i])
     }
   }
 }
@@ -243,9 +240,8 @@ summary.ciregic <- function(object, ...){
 #' @export
 print.summary.ciregic <- function(x, ...){
   if(is.na(x$vcov[1])) {
-    varnames <- x$varnames
-    coef <- matrix(x$coefficients, ncol = 2)
-    rownames(coef) <- x$varnames
+    coeff <- matrix(x$coefficients, ncol = 2)
+    rownames(coeff) <- x$varnames
 
     cat("Call:\n")
     print(x$call)
@@ -255,25 +251,46 @@ print.summary.ciregic <- function(x, ...){
       cat("Failure cause", i)
       cat("\n")
       cat("Coefficients:\n")
-      print(coef[ ,i])
+      print(coeff[ ,i])
     }
   } else {
     q <- length(x$coefficients) / 2
-    res <- cbind(x$coefficients, x$se, x$z, x$p)
 
-    rownames(res) <- rep(x$varnames, times = 2)
-    colnames(res) <- c("Estimate", "Std. Error", "z value", "Pr(>|z|)")
+    if(q > 1){
+      res <- cbind(x$coefficients, x$se, x$z, x$p)
 
-    cat("Call:\n")
-    print(x$call)
-    cat("\n")
-    cat("Failure cause 1")
-    cat("\n")
-    printCoefmat(res[1:q, ], P.values = TRUE, has.Pvalue = TRUE, digits = 4)
-    cat("\n")
-    cat("Failure cause 2")
-    cat("\n")
-    printCoefmat(res[(1+q):(2*q), ], P.values = TRUE, has.Pvalue = TRUE, digits = 4)
+      rownames(res) <- rep(x$varnames, times = 2)
+      colnames(res) <- c("Estimate", "Std. Error", "z value", "Pr(>|z|)")
+
+      cat("Call:\n")
+      print(x$call)
+      cat("\n")
+      cat("Failure cause 1")
+      cat("\n")
+      printCoefmat(res[1:q, ], P.values = TRUE, has.Pvalue = TRUE, digits = 4)
+      cat("\n")
+      cat("Failure cause 2")
+      cat("\n")
+      printCoefmat(res[(1 + q):(2 * q), ], P.values = TRUE, has.Pvalue = TRUE, digits = 4)
+    } else {
+      res <- cbind(x$coefficients, x$se, x$z, x$p)
+      colnames(res) <- c("Estimate", "Std. Error", "z value", "Pr(>|z|)")
+
+      res1 <- as.data.frame(t(res[1:q, ]))
+      res2 <- as.data.frame(t(res[(q + 1):(2 * q), ]))
+
+      rownames(res1) <- rownames(res2) <- rep(x$varnames)
+      cat("Call:\n")
+      print(x$call)
+      cat("\n")
+      cat("Failure cause 1")
+      cat("\n")
+      printCoefmat(res1, P.values = TRUE, has.Pvalue = TRUE, digits = 4)
+      cat("\n")
+      cat("Failure cause 2")
+      cat("\n")
+      printCoefmat(res2, P.values = TRUE, has.Pvalue = TRUE, digits = 4)
+    }
   }
 }
 

@@ -51,8 +51,8 @@ bssmle_se <- function(formula, data, alpha, do.par, nboot) {
                       .combine = "rbind",
                       .export = c("naive_b", "bssmle"),
                       .packages = c("splines", "stats", "alabama", "utils")) %dopar% {
-                        #pb <- utils::txtProgressBar(max = nboot, style = 3)
-                        #utils::setTxtProgressBar(pb, j)
+                        pb <- utils::txtProgressBar(max = nboot, style = 3)
+                        utils::setTxtProgressBar(pb, j)
                         par <- bssmle(formula,
                                       data = tmp[[j]],
                                       alpha)
@@ -60,8 +60,8 @@ bssmle_se <- function(formula, data, alpha, do.par, nboot) {
                         n <- (length(par[[1]]) - 2 * q) / 2
                         pars <- par[[1]][(2 * n + 1):(2 * n + 2 * q)]
                         return(pars)
+                        close(pb)
                       }
-    #close(pb)
     parallel::stopCluster(clst)
     rownames(res.bt) <- c()
   }
