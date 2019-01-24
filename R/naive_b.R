@@ -7,6 +7,7 @@
 #' @param u the first observation time after the failure.
 #' @param c an indicator of cause of failure. If an observation is righ-censored, \code{event = 0}; otherwise, \code{event = 1} or \code{event = 2}, where \code{1} represents the first cause of failure, and \code{2} represents the second cause of failure. The current version of package only allows for two causes of failure.
 #' @param q a dimension of design matrix.
+#' @param k a tuning parameter to control the number of knots. \code{k = 1} is the default, but \eqn{0.5 \le}  \code{k} \eqn{\le 1}.
 #' @keywords naive_b
 #' @importFrom splines bs
 #' @details The function \code{naive_b} provides initial values for the optimization procedure.
@@ -16,9 +17,9 @@
 #' attach(simdata)
 #' intccr:::naive_b(data = simdata, v = v, u = u, c = c, q = 2)
 
-naive_b <- function(data, v, u, c, q){
+naive_b <- function(data, v, u, c, q, k = 1){
   t <- c(v, u[c > 0])
-  nk <- floor(length(t)^(1/3))
+  nk <- floor(k * length(t)^(1/3))
 
   max <- nk + 1
   knots <- quantile(t, seq(0, 1, by = 1 / (nk + 1)))[2:max]

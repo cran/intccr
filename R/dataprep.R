@@ -75,13 +75,23 @@ dataprep <- function(data, ID, time, event, Z) {
   }
   colnames(X) <- Z
   temp <- data.frame(id, v, u, c, X)
-  if (sum(is.na(temp)) != 0){       # detect NA in temp
-    naval <- which(is.na(v))        # detect subject id who has NA (one right-censored time record)
-    if(length(naval) == 1) {
-      warning("subject id ", naval, " is omitted because its interval is (0, Inf).")
-    } else {
-      warning("subject id ", toString(naval), " are omitted because those intervals are (0, Inf).")
+  if (sum(temp$v == 0 & temp$u == Inf) + sum(temp$v == 0 & temp$u == 0) > 0) {
+    right1 <- which(temp$v == 0 & temp$u == Inf)       # detect subject id who has one right-censored time record
+    left1 <- which(temp$v == 0 & temp$u == 0)          # detect subject id who has one left-censored time record
+    if(length(right1) == 1) {
+      warning("subject id ", right1, " is omitted because its interval is (0, Inf).")
     }
+    if (length(left1) == 1) {
+      warning("subject id ", left1, " is omitted because its interval is (0, 0).")
+    }
+    if (length(right1) > 1) {
+      warning("subject id ", toString(right1), " are omitted because those intervals are (0, Inf).")
+    }
+    if (length(left1) > 1) {
+      warning("subject id ", toString(left1), " are omitted because those intervals are (0, 0).")
+    }
+    return(temp[!(temp$id %in% c(right1, left1)),])
+  } else {
+    return(temp)
   }
-  na.omit(temp)
 }

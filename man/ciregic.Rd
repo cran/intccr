@@ -4,7 +4,7 @@
 \alias{ciregic}
 \title{Competing Risks Regression with Interval-Censored Data}
 \usage{
-ciregic(formula, data, alpha, do.par, nboot)
+ciregic(formula, data, alpha, k = 1, do.par, nboot)
 }
 \arguments{
 \item{formula}{a formula object relating the survival object \code{Surv2(v, u, event)} to a set of covariates}
@@ -12,6 +12,8 @@ ciregic(formula, data, alpha, do.par, nboot)
 \item{data}{a data frame that includes the variables named in the formula argument}
 
 \item{alpha}{\eqn{\alpha = (\alpha1, \alpha2)} contains parameters that define the link functions from class of generalized odds-rate transformation models. The components \eqn{\alpha1} and \eqn{\alpha2} should both be \eqn{\ge 0}. If \eqn{\alpha1 = 0}, the user assumes the proportional subdistribution hazards model or the Fine-Gray model for the cause of failure 1. If \eqn{\alpha2 = 1}, the user assumes the proportional odds model for the cause of failure 2.}
+
+\item{k}{a tuning parameter to control the number of knots. \code{k = 1} is the default, but \eqn{0.5 \le}  \code{k} \eqn{\le 1}.}
 
 \item{do.par}{an option to use parallel computing for bootstrap. If \code{do.par = TRUE}, parallel computing will be used during the bootstrap estimation of the variance-covariance matrix for the regression parameter estimates.}
 
