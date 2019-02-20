@@ -18,8 +18,8 @@
 \value{
 The function \code{predict.ciregic} returns a list of predicted values of the model from \code{object}.
 \item{t}{time points}
-\item{cif1}{the predicted value of cumulative incidence function for cause 1}
-\item{cif2}{the predicted value of cumulative incidence function for cause 2}
+\item{cif1}{the predicted value of cumulative incidence function for the event type 1}
+\item{cif2}{the predicted value of cumulative incidence function for the event type 2}
 }
 \description{
 \code{predict} method for class \code{ciregic}. It provides the predicted cumulative incidence function for a given covariate pattern and timepoint(s).

@@ -13,11 +13,11 @@ naive_b(data, v, u, c, q, k = 1)
 
 \item{u}{the first observation time after the failure.}
 
-\item{c}{an indicator of cause of failure. If an observation is righ-censored, \code{event = 0}; otherwise, \code{event = 1} or \code{event = 2}, where \code{1} represents the first cause of failure, and \code{2} represents the second cause of failure. The current version of package only allows for two causes of failure.}
+\item{c}{an indicator of event type. If an observation is righ-censored, \code{event = 0}; otherwise, \code{event = 1} or \code{event = 2}, where \code{1} represents the event type 1, and \code{2} represents the event type 2. The current version of package only allows for two event types.}
 
 \item{q}{a dimension of design matrix.}
 
-\item{k}{a tuning parameter to control the number of knots. \code{k = 1} is the default, but \eqn{0.5 \le}  \code{k} \eqn{\le 1}.}
+\item{k}{a parameter that controls the number of knots in the B-spline with \eqn{0.5 \le }\code{k}\eqn{ \le 1}}
 }
 \value{
 Initial values of B-spline estimation

@@ -13,7 +13,7 @@ dataprep(data, ID, time, event, Z)
 
 \item{time}{a variable indicating observed time points}
 
-\item{event}{a vector of event indicator. If an observation is righ-censored, \code{event = 0}; otherwise, \code{event = 1} or \code{event = 2}, where \code{1} represents the first cause of failure, and \code{2} represents the second cause of failure. The current version of package only allows two causes of failure.}
+\item{event}{a vector of event indicator. If an observation is righ-censored, \code{event = 0}; otherwise, \code{event = 1} or \code{event = 2}, where \code{1} represents the event type 1, and \code{2} represents the event type 2. The current version of package only allows two event types.}
 
 \item{Z}{a vector of variables indicating name of covariates}
 }
@@ -24,7 +24,7 @@ a data frame
 The function \code{dataprep} reshapes data from a long format to a ready-to-use format to be used directly in the function \code{ciregic}.
 }
 \details{
-The function \code{dataprep} provides a ready-to-use data format that can be directly used in the function \code{ciregic}. The returned data frame consists of \code{id}, \code{v}, \code{u}, \code{c}, and covariates as columns. The \code{v} and \code{u} indicate time window with the last observation time before the event and the first observation after the event. The \code{c} represents a type of event, for example, \code{c = 1} for the first cause of failure, \code{c = 2} for the second cause of failure, and \code{c = 0} for the right-censored. Individuals who have only one time record with right-censored event will be omitted because its time interval is \code{(0, Inf)}, and the lower bound \code{v} will be replaced by zero, for example \code{(0, v]}, if individuals are not right-censored and have only one time record.
+The function \code{dataprep} provides a ready-to-use data format that can be directly used in the function \code{ciregic}. The returned data frame consists of \code{id}, \code{v}, \code{u}, \code{c}, and covariates as columns. The \code{v} and \code{u} indicate time window with the last observation time before the event and the first observation after the event. The \code{c} represents a type of event, for example, \code{c = 1} for the event type 1, \code{c = 2} for the event type 2, and \code{c = 0} for the right-censored. Individuals who have only one time record with right-censored event will be omitted because its time interval is \code{(0, Inf)}, and the lower bound \code{v} will be replaced by zero, for example \code{(0, v]}, if individuals are not right-censored and have only one time record.
 }
 \examples{
 library(intccr)

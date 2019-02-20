@@ -4,7 +4,7 @@
 #' @author Jun Park, \email{jp84 at iu dot edu}
 #' @param v the last observation time prior to the failure; \eqn{0\le v \le u}.
 #' @param u the first observation time after the failure; \eqn{u \ge 0}.
-#' @param event an indicator of cause of failure. If an observation is righ-censored, \code{event = 0}; otherwise, \code{event = 1} or \code{event = 2}, where \code{1} represents the first cause of failure, and \code{2} represents the second cause of failure. The current version of package only allows for two causes of failure.
+#' @param event an indicator of event type. If an observation is righ-censored, \code{event = 0}; otherwise, \code{event = 1} or \code{event = 2}, where \code{1} represents the event type 1, and \code{2} represents the event type 2. The current version of package only allows for two event types.
 #' @keywords Surv2
 #' @details The function \code{Surv2} provides a response data frame which is used in the function \code{ciregic}.
 #' @return data frame
@@ -26,7 +26,7 @@ Surv2 <- function(v, u, event){
   if (min(event %in% 0:2) == 0)
     stop("Event values outside permissible range {0,1,2}")
   if (sum(event == 1) == 0 | sum(event == 2) == 0)
-    stop("At least one failure cause has 0 events")
+    stop("At least one event type has 0 events")
 
   cbind(v = v, u = u, delta = event)
 }

@@ -4,8 +4,8 @@
 #' @author Jun Park, \email{jp84 at iu dot edu}
 #' @param formula a formula object relating survival object \code{Surv2(v, u, event)} to a set of covariates
 #' @param data a data frame that includes the variables named in the formula argument
-#' @param alpha \eqn{\alpha = (\alpha1, \alpha2)} contains parameters that define the link functions from class of generalized odds-rate transformation models. The components \eqn{\alpha1} and \eqn{\alpha2} should both be \eqn{\ge 0}. If \eqn{\alpha1 = 0}, the user assumes the proportional subdistribution hazards model or the Fine-Gray model for the cause of failure 1. If \eqn{\alpha2 = 1}, the user assumes the proportional odds model for the cause of failure 2.
-#' @param k a tuning parameter to control the number of knots. \code{k = 1} is the default, but \eqn{0.5 \le}  \code{k} \eqn{\le 1}.
+#' @param alpha \eqn{\alpha = (\alpha1, \alpha2)} contains parameters that define the link functions from class of generalized odds-rate transformation models. The components \eqn{\alpha1} and \eqn{\alpha2} should both be \eqn{\ge 0}. If \eqn{\alpha1 = 0}, the user assumes the proportional subdistribution hazards model or the Fine-Gray model for the event type 1. If \eqn{\alpha2 = 1}, the user assumes the proportional odds model for the event type 2.
+#' @param k a parameter that controls the number of knots in the B-spline with \eqn{0.5 \le }\code{k}\eqn{ \le 1}
 #' @keywords bssmle
 #' @import stats
 #' @importFrom alabama constrOptim.nl
@@ -26,7 +26,7 @@
 #' est.longdata <- intccr:::bssmle(Surv2(v, u, c) ~ z1 + z2, data = newdata, alpha = c(1, 1))
 
 
-bssmle <- function(formula, data, alpha, k = 1){
+bssmle <- function(formula, data, alpha, k = 1) {
 
   ## Create time-window, event var and design matrix
   mf <- model.frame(formula = formula, data = data)
@@ -35,10 +35,18 @@ bssmle <- function(formula, data, alpha, k = 1){
 
   delta <- mf[[1]][,3]
   Z <- model.matrix(attr(mf, "terms"), data = mf)
-  Z <- Z[,colnames(Z) != "(Intercept)"]
+  if(length(colnames(Z)) == 1) {
+    Z <- rep(0, times = length(delta))
+  } else {
+    Z <- Z[, colnames(Z) != "(Intercept)"]
+  }
   if(is.matrix(Z) == FALSE){
     Z <- as.matrix(Z)
-    colnames(Z) <- colnames(mf)[2]
+    if(is.na(colnames(mf)[2])) {
+      colnames(Z) <- "(intercept)"
+    } else {
+      colnames(Z) <- colnames(mf)[2]
+    }
   }
 
   ## B-spline basis matrix

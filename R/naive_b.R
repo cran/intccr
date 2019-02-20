@@ -5,9 +5,9 @@
 #' @param data a data frame that includes the variables named in each argument
 #' @param v the last observation time prior to the failure.
 #' @param u the first observation time after the failure.
-#' @param c an indicator of cause of failure. If an observation is righ-censored, \code{event = 0}; otherwise, \code{event = 1} or \code{event = 2}, where \code{1} represents the first cause of failure, and \code{2} represents the second cause of failure. The current version of package only allows for two causes of failure.
+#' @param c an indicator of event type. If an observation is righ-censored, \code{event = 0}; otherwise, \code{event = 1} or \code{event = 2}, where \code{1} represents the event type 1, and \code{2} represents the event type 2. The current version of package only allows for two event types.
 #' @param q a dimension of design matrix.
-#' @param k a tuning parameter to control the number of knots. \code{k = 1} is the default, but \eqn{0.5 \le}  \code{k} \eqn{\le 1}.
+#' @param k a parameter that controls the number of knots in the B-spline with \eqn{0.5 \le }\code{k}\eqn{ \le 1}
 #' @keywords naive_b
 #' @importFrom splines bs
 #' @details The function \code{naive_b} provides initial values for the optimization procedure.
@@ -27,7 +27,11 @@ naive_b <- function(data, v, u, c, q, k = 1){
 
   ## Generate beta
   b <- seq(from = 0.0001, to = 0.875, by = ((0.875 - 0.0001) / (dim(B)[2] - 1)))
-  b <- log(b^3)
-  b <- c(b, b, rep(0, times = (2 * q)))
+  b <- log(b ^ 3)
+  if(q > 0) {
+    b <- c(b, b, rep(0, times = (2 * q)))
+  } else {
+    b <- c(b, b)
+  }
   b
 }

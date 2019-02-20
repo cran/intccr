@@ -4,8 +4,8 @@
 #' @author Jun Park, \email{jp84 at iu dot edu}
 #' @param formula a formula object relating the survival object \code{Surv2(v, u, event)} to a set of covariates
 #' @param data a data frame that includes the variables named in the formula argument
-#' @param alpha \eqn{\alpha = (\alpha1, \alpha2)} contains parameters that define the link functions from class of generalized odds-rate transformation models. The components \eqn{\alpha1} and \eqn{\alpha2} should both be \eqn{\ge 0}. If \eqn{\alpha1 = 0}, the user assumes the proportional subdistribution hazards model or the Fine-Gray model for the cause of failure 1. If \eqn{\alpha2 = 1}, the user assumes the proportional odds model for the cause of failure 2.
-#' @param k a tuning parameter to control the number of knots. \code{k = 1} is the default, but \eqn{0.5 \le}  \code{k} \eqn{\le 1}.
+#' @param alpha \eqn{\alpha = (\alpha1, \alpha2)} contains parameters that define the link functions from class of generalized odds-rate transformation models. The components \eqn{\alpha1} and \eqn{\alpha2} should both be \eqn{\ge 0}. If \eqn{\alpha1 = 0}, the user assumes the proportional subdistribution hazards model or the Fine-Gray model for the event type 1. If \eqn{\alpha2 = 1}, the user assumes the proportional odds model for the event type 2.
+#' @param k a parameter that controls the number of knots in the B-spline with \eqn{0.5 \le }\code{k}\eqn{ \le 1}
 #' @param do.par an option to use parallel computing for bootstrap. If \code{do.par = TRUE}, parallel computing will be used during the bootstrap estimation of the variance-covariance matrix for the regression parameter estimates.
 #' @param nboot a number of bootstrap samples for estimating variances and covariances of the estimated regression coefficients. If \code{nboot = 0}, the function \code{ciregic} does not perform bootstrap estimation of the variance-covariance matrix of the regression parameter estimates and returns \code{NA} in the place of the estimated variance-covariance matrix of the regression parameter estimates.
 #' @return The function \code{ciregic} provides an object of class \code{ciregic} with components:
@@ -19,12 +19,13 @@
 #' \item{tms}{a vector of the minimum and maximum observation times}
 #' \item{Bv}{a list containing the B-splines basis functions evaluated at \code{v}}
 #' \item{numboot}{a number of converged bootstrap}
+#' \item{notconverged}{a list of number of bootstrap samples not converged}
 #' \item{call}{a matched call}
 #' @references
 #' {Bakoyannis, G., Yu, M., and Yiannoutsos C. T. (2017). Semiparametric regression on cumulative incidence function with interval-censored competing risks data. \emph{Statistics in Medicine}, \strong{36}:3683-3707.}
 #' @references
 #' {Fine, J. P. and Gray, R. J. (1999). A proportional hazards model for the subdistribution of a competing risk. \emph{Journal of the American Statistical Association}, \strong{94}:496-509.}
-#' @details The formula for the model has the form of \code{response ~ predictors}. The response in the formula is a \code{Surv2(v, u, event)} object where \code{v} is the last observation time prior to the failure, \code{u} is the first observation time after the failure, and \code{event} is the event or censoring indicator. \code{event} should include 0, 1 or 2, denoting right-censoring, failure from cause 1 and failure from cause 2, respectively. If \code{event=0} (i.e. right-censored observation) then \code{u} is not included in any calculation as it corresponds to \eqn{\infty}. The user can provide any value in \code{u} for the right-censored cases, even \code{NA}. The function \code{ciregic} fits models that belong to the class of generalized odds rate transformation models which includes the proportional subdistribution hazards or the Fine-Gray model and the proportional odds model. The parameter \eqn{\alpha=(\alpha1, \alpha2)} defines the link function/model to be fitted for cause of failure 1 and 2, respectively. A value of \code{0} corresponds to the Fine-Gray model and a value of \code{1} corresponds to the proportional odds model. For example, if \eqn{\alpha=(0,1)} then the function \code{ciregic} fits the Fine-Gray model for cause 1 and the proportional odds model for cause 2.
+#' @details The formula for the model has the form of \code{response ~ predictors}. The response in the formula is a \code{Surv2(v, u, event)} object where \code{v} is the last observation time prior to the event, \code{u} is the first observation time after the event, and \code{event} is the event or censoring indicator. \code{event} should include 0, 1 or 2, denoting right-censoring, event type 1 and 2, respectively. If \code{event=0} (i.e. right-censored observation) then \code{u} is not included in any calculation as it corresponds to \eqn{\infty}. The user can provide any value in \code{u} for the right-censored cases, even \code{NA}. The function \code{ciregic} fits models that belong to the class of generalized odds rate transformation models which includes the proportional subdistribution hazards or the Fine-Gray model and the proportional odds model. The parameter \eqn{\alpha=(\alpha1, \alpha2)} defines the link function/model to be fitted for event 1 and 2, respectively. A value of \code{0} corresponds to the Fine-Gray model and a value of \code{1} corresponds to the proportional odds model. For example, if \eqn{\alpha=(0,1)} then the function \code{ciregic} fits the Fine-Gray model for the event type 1 and the proportional odds model for the event type 2.
 #' @keywords ciregic
 #' @seealso \code{\link[intccr]{summary.ciregic}} for the summarized results and \code{\link[intccr]{predict.ciregic}} for value of the predicted cumulative incidence functions. \code{coef} and \code{vcov} are the generic functions. \code{\link[intccr]{dataprep}} for reshaping data from a long format to a suitable format to be used in the function \code{ciregic}.
 #' @examples
@@ -69,22 +70,26 @@
 ciregic <- function(formula, data, alpha, k = 1, do.par, nboot) UseMethod("ciregic")
 
 #' @export
-ciregic.default <- function(formula, data, alpha, k = 1, do.par, nboot){
+ciregic.default <- function(formula, data, alpha, k = 1, do.par, nboot) {
+  if (k < .5 | k > 1)
+    stop("k must have a value between 0.5 and 1.")
   est <- bssmle(formula, data, alpha, k)
   if(min(!is.na(est$beta)) == 1) {
     if(nboot >= 1){
       res <- bssmle_se(formula, data, alpha, k, do.par, nboot)
       Sigma <- res$Sigma
+      notcoverged <- res$notcoverged
       numboot <- res$numboot
       q <- length(est$varnames)
       n <- (length(est$beta) - 2 * q) / 2
       beta <- est$beta[(2 * n + 1):(2 * n + 2 * q)]
       gamma <- est$beta[1:(2 * n)]
-      temp <- paste(rep(est$varnames, 2), c(rep("cause 1", q), rep("cause 2", q)), sep = ",")
+      temp <- paste(rep(est$varnames, 2), c(rep("event type 1", q), rep("event type 2", q)), sep = ",")
       rownames(Sigma) <- colnames(Sigma) <- temp
     } else {
       Sigma <- NA
       numboot <- 0
+      notcoverged <- NA
       q <- length(est$varnames)
       n <- (length(est$beta) - 2 * q) / 2
       beta <- est$beta[(2 * n + 1):(2 * n + 2 * q)]
@@ -100,7 +105,8 @@ ciregic.default <- function(formula, data, alpha, k = 1, do.par, nboot){
               convergence = est$convergence,
               tms = est$tms,
               Bv = est$Bv,
-              numboot = numboot)
+              numboot = numboot,
+              notcoverged = notcoverged)
     res$call <- match.call()
 
     class(res) <- "ciregic"
@@ -108,6 +114,7 @@ ciregic.default <- function(formula, data, alpha, k = 1, do.par, nboot){
   } else {
     Sigma <- NA
     numboot <- 0
+    notcoverged <- NA
     q <- length(est$varnames)
     n <- (length(est$beta) - 2 * q) / 2
     beta <- est$beta[(2 * n + 1):(2 * n + 2 * q)]
@@ -122,7 +129,8 @@ ciregic.default <- function(formula, data, alpha, k = 1, do.par, nboot){
               convergence = est$convergence,
               tms = est$tms,
               Bv = est$Bv,
-              numboot = numboot)
+              numboot = numboot,
+              notcoverged = notcoverged)
     res$call <- match.call()
 
     class(res) <- "ciregic"
@@ -134,7 +142,7 @@ ciregic.default <- function(formula, data, alpha, k = 1, do.par, nboot){
 #' @export
 print.ciregic <- function(x, ...){
   if(x$convergence == "Did not converge"){
-    print("Did not converge")
+    message("Did not converge")
     coeff <- matrix(x$coefficients, ncol = 2)
     rownames(coeff) <- x$varnames
 
@@ -143,7 +151,7 @@ print.ciregic <- function(x, ...){
 
     for(i in 1:2){
       cat("\n")
-      cat("Failure cause", i)
+      cat("Event type", i)
       cat("\n")
       cat("Coefficients:\n")
       print(coeff[ ,i])
@@ -157,7 +165,7 @@ print.ciregic <- function(x, ...){
 
     for(i in 1:2){
       cat("\n")
-      cat("Failure cause", i)
+      cat("Event type", i)
       cat("\n")
       cat("Coefficients:\n")
       print(coeff[ ,i])
@@ -216,33 +224,36 @@ vcov.ciregic <- function(object, ...){
 #'
 #' @export
 summary.ciregic <- function(object, ...){
-  if(is.na(object$vcov[1])) {
-    temp <- list(varnames = object$varnames,
-                 coefficients = object$coefficients,
-                 vcov = object$vcov,
-                 call = object$call)
+  if(is.na(object$coefficients[1])){
+    message("Did not converge")
   } else {
-    se <- sqrt(diag(object$vcov))
-    z <- (object$coefficients) / se
-    p <- 2 * (1 - pnorm(abs(z)))
+    if(is.na(object$vcov[1])) {
+      temp <- list(varnames = object$varnames,
+                   coefficients = object$coefficients,
+                   vcov = object$vcov,
+                   call = object$call)
+    } else {
+      se <- sqrt(diag(object$vcov))
+      z <- (object$coefficients) / se
+      p <- 2 * (1 - pnorm(abs(z)))
 
-    temp <- list(varnames = object$varnames,
-                 coefficients = object$coefficients,
-                 vcov = object$vcov,
-                 se = se,
-                 z = z,
-                 p = p,
-                 call = object$call)
+      temp <- list(varnames = object$varnames,
+                   coefficients = object$coefficients,
+                   vcov = object$vcov,
+                   se = se,
+                   z = z,
+                   p = p,
+                   call = object$call)
+    }
+    class(temp) <- "summary.ciregic"
+    temp
   }
-
-  class(temp) <- "summary.ciregic"
-  temp
 }
-
 
 #' @export
 print.summary.ciregic <- function(x, ...){
   if(is.na(x$vcov[1])) {
+
     coeff <- matrix(x$coefficients, ncol = 2)
     rownames(coeff) <- x$varnames
 
@@ -251,49 +262,32 @@ print.summary.ciregic <- function(x, ...){
 
     for(i in 1:2){
       cat("\n")
-      cat("Failure cause", i)
+      cat("Event type", i)
       cat("\n")
       cat("Coefficients:\n")
-      print(coeff[ ,i])
+      print(coeff[ ,i], digits = 4)
     }
   } else {
     q <- length(x$coefficients) / 2
 
-    if(q > 1){
-      res <- cbind(x$coefficients, x$se, x$z, x$p)
+    res <- as.data.frame(cbind(x$coefficients, x$se, x$z, x$p))
+    colnames(res) <- c("Estimate", "Std. Error", "z value", "Pr(>|z|)")
 
-      rownames(res) <- rep(x$varnames, times = 2)
-      colnames(res) <- c("Estimate", "Std. Error", "z value", "Pr(>|z|)")
+    res1 <- res[1:q, ]
+    res2 <- res[(q + 1):(2 * q), ]
 
-      cat("Call:\n")
-      print(x$call)
-      cat("\n")
-      cat("Failure cause 1")
-      cat("\n")
-      printCoefmat(res[1:q, ], P.values = TRUE, has.Pvalue = TRUE, digits = 4)
-      cat("\n")
-      cat("Failure cause 2")
-      cat("\n")
-      printCoefmat(res[(1 + q):(2 * q), ], P.values = TRUE, has.Pvalue = TRUE, digits = 4)
-    } else {
-      res <- cbind(x$coefficients, x$se, x$z, x$p)
-      colnames(res) <- c("Estimate", "Std. Error", "z value", "Pr(>|z|)")
+    rownames(res1) <- rownames(res2) <- x$varnames
 
-      res1 <- as.data.frame(t(res[1:q, ]))
-      res2 <- as.data.frame(t(res[(q + 1):(2 * q), ]))
-
-      rownames(res1) <- rownames(res2) <- rep(x$varnames)
-      cat("Call:\n")
-      print(x$call)
-      cat("\n")
-      cat("Failure cause 1")
-      cat("\n")
-      printCoefmat(res1, P.values = TRUE, has.Pvalue = TRUE, digits = 4)
-      cat("\n")
-      cat("Failure cause 2")
-      cat("\n")
-      printCoefmat(res2, P.values = TRUE, has.Pvalue = TRUE, digits = 4)
-    }
+    cat("Call:\n")
+    print(x$call)
+    cat("\n")
+    cat("Event type 1")
+    cat("\n")
+    printCoefmat(round(res1, digits = 4), P.values = TRUE, has.Pvalue = TRUE, digits = 4)
+    cat("\n")
+    cat("Event type 2")
+    cat("\n")
+    printCoefmat(round(res2, digits = 4), P.values = TRUE, has.Pvalue = TRUE, digits = 4)
   }
 }
 
@@ -319,7 +313,6 @@ vcov.summary.ciregic <- function(object, ...){
   object$vcov
 }
 
-
 #' Covariate-Specific Cumulative Incidence Prediction
 #' @description \code{predict} method for class \code{ciregic}. It provides the predicted cumulative incidence function for a given covariate pattern and timepoint(s).
 #' @param object an object of class \code{ciregic}, which is a result of a call to \code{ciregic}
@@ -329,8 +322,8 @@ vcov.summary.ciregic <- function(object, ...){
 #' @details \code{predict.ciregic} returns the predicted cumulative incidence function for a given covariate pattern and timepoint(s).
 #' @return The function \code{predict.ciregic} returns a list of predicted values of the model from \code{object}.
 #' \item{t}{time points}
-#' \item{cif1}{the predicted value of cumulative incidence function for cause 1}
-#' \item{cif2}{the predicted value of cumulative incidence function for cause 2}
+#' \item{cif1}{the predicted value of cumulative incidence function for the event type 1}
+#' \item{cif2}{the predicted value of cumulative incidence function for the event type 2}
 #' @seealso The fitted semiparametric regression on cumulative incidence function with interval-censored competing risks data \code{\link[intccr]{ciregic}} and summary of the fitted semiparametric regression model \code{\link[intccr]{summary.ciregic}}
 #' @examples
 #' ## Continuing the ciregic(...) example

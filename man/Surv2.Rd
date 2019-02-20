@@ -11,7 +11,7 @@ Surv2(v, u, event)
 
 \item{u}{the first observation time after the failure; \eqn{u \ge 0}.}
 
-\item{event}{an indicator of cause of failure. If an observation is righ-censored, \code{event = 0}; otherwise, \code{event = 1} or \code{event = 2}, where \code{1} represents the first cause of failure, and \code{2} represents the second cause of failure. The current version of package only allows for two causes of failure.}
+\item{event}{an indicator of event type. If an observation is righ-censored, \code{event = 0}; otherwise, \code{event = 1} or \code{event = 2}, where \code{1} represents the event type 1, and \code{2} represents the event type 2. The current version of package only allows for two event types.}
 }
 \value{
 data frame
