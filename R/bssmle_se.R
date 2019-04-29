@@ -9,7 +9,7 @@
 #' @param do.par using parallel computing for bootstrap calculation. If \code{do.par = TRUE}, parallel computing will be used during the bootstrap estimation of the variance-covariance matrix for the regression parameter estimates.
 #' @param nboot a number of bootstrap samples for estimating variances and covariances of the estimated regression coefficients. If \code{nboot = 0}, the function \code{ciregic} does dot perform bootstrap estimation of the variance matrix of the regression parameter estimates and returns \code{NA} in the place of the estimated variance matrix of the regression parameter estimates.
 #' @keywords bssmle_se
-#' @import foreach parallel numDeriv
+#' @import foreach parallel numDeriv tcltk
 #' @importFrom doParallel registerDoParallel
 #' @importFrom utils txtProgressBar setTxtProgressBar
 #' @importFrom tcltk tkProgressBar setTkProgressBar
@@ -46,31 +46,54 @@ bssmle_se <- function(formula, data, alpha, k = 1, do.par, nboot) {
                       }
     close(pb)
   } else {
-    no.cores <- parallel::detectCores() - 1
-    clst <- parallel::makeCluster(no.cores)
-    parallel::clusterExport(clst, "Surv2")
-    doParallel::registerDoParallel(clst)
-    res.bt <- foreach(j = 1:nboot,
-                      .combine = "rbind",
-                      .export = c("naive_b", "bssmle"),
-                      .packages = c("splines", "stats", "alabama", "utils", "tcltk")) %dopar% {
-                        if(!exists("pb")) pb <- tcltk::tkProgressBar("Parallel task", min = 1, max = nboot)
-                        info <- sprintf("%d%% done", round(j * 100 / nboot))
-                        tcltk::setTkProgressBar(pb, j, sprintf("Bootstrapping (%s)", info), info)
+    if(isTRUE(Sys.info()[1] == "Windows")){
+      no.cores <- parallel::detectCores() - 1
+      clst <- parallel::makeCluster(no.cores)
+      parallel::clusterExport(clst, "Surv2")
+      doParallel::registerDoParallel(clst)
+      res.bt <- foreach(j = 1:nboot,
+                        .combine = "rbind",
+                        .export = c("naive_b", "bssmle"),
+                        .packages = c("splines", "stats", "alabama", "utils", "tcltk")) %dopar% {
 
-                        par <- bssmle(formula,
-                                      data = tmp[[j]],
-                                      alpha, k)
-                        q <- length(par[[2]])
-                        n <- (length(par[[1]]) - 2 * q) / 2
-                        pars <- par[[1]][(2 * n + 1):(2 * n + 2 * q)]
-                        return(pars)
-                        close(pb)
-                      }
-    parallel::stopCluster(clst)
-    rownames(res.bt) <- c()
+                          pb <- tcltk::tkProgressBar("Parallel task", min = 1, max = nboot)
+                          info <- sprintf("%d%% done", round(j * 100 / nboot))
+                          tcltk::setTkProgressBar(pb, j, sprintf("Bootstrapping (%s)", info), info)
+
+                          par <- bssmle(formula,
+                                        data = tmp[[j]],
+                                        alpha, k)
+                          q <- length(par[[2]])
+                          n <- (length(par[[1]]) - 2 * q) / 2
+                          pars <- par[[1]][(2 * n + 1):(2 * n + 2 * q)]
+                          close(pb)
+                          return(pars)
+                        }
+      parallel::stopCluster(clst)
+      rownames(res.bt) <- c()
+    } else {
+      no.cores <- parallel::detectCores() - 1
+      clst <- parallel::makeCluster(no.cores)
+      parallel::clusterExport(clst, "Surv2")
+      doParallel::registerDoParallel(clst)
+      res.bt <- foreach(j = 1:nboot,
+                        .combine = "rbind",
+                        .export = c("naive_b", "bssmle"),
+                        .packages = c("splines", "stats", "alabama", "utils")) %dopar% {
+
+                          par <- bssmle(formula,
+                                        data = tmp[[j]],
+                                        alpha, k)
+                          q <- length(par[[2]])
+                          n <- (length(par[[1]]) - 2 * q) / 2
+                          pars <- par[[1]][(2 * n + 1):(2 * n + 2 * q)]
+
+                          return(pars)
+                        }
+      parallel::stopCluster(clst)
+      rownames(res.bt) <- c()
+    }
   }
-
   notconverged <- ifelse(is.vector(res.bt),
                          ifelse(!is.na(res.bt[1]), 0, 1),
                          if (sum(is.na(res.bt[, 1])) == 0) 0 else which(is.na(res.bt[, 1])))

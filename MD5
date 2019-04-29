@@ -1,7 +1,7 @@
-8d904d3d30fe95e5f505e109ab196ed8 *DESCRIPTION
-8394e0a8a716d23541a94c8d608548ca *NAMESPACE
+e1f97444e8aa90326a99c248f9fd5d33 *DESCRIPTION
+28bf3c8326efb6adea84913d2e696f29 *NAMESPACE
 7db017fb1aa62f29adc23fd462d2fc3f *R/bssmle.R
-88171aa1bf46e35f6f809dc1bd2bdd37 *R/bssmle_se.R
+40890c844ba1e2622c4749f97901a961 *R/bssmle_se.R
 959db27754cfa49c6bf4d3e1dc59f50f *R/ciregic.R
 49d78cf6ddabe1f359cc21576ad1c516 *R/dataprep.R
 309784dcab7b3f0386e51f1561c64341 *R/longdata.R
@@ -10,9 +10,14 @@
 bbd2a95aee0d87d39bb00b1b522ad2dc *R/simdata.R
 f065c4a85ebd2137e7216494348a460a *R/surv2.R
 484b0af5d4ec377859629c304bbf0d49 *R/waldtest.R
+85230a9e0754130a9a262f88b72bcaab *build/vignette.rds
 53cb826850deb94719d43789216bcf4d *data/longdata.rda
 4aa3fc5663a20612431874c007b62399 *data/pseudo.HIV.long.rda
 78eae9bc04d386eec1aacef483a57454 *data/simdata.rda
+3e921a10709942495c9bf92c5194fa23 *inst/citation
+e8a5c82d251f1ca55d242df70dac1eda *inst/doc/vig_intccr.Rnw
+f0a4e35621e16d2b537d86186b6a2687 *inst/doc/vig_intccr.pdf
+1e21073d3fc5202cfb421a1d7becc04d *inst/vig_intccr.pdf
 ee1f8a4dd45b3d8c1c5d5f9851930705 *man/Surv2.Rd
 a2b862e706002f9120d6995a51e80e4a *man/bssmle.Rd
 cf325089cd275c20d8fdfc877872698a *man/bssmle_se.Rd
@@ -27,3 +32,5 @@ abaaf645158fd69c22c1f3a766c0b5e7 *man/naive_b.Rd
 f1ce5c6c41667ee9b12736edb8ce8032 *man/vcov.ciregic.Rd
 b5ee7db6be0720da87518a4312506714 *man/vcov.summary.ciregic.Rd
 6087052e198e8ee0a13040460a0cc00a *man/waldtest.Rd
+1010914c896ef5b5274c4b2bd27102c7 *vignettes/park2019intccr.pdf
+e8a5c82d251f1ca55d242df70dac1eda *vignettes/vig_intccr.Rnw

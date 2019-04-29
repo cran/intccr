@@ -1,0 +1,12 @@
+\documentclass{article}
+\usepackage{pdfpages}
+%\VignetteIndexEntry{intccr_tutorial}
+
+\begin{document}
+
+\SweaveOpts{concordance=TRUE}
+
+\includepdf[pages=-, fitpaper=true]{park2019intccr.pdf}
+
+
+\end{document}

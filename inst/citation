@@ -1,0 +1,9 @@
+bibentry(bibtype = "article",
+ title = "Semiparametric competing risks regression under interval censoring using the R package intccr",
+ author = person("Park, Jun", "Bakoyannis, Giorgos", "Yiannoutsos, Constantin T."),
+ year = 2019,
+ journal = {"Computer Methods and Programs in Biomedicine"},
+ volume = 173,
+ url = "https://CRAN.R-project.org/package=intccr",
+ pages = {"167-176"}
+)
