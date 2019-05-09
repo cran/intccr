@@ -1,7 +1,7 @@
-059a00581b1bd68aeff566bc01003b5a *DESCRIPTION
+b6465b9e9d14287f7d45a3a8e278d461 *DESCRIPTION
 fd6395474f8c0a7bd60754c5fd1d8aa3 *NAMESPACE
 7db017fb1aa62f29adc23fd462d2fc3f *R/bssmle.R
-090f71c5e73f2542a264e7d7e3f2e9e6 *R/bssmle_se.R
+2256e0c71d3975118865a540f8c92510 *R/bssmle_se.R
 959db27754cfa49c6bf4d3e1dc59f50f *R/ciregic.R
 49d78cf6ddabe1f359cc21576ad1c516 *R/dataprep.R
 309784dcab7b3f0386e51f1561c64341 *R/longdata.R
@@ -16,7 +16,7 @@ f065c4a85ebd2137e7216494348a460a *R/surv2.R
 78eae9bc04d386eec1aacef483a57454 *data/simdata.rda
 3e921a10709942495c9bf92c5194fa23 *inst/citation
 e8a5c82d251f1ca55d242df70dac1eda *inst/doc/intccr.Rnw
-6561c1d6b4194593d6a35f9d753d8a20 *inst/doc/intccr.pdf
+aa9c379f16f4a067ef22bc468e106525 *inst/doc/intccr.pdf
 bbc767c5722df9e305d6b36fdb30a7e2 *inst/intccr.pdf
 ee1f8a4dd45b3d8c1c5d5f9851930705 *man/Surv2.Rd
 a2b862e706002f9120d6995a51e80e4a *man/bssmle.Rd
@@ -32,5 +32,5 @@ abaaf645158fd69c22c1f3a766c0b5e7 *man/naive_b.Rd
 f1ce5c6c41667ee9b12736edb8ce8032 *man/vcov.ciregic.Rd
 b5ee7db6be0720da87518a4312506714 *man/vcov.summary.ciregic.Rd
 6087052e198e8ee0a13040460a0cc00a *man/waldtest.Rd
+bbc767c5722df9e305d6b36fdb30a7e2 *vignettes/Park2019intccr.pdf
 e8a5c82d251f1ca55d242df70dac1eda *vignettes/intccr.Rnw
-1010914c896ef5b5274c4b2bd27102c7 *vignettes/park2019intccr.pdf

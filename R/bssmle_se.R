@@ -65,8 +65,8 @@ bssmle_se <- function(formula, data, alpha, k = 1, do.par, nboot) {
                         n <- (length(par[[1]]) - 2 * q) / 2
                         pars <- par[[1]][(2 * n + 1):(2 * n + 2 * q)]
                         return(pars)
+                        close(pb)
                       }
-    close(pb)
     parallel::stopCluster(clst)
     rownames(res.bt) <- c()
   }
