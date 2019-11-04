@@ -4,24 +4,25 @@
 \alias{bssmle_se}
 \title{Bootstrap varince-covariance estimation}
 \usage{
-bssmle_se(formula, data, alpha, k = 1, do.par, nboot)
+bssmle_se(formula, data, alpha, k = 1, do.par, nboot, objfun)
 }
 \arguments{
 \item{formula}{a formula object relating survival object \code{Surv2(v, u, event)} to a set of covariates}
 
 \item{data}{a data frame that includes the variables named in the formula argument}
 
-\item{alpha}{\eqn{\alpha = (\alpha1, \alpha2)} contains parameters that define the link functions from class of generalized odds-rate transformation models. The components \eqn{\alpha1} and \eqn{\alpha2} should both be \eqn{\ge 0}. If \eqn{\alpha1 = 0}, the user assumes the proportional subdistribution hazards model or the Fine-Gray model for the event type 1. If \eqn{\alpha2 = 1}, the user assumes the proportional odds model for the event type 2.}
+\item{alpha}{\eqn{\alpha = (\alpha1, \alpha2)} contains parameters that define the link functions from class of generalized odds-rate transformation models. The components \eqn{\alpha1} and \eqn{\alpha2} should both be \eqn{\ge 0}. If \eqn{\alpha1 = 0}, the user assumes the proportional subdistribution hazards model or the Fine-Gray model for the cause of failure 1. If \eqn{\alpha2 = 1}, the user assumes the proportional odds model for the cause of failure 2.}
 
 \item{k}{a parameter that controls the number of knots in the B-spline with \eqn{0.5 \le }\code{k}\eqn{ \le 1}}
 
 \item{do.par}{using parallel computing for bootstrap calculation. If \code{do.par = TRUE}, parallel computing will be used during the bootstrap estimation of the variance-covariance matrix for the regression parameter estimates.}
 
 \item{nboot}{a number of bootstrap samples for estimating variances and covariances of the estimated regression coefficients. If \code{nboot = 0}, the function \code{ciregic} does dot perform bootstrap estimation of the variance matrix of the regression parameter estimates and returns \code{NA} in the place of the estimated variance matrix of the regression parameter estimates.}
+
+\item{objfun}{an option to select estimating function}
 }
 \value{
 The function \code{bssmle_se} returns a list of components:
-\item{notconverged}{a list of number of bootstrap samples not converged}
 \item{numboot}{a number of bootstrap converged}
 \item{Sigma}{an estimated bootstrap variance-covariance matrix of the estimated regression coefficients}
 }
@@ -29,12 +30,7 @@ The function \code{bssmle_se} returns a list of components:
 Bootstrap varince estimation for the estimated regression coefficients
 }
 \details{
-The function \code{bssmle_se} estimates bootstrap standard errors for the estimated regression coefficients from the function \code{bssmle}.
-}
-\examples{
-attach(simdata)
-est.vcov <- intccr:::bssmle_se(formula = Surv2(v, u, c) ~ z1 + z2, data = simdata,
-                               alpha = c(1, 1), do.par = FALSE, nboot = 1)
+The function \code{bssmle_se} estimates bootstrap standard errors for the estimated regression coefficients from the function \code{bssmle} or \code{bssmle_lt}.
 }
 \author{
 Giorgos Bakoyannis, \email{gbakogia at iu dot edu}

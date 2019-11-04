@@ -1,7 +1,7 @@
-#' Wald test for \code{ciregic}
-#' @description \code{waldtest} for class \code{ciregic}. It provides the result of Wald test for the fitted model from the function \code{ciregic}.
-#' @param obj1 an object of the fitted model in \code{ciregic}
-#' @param obj2 an object of the fitted model in \code{ciregic}, the default is \code{NULL}
+#' Wald test for \code{ciregic} and \code{ciregic_lt}
+#' @description \code{waldtest} for class \code{ciregic} or \code{ciregic_lt}. This provides the result of Wald test for the fitted model from the function \code{ciregic} or \code{ciregic_lt}.
+#' @param obj1 an object of the fitted model in \code{ciregic} or \code{ciregic_lt}
+#' @param obj2 an object of the fitted model in \code{ciregic} or \code{ciregic_lt}, the default is \code{NULL}
 #' @param ... further arguments
 #' @details The function \code{waldtest.ciregic} returns a result of Wald test.
 #' @return The function \code{waldtest} returns an output table of Wald test of the model from \code{object}.
@@ -14,17 +14,13 @@
 #' @seealso The fitted semiparametric regression on cumulative incidence function with interval-censored competing risks data \code{\link[intccr]{ciregic}}
 #' @examples
 #' ## Continuing the ciregic(...) example
-#' \dontrun{
-#' ## Bootstrap variance estimation based on 5 replications
-#' set.seed(12345)
-#' fit <- ciregic(formula = Surv2(v, u, c) ~ z1 + z2, data = newdata,
-#'                alpha = c(1, 1), nboot = 5, do.par = FALSE)
 #' waldtest(obj1 = fit)
 #' set.seed(12345)
-#' fit.nested <- ciregic(formula = Surv2(v, u, c) ~ z2, data = newdata,
-#'                alpha = c(1, 1), nboot = 5, do.par = FALSE)
+#' newdata <- dataprep(data = longdata, ID = id, time = t,
+#'                     event = c, Z = c(z1, z2))
+#' fit.nested <- ciregic(formula = Surv2(v = v, u = u, event = c) ~ z2, data = newdata,
+#'                alpha = c(1, 1), nboot = 0, do.par = FALSE)
 #' waldtest(obj1 = fit, obj2 = fit.nested)
-#' }
 #'
 #' @export
 
@@ -78,12 +74,10 @@ waldtest <- function(obj1, obj2 = NULL, ...) {
   stat <- pval <- rep(NA, 3)
   df <- rep(NA, 2)
 
-  ## Overall
   stat[1] <- t(diff.coef[which(diff.coef != 0)]) %*% solve(vcov[covnames, covnames]) %*% diff.coef[which(diff.coef != 0)]
   df[1] <- 2 * (q - df.nested)
   pval[1] <- pchisq(stat[1], df[1], lower.tail = FALSE)
 
-  ## Cause-specific
   stat[2] <- t(diff.coef[which(diff.coef[1:q] != 0)]) %*% solve(vcov[which(covnames[1:q]), which(covnames[1:q])]) %*% diff.coef[which(diff.coef[1:q] != 0)]
   stat[3] <- t(diff.coef[which(diff.coef[(q + 1) : (2 * q)] != 0) + q]) %*% solve(vcov[which(covnames[1:q]) + q, which(covnames[1:q]) + q]) %*% diff.coef[which(diff.coef[(q + 1) : (2 * q)] != 0) + q]
   df[2] <- q - df.nested
@@ -91,16 +85,16 @@ waldtest <- function(obj1, obj2 = NULL, ...) {
   pval[3] <- pchisq(stat[3], df[2], lower.tail = FALSE)
 
   tbl <- as.data.frame(rbind(cbind(format(stat[1], digits = 1, nsmall = 4),
-                                     df[1],
-                                     format.pval(pval[1], digits = 1, nsmall = 4)),
-                               cbind(format(stat[2], digits = 1, nsmall = 4),
-                                     df[2],
-                                     format.pval(pval[2], digits = 1, nsmall = 4)),
-                               cbind(format(stat[3], digits = 1, nsmall = 4),
-                                     df[2],
-                                     format.pval(pval[3], digits = 1, nsmall = 4))))
+                                   df[1],
+                                   format.pval(pval[1], digits = 1, nsmall = 4)),
+                             cbind(format(stat[2], digits = 1, nsmall = 4),
+                                   df[2],
+                                   format.pval(pval[2], digits = 1, nsmall = 4)),
+                             cbind(format(stat[3], digits = 1, nsmall = 4),
+                                   df[2],
+                                   format.pval(pval[3], digits = 1, nsmall = 4))))
   colnames(tbl) <- c("Chisq", "df", "P(> Chisq)")
-tbl
+  tbl
   res <- list(varnames.full = obj1$varnames,
               varnames.nested = obj2$varnames,
               vcov = vcov,

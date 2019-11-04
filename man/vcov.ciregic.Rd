@@ -22,12 +22,6 @@ The function \code{vcov} returns the variance-covariance matrix of the fitted se
 }
 \examples{
 ## Continuing the ciregic(...) example
-\dontshow{
-newdata <- dataprep(data = longdata, ID = "id", time = "t",
-                    event = "c", Z = c("z1", "z2"))
-fit <- ciregic(formula = Surv2(v, u, c) ~ z1 + z2, data = newdata,
-               alpha = c(1, 1), nboot = 0, do.par = FALSE)
-}
 vcov(fit)
 
 

@@ -28,12 +28,6 @@ The function \code{summary.ciregic} returns the coefficients, bootstrap standard
 }
 \examples{
 ## Continuing the ciregic(...) example
-\dontshow{
-newdata <- dataprep(data = longdata, ID = "id", time = "t",
-                    event = "c", Z = c("z1", "z2"))
-fit <- ciregic(formula = Surv2(v, u, c) ~ z1 + z2, data = newdata,
-               alpha = c(1, 1), nboot = 0, do.par = FALSE)
-}
 sfit <- summary(fit)
 sfit
 

@@ -2,14 +2,14 @@
 % Please edit documentation in R/waldtest.R
 \name{waldtest}
 \alias{waldtest}
-\title{Wald test for \code{ciregic}}
+\title{Wald test for \code{ciregic} and \code{ciregic_lt}}
 \usage{
 waldtest(obj1, obj2 = NULL, ...)
 }
 \arguments{
-\item{obj1}{an object of the fitted model in \code{ciregic}}
+\item{obj1}{an object of the fitted model in \code{ciregic} or \code{ciregic_lt}}
 
-\item{obj2}{an object of the fitted model in \code{ciregic}, the default is \code{NULL}}
+\item{obj2}{an object of the fitted model in \code{ciregic} or \code{ciregic_lt}, the default is \code{NULL}}
 
 \item{...}{further arguments}
 }
@@ -23,24 +23,20 @@ The function \code{waldtest} returns an output table of Wald test of the model f
 \item{table}{a table including test statistic, degrees of freedom, and p-value}
 }
 \description{
-\code{waldtest} for class \code{ciregic}. It provides the result of Wald test for the fitted model from the function \code{ciregic}.
+\code{waldtest} for class \code{ciregic} or \code{ciregic_lt}. This provides the result of Wald test for the fitted model from the function \code{ciregic} or \code{ciregic_lt}.
 }
 \details{
 The function \code{waldtest.ciregic} returns a result of Wald test.
 }
 \examples{
 ## Continuing the ciregic(...) example
-\dontrun{
-## Bootstrap variance estimation based on 5 replications
-set.seed(12345)
-fit <- ciregic(formula = Surv2(v, u, c) ~ z1 + z2, data = newdata,
-               alpha = c(1, 1), nboot = 5, do.par = FALSE)
 waldtest(obj1 = fit)
 set.seed(12345)
-fit.nested <- ciregic(formula = Surv2(v, u, c) ~ z2, data = newdata,
-               alpha = c(1, 1), nboot = 5, do.par = FALSE)
+newdata <- dataprep(data = longdata, ID = id, time = t,
+                    event = c, Z = c(z1, z2))
+fit.nested <- ciregic(formula = Surv2(v = v, u = u, event = c) ~ z2, data = newdata,
+               alpha = c(1, 1), nboot = 0, do.par = FALSE)
 waldtest(obj1 = fit, obj2 = fit.nested)
-}
 
 }
 \seealso{

@@ -4,18 +4,20 @@
 \alias{naive_b}
 \title{Initial values for the sieve maximum likelihood estimation}
 \usage{
-naive_b(data, v, u, c, q, k = 1)
+naive_b(data, w = NULL, v, u, c, q, k = 1)
 }
 \arguments{
 \item{data}{a data frame that includes the variables named in each argument}
 
-\item{v}{the last observation time prior to the failure.}
+\item{w}{a left-truncation time (default is \code{w = NULL}.)}
 
-\item{u}{the first observation time after the failure.}
+\item{v}{the last observation time prior to the failure}
 
-\item{c}{an indicator of event type. If an observation is righ-censored, \code{event = 0}; otherwise, \code{event = 1} or \code{event = 2}, where \code{1} represents the event type 1, and \code{2} represents the event type 2. The current version of package only allows for two event types.}
+\item{u}{the first observation time after the failure}
 
-\item{q}{a dimension of design matrix.}
+\item{c}{an indicator of cause of failure, for example, if an observation is righ-censored, \code{event = 0}; otherwise, \code{event = 1} or \code{event = 2}, where \code{1} represents the first cause of failure, and \code{2} represents the second cause of failure. The current version of package only allows for two causes of failure.}
+
+\item{q}{a number of parameters in design matrix}
 
 \item{k}{a parameter that controls the number of knots in the B-spline with \eqn{0.5 \le }\code{k}\eqn{ \le 1}}
 }

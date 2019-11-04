@@ -11,7 +11,7 @@ bssmle(formula, data, alpha, k = 1)
 
 \item{data}{a data frame that includes the variables named in the formula argument}
 
-\item{alpha}{\eqn{\alpha = (\alpha1, \alpha2)} contains parameters that define the link functions from class of generalized odds-rate transformation models. The components \eqn{\alpha1} and \eqn{\alpha2} should both be \eqn{\ge 0}. If \eqn{\alpha1 = 0}, the user assumes the proportional subdistribution hazards model or the Fine-Gray model for the event type 1. If \eqn{\alpha2 = 1}, the user assumes the proportional odds model for the event type 2.}
+\item{alpha}{\eqn{\alpha = (\alpha1, \alpha2)} contains parameters that define the link functions from class of generalized odds-rate transformation models. The components \eqn{\alpha1} and \eqn{\alpha2} should both be \eqn{\ge 0}. If \eqn{\alpha1 = 0}, the user assumes the proportional subdistribution hazards model or the Fine-Gray model for the cause of failure 1. If \eqn{\alpha2 = 1}, the user assumes the proportional odds model for the cause of failure 2.}
 
 \item{k}{a parameter that controls the number of knots in the B-spline with \eqn{0.5 \le }\code{k}\eqn{ \le 1}}
 }
@@ -30,12 +30,6 @@ Routine that performs B-spline sieve maximum likelihood estimation with linear a
 }
 \details{
 The function \code{bssmle} performs B-spline sieve maximum likelihood estimation.
-}
-\examples{
-est.simdata <- intccr:::bssmle(Surv2(v, u, c) ~ z1 + z2, data = simdata, alpha = c(1, 1))
-newdata <- intccr::dataprep(data = longdata, ID = "id", time = "t",
-                            event = "c", Z = c("z1", "z2"))
-est.longdata <- intccr:::bssmle(Surv2(v, u, c) ~ z1 + z2, data = newdata, alpha = c(1, 1))
 }
 \author{
 Giorgos Bakoyannis, \email{gbakogia at iu dot edu}
