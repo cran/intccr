@@ -3,13 +3,13 @@
 \docType{data}
 \name{fit_lt}
 \alias{fit_lt}
-\title{Output of ciregltic}
+\title{Output of \code{ciregic_lt}}
 \format{A list of components.}
 \usage{
 fit_lt
 }
 \description{
-Object contains the output of the function \code{ciregltic}. Standard errors were estimated by the least-squares method.
+Object contains the output of the function \code{ciregic_lt}. Standard errors were estimated by the least-squares method.
 }
 \examples{
 fit_lt

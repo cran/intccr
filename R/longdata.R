@@ -1,6 +1,6 @@
-#' Simulated long format data
+#' Simulated interval-censored competing risks data - long format
 #'
-#' @description Data containing subject id, a series of time points, cause of failure, and covariates with 200 observations.
+#' @description The data containing the subject id, series of time points, cause of failure, and covariates with 200 observations.
 #'
 #' @docType data
 #'
@@ -11,5 +11,6 @@
 #' @keywords datasets
 #'
 #' @examples
-#' head(longdata, n = 5)
+#' library(intccr)
+#' data(longdata)
 "longdata"

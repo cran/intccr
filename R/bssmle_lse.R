@@ -1,13 +1,13 @@
 #' Least-Squares Estimator of the Information Matrix
-#' @description A least-squares estimator of the information matrix for the estimated regression coefficients
-#' @author Giorgos Bakoyannis, \email{gbakogia at iu dot edu}
+#' @description Performs the least-squares methods to estimate the information matrix for the estimated regression coefficients
 #' @author Jun Park, \email{jp84 at iu dot edu}
+#' @author Giorgos Bakoyannis, \email{gbakogia at iu dot edu}
 #' @param obj a list of objectives from \code{bssmle}
 #' @keywords bssmle_lse
 #' @importFrom MASS ginv
 #' @details The function \code{bssmle_lse} estimates the information matrix for the estimated regression coefficients from the function \code{bssmle} using the lease-squares method.
 #' @return The function \code{bssmle_lse} returns a list of components:
-#' \item{Sigma}{estimated variance-covariance matrix of the estimated regression coefficients}
+#' \item{Sigma}{the estimated variance-covariance matrix for the estimated regression coefficients}
 #' @references
 #' {Zhang, Y., Hua, L., and Huang, J. (2010), A spline-based semiparametric maximum likelihood estimation method for the Cox model with interval-censoed data. \emph{Scandinavian Journal of Statistics}, \strong{37}:338-354.}
 
@@ -103,22 +103,22 @@ bssmle_lse <- function(obj) {
   iG_Z <- (-1) * iG[, ((2 * n) + 1):(2 * (q + n))]
 
   xi <- try(solve(crossprod(iG_phi), crossprod(iG_phi, iG_Z)), silent = TRUE)
-  if(class(xi) != "try-error"){
+  if(sum(class(xi) == "try-error") == 0) {
     iG_phi0 <- iG_phi %*% xi
     B.hat <- (crossprod(iG_Z - iG_phi0)) / dim(Bv)[1]
     temp.Sigma <- try(solve(B.hat), silent = TRUE)
-    if(class(temp.Sigma) != "try-error") {
+    if(sum(class(temp.Sigma) == "try-error") == 0) {
       Sigma <- solve(B.hat) / dim(Bv)[1]
     } else {
       Sigma <- MASS::ginv(B.hat) / dim(Bv)[1]
     }
   } else {
     xi <- try(MASS::ginv(crossprod(iG_phi)) %*% crossprod(iG_phi, iG_Z), silent = TRUE)
-    if(class(xi) != "try-error") {
+    if(sum(class(xi) == "try-error") == 0) {
       iG_phi0 <- iG_phi %*% xi
       B.hat <- (crossprod(iG_Z - iG_phi0)) / dim(Bv)[1]
       temp.Sigma <- try(solve(B.hat), silent = TRUE)
-      if(class(temp.Sigma) != "try-error") {
+      if(sum(class(temp.Sigma) == "try-error") == 0) {
         Sigma <- solve(B.hat) / dim(Bv)[1]
       } else {
         Sigma <- MASS::ginv(B.hat) / dim(Bv)[1]

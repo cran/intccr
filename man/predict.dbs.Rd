@@ -15,7 +15,7 @@
 The function \code{predict} returns a predicted B-splies.
 }
 \description{
-predict the derivative of the B-splines
+Evaluates the derivative of the B-splines basis matrix at given values.
 }
 \details{
 The function \code{predict} is a generic function of \code{bs.derivs}

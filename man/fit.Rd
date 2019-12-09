@@ -3,7 +3,7 @@
 \docType{data}
 \name{fit}
 \alias{fit}
-\title{Output of ciregic}
+\title{Output of \code{ciregic}}
 \format{A list of components.}
 \usage{
 fit

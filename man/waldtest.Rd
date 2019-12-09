@@ -30,15 +30,15 @@ The function \code{waldtest.ciregic} returns a result of Wald test.
 }
 \examples{
 ## Continuing the ciregic(...) example
+library(intccr)
 waldtest(obj1 = fit)
 set.seed(12345)
 newdata <- dataprep(data = longdata, ID = id, time = t,
                     event = c, Z = c(z1, z2))
 fit.nested <- ciregic(formula = Surv2(v = v, u = u, event = c) ~ z2, data = newdata,
-               alpha = c(1, 1), nboot = 0, do.par = FALSE)
+                      alpha = c(1, 1), nboot = 0, do.par = FALSE)
 waldtest(obj1 = fit, obj2 = fit.nested)
-
 }
 \seealso{
-The fitted semiparametric regression on cumulative incidence function with interval-censored competing risks data \code{\link[intccr]{ciregic}}
+The fitted semiparametric regression on cumulative incidence function with interval-censored competing risks data \code{\link[intccr]{ciregic}} and left-truncated and interval-censored competing risks data \code{\link[intccr]{ciregic_lt}}
 }

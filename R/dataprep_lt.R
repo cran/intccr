@@ -10,7 +10,7 @@
 #' @param Z a vector of variables indicating name of covariates
 #' @keywords dataprep_lt
 #' @importFrom utils capture.output
-#' @details The function \code{dataprep_lt} provides a ready-to-use data format that can be directly used in the function \code{regltic}. The returned data frame consists of \code{id}, \code{v}, \code{u}, \code{c}, and covariates as columns. The \code{v} and \code{u} indicate time window with the last observation time before the event and the first observation after the event. The \code{c} represents a type of event, for example, \code{c = 1} for the first cause of failure, \code{c = 2} for the second cause of failure, and \code{c = 0} for the right-censored. Individuals who have only one time record with right-censored event will be omitted because its time interval is \code{(0, Inf)}, and the lower bound \code{v} will be replaced by zero, for example \code{(0, v]}, if individuals are not right-censored and have only one time record.
+#' @details The function \code{dataprep_lt} provides a ready-to-use data format that can be directly used in the function \code{regltic}. The returned data frame consists of \code{id}, \code{v}, \code{u}, \code{c}, and covariates as columns. The \code{v} and \code{u} indicate time window with the last observation time before the event and the first observation after the event. The \code{c} represents a type of event, for example, \code{c = 1} for the first cause of failure, \code{c = 2} for the second cause of failure, and \code{c = 0} for the right-censored.  For individuals having one time record with the event, the lower bound \code{v} will be replaced by zero, for example \code{(0, v]}. For individuals having one time record without the event, the upper bound \code{u} will be replaced by \code{Inf}, for example \code{(v, Inf]}.
 #' @return a data frame
 #' @export
 
@@ -53,7 +53,7 @@ dataprep_lt <- function(data, ID, W, time, event, Z) {
 
     if(length(indt) == 1){                # detect individual who has one time record
       if(indc != 0){                      # non-censored individual
-        v[i] <- w[i]                      # lower bound is the left truncation time (could be 0)
+        v[i] <- w[i]                      # lower bound is the left truncation time
         u[i] <- indt                      # upper bound is its time record
         c[i] <- indc
       } else {
@@ -69,7 +69,7 @@ dataprep_lt <- function(data, ID, W, time, event, Z) {
       for (j in 1:length(indt)){
         if (indc[j] > 0){
           v[i] <- indt[(j - 1)]
-          u[i] <- indt[j]           # non-censored
+          u[i] <- indt[j]             # non-censored
           c[i] <- indc[j]
           break
         }
@@ -78,5 +78,13 @@ dataprep_lt <- function(data, ID, W, time, event, Z) {
   }
   colnames(X) <- Z
   temp <- data.frame(id, w, v, u, c, X)
-  return(temp)
+  if (sum(is.na(temp)) != 0){
+    naval <- which(is.na(v))
+    if(length(naval) == 1) {
+      warning("subject id ", naval, " is omitted because its interval is (0, Inf).")
+    } else {
+      warning("subject id ", toString(naval), " are omitted because those intervals are (0, Inf).")
+    }
+  }
+  na.omit(temp)
 }

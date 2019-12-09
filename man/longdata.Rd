@@ -3,15 +3,16 @@
 \docType{data}
 \name{longdata}
 \alias{longdata}
-\title{Simulated long format data}
+\title{Simulated interval-censored competing risks data - long format}
 \format{A data frame with 868 rows and 5 variables.}
 \usage{
 longdata
 }
 \description{
-Data containing subject id, a series of time points, cause of failure, and covariates with 200 observations.
+The data containing the subject id, series of time points, cause of failure, and covariates with 200 observations.
 }
 \examples{
-head(longdata, n = 5)
+library(intccr)
+data(longdata)
 }
 \keyword{datasets}

@@ -23,10 +23,17 @@ The function \code{bssmle} returns a list of components:
 \item{loglikelihood}{a loglikelihood of the fitted model}
 \item{convergence}{an indicator of convegence}
 \item{tms}{a vector of the minimum and maximum observation times}
+\item{Z}{a set of covariates}
+\item{Tv}{a vector of \code{v}}
+\item{Tu}{a vector of \code{u}}
 \item{Bv}{a list containing the B-splines basis functions evaluated at \code{v}}
+\item{Bu}{a list containing the B-splines basis functions evaluated at \code{v}}
+\item{dBv}{a list containing the first derivative of the B-splines basis functions evaluated at \code{v}}
+\item{dBu}{a list containing the first derivative of the B-splines basis functions evaluated at \code{u}}
+\item{dmat}{a matrix of event indicator functions}
 }
 \description{
-Routine that performs B-spline sieve maximum likelihood estimation with linear and nonlinear inequality constraints
+Routine that performs B-spline sieve maximum likelihood estimation with linear and nonlinear inequality/equality constraints
 }
 \details{
 The function \code{bssmle} performs B-spline sieve maximum likelihood estimation.

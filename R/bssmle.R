@@ -1,5 +1,5 @@
 #' B-spline Sieve Maximum Likelihood Estimation
-#' @description Routine that performs B-spline sieve maximum likelihood estimation with linear and nonlinear inequality constraints
+#' @description Routine that performs B-spline sieve maximum likelihood estimation with linear and nonlinear inequality/equality constraints
 #' @author Giorgos Bakoyannis, \email{gbakogia at iu dot edu}
 #' @author Jun Park, \email{jp84 at iu dot edu}
 #' @param formula a formula object relating survival object \code{Surv2(v, u, event)} to a set of covariates
@@ -18,7 +18,14 @@
 #' \item{loglikelihood}{a loglikelihood of the fitted model}
 #' \item{convergence}{an indicator of convegence}
 #' \item{tms}{a vector of the minimum and maximum observation times}
+#' \item{Z}{a set of covariates}
+#' \item{Tv}{a vector of \code{v}}
+#' \item{Tu}{a vector of \code{u}}
 #' \item{Bv}{a list containing the B-splines basis functions evaluated at \code{v}}
+#' \item{Bu}{a list containing the B-splines basis functions evaluated at \code{v}}
+#' \item{dBv}{a list containing the first derivative of the B-splines basis functions evaluated at \code{v}}
+#' \item{dBu}{a list containing the first derivative of the B-splines basis functions evaluated at \code{u}}
+#' \item{dmat}{a matrix of event indicator functions}
 
 bssmle <- function(formula, data, alpha, k = 1) {
 
@@ -50,6 +57,7 @@ bssmle <- function(formula, data, alpha, k = 1) {
   Tu[delta == 0] <- max(t)
   Bu <- predict(Bv, Tu)
 
+  ## First derivative of B-splines
   dBv0 <- bs.derivs(Tv, derivs = 1, knots = knots, degree = 3, intercept = TRUE,
                     Boundary.knots = c(min(t), max(t)))
   dBv <- predict(dBv0, Tv)
@@ -58,12 +66,14 @@ bssmle <- function(formula, data, alpha, k = 1) {
   n <- dim(Bu)[2]
   q <- dim(Z)[2]
 
+  ## event indicator
   d1 <- (delta == 1 & Tv > 0)
   d2 <- (delta == 2 & Tv > 0)
   d1_1 <- (delta == 1 & Tv == 0)
   d2_1 <- (delta == 2 & Tv == 0)
   d <- (d1 + d1_1 + d2 + d2_1)
 
+  ## parameters for link functions
   a1 <- alpha[1]
   a2 <- alpha[2]
 

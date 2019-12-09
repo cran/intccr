@@ -1,6 +1,6 @@
-#' Output of ciregltic
+#' Output of \code{ciregic_lt}
 #'
-#' Object contains the output of the function \code{ciregltic}. Standard errors were estimated by the least-squares method.
+#' @description Object contains the output of the function \code{ciregic_lt}. Standard errors were estimated by the least-squares method.
 #'
 #' @docType data
 #'

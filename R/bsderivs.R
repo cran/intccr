@@ -1,7 +1,7 @@
 #' Derivative of B-spline
-#' @description takes the derivative of the B-splines
-#' @author Giorgos Bakoyannis, \email{gbakogia at iu dot edu}
+#' @description Generates the derivative of the B-splines basis matrix.
 #' @author Jun Park, \email{jp84 at iu dot edu}
+#' @author Giorgos Bakoyannis, \email{gbakogia at iu dot edu}
 #' @param x object of B-splines
 #' @param derivs a number of derivatives
 #' @param df degrees of freedom of B-splines
@@ -121,9 +121,9 @@ dbs <- function(x, derivs = 1L, df = NULL, knots = NULL, degree = 3L,
 }
 
 #' Derivative of B-spline
-#' @description takes the derivative of the B-splines
-#' @author Giorgos Bakoyannis, \email{gbakogia at iu dot edu}
+#' @description Generates the derivative of the B-splines basis matrix.
 #' @author Jun Park, \email{jp84 at iu dot edu}
+#' @author Giorgos Bakoyannis, \email{gbakogia at iu dot edu}
 #' @param x object of B-splines
 #' @param derivs a number of derivatives
 #' @param df degrees of freedom of B-splines
@@ -150,7 +150,7 @@ bs.derivs <- function(x, derivs = 0, df = NULL, knots = NULL, degree = 3, interc
 }
 
 #' Prediction of derivative of B-spline
-#' @description predict the derivative of the B-splines
+#' @description Evaluates the derivative of the B-splines basis matrix at given values.
 #' @author Giorgos Bakoyannis, \email{gbakogia at iu dot edu}
 #' @author Jun Park, \email{jp84 at iu dot edu}
 #' @param object returned object of B-splines

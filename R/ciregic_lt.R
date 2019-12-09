@@ -1,13 +1,13 @@
 #' Competing Risks Regression with Left-truncated and Interval-Censored Data
-#' @description The function \code{ciregic_lt} performs semiparametric regression on cumulative incidence function with left-truncated and interval-censored competing risks data. It fits the proportional subdistribution hazards model (Fine-Gray model), the proportional odds model, and other models that belong to the class of semiparametric generalized odds rate transformation models.
-#' @author Giorgos Bakoyannis, \email{gbakogia at iu dot edu}
+#' @description The function \code{ciregic_lt} performs semiparametric regression on cumulative incidence function with left-truncated and interval-censored competing risks data. It fits the proportional subdistribution hazards model (Fine-Gray model), the proportional odds model, and other models that belong to the class of semiparametric generalized odds rate transformation models. The lease-square method is implemented to estimate the standard error of the regression coefficients.
 #' @author Jun Park, \email{jp84 at iu dot edu}
+#' @author Giorgos Bakoyannis, \email{gbakogia at iu dot edu}
 #' @param formula a formula object relating the survival object \code{Surv2(v, u, w, event)} to a set of covariates
 #' @param data a data frame that includes the variables named in the formula argument
 #' @param alpha \eqn{\alpha = (\alpha1, \alpha2)} contains parameters that define the link functions from class of generalized odds-rate transformation models. The components \eqn{\alpha1} and \eqn{\alpha2} should both be \eqn{\ge 0}. If \eqn{\alpha1 = 0}, the user assumes the proportional subdistribution hazards model or the Fine-Gray model for the cause of failure 1. If \eqn{\alpha2 = 1}, the user assumes the proportional odds model for the cause of failure 2.
 #' @param k a parameter that controls the number of knots in the B-spline with \eqn{0.5 \le }\code{k}\eqn{ \le 1}
 #' @param do.par an option to use parallel computing for bootstrap. If \code{do.par = TRUE}, parallel computing will be used during the bootstrap estimation of the variance-covariance matrix for the regression parameter estimates.
-#' @param nboot a number of bootstrap samples for estimating variances and covariances of the estimated regression coefficients. If \code{nboot = 0}, the function \code{ciregic_lt} returns a closed-form variance estimator and does not perform bootstrap estimation of the variance-covariance matrix of the regression parameter estimates. For \code{nboot} \eqn{\ge 1}, the function \code{ciregic_lt} returns the boostrap variance estimator of the regression parameter estimates.
+#' @param nboot a number of bootstrap samples for estimating variances and covariances of the estimated regression coefficients. If \code{nboot = 0}, the function \code{ciregic_lt} returns a closed-form variance estimator using the least-squares method and does not perform bootstrap estimation of the variance-covariance matrix of the regression parameter estimates. For \code{nboot} \eqn{\ge 1}, the function \code{ciregic_lt} returns the boostrap variance estimator of the regression parameter estimates.
 #' @param ... additional arguments
 #' @return The function \code{ciregic_lt} provides an object of class \code{ciregic_lt} with components:
 #' \item{varnames}{a vector containing variable names}
@@ -20,6 +20,7 @@
 #' \item{tms}{a vector of the minimum and maximum observation times}
 #' \item{Bv}{a list containing the B-splines basis functions evaluated at \code{v}}
 #' \item{numboot}{a number of converged bootstrap}
+#' \item{notconverged}{a list of number of bootstrap samples that did not converge}
 #' \item{call}{a matched call}
 #' @references
 #' {Bakoyannis, G., Yu, M., and Yiannoutsos C. T. (2017). Semiparametric regression on cumulative incidence function with interval-censored competing risks data. \emph{Statistics in Medicine}, \strong{36}:3683-3707.}
@@ -267,11 +268,13 @@ print.summary.ciregic_lt <- function(x, ...){
     cat("\n")
     cat("Event type 1")
     cat("\n")
-    printCoefmat(round(res1, digits = 4), P.values = TRUE, has.Pvalue = TRUE, digits = 4)
+    printCoefmat(round(res1, digits = 4), P.values = TRUE, has.Pvalue = TRUE,
+                 digits = 4, signif.stars = TRUE)
     cat("\n")
     cat("Event type 2")
     cat("\n")
-    printCoefmat(round(res2, digits = 4), P.values = TRUE, has.Pvalue = TRUE, digits = 4)
+    printCoefmat(round(res2, digits = 4), P.values = TRUE, has.Pvalue = TRUE,
+                 digits = 4, signif.stars = TRUE)
   }
 }
 

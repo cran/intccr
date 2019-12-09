@@ -4,7 +4,7 @@
 #'
 #' @docType data
 #'
-#' @usage data(longdata_lt)
+#' @usage longdata_lt
 #'
 #' @format A data frame with 275 unique individuals and 6 variables.
 #'

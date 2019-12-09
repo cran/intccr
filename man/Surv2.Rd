@@ -4,14 +4,16 @@
 \alias{Surv2}
 \title{Creating data frame}
 \usage{
-Surv2(v, u, w = NULL, event)
+Surv2(v, u, w = NULL, sub = NULL, event)
 }
 \arguments{
 \item{v}{the last observation time prior to the failure; \eqn{0\le v \le u}}
 
 \item{u}{the first observation time after the failure; \eqn{u \ge 0}}
 
-\item{w}{a left truncation time or delayed entry time (default is \code{w = NULL})}
+\item{w}{a left truncation time or delayed entry time. The default setting is \code{w = NULL} for non left-truncated data.}
+
+\item{sub}{an indicator variable in the data set. It is an optional argument for interval-censored competing risks data and missing cause of failure, and the default is \code{NULL}. \code{sub = 1} for the observations that are subject to missingness and \code{sub = 0} elsewhere.}
 
 \item{event}{an indicator of cause of failure. If an observation is righ-censored, \code{event = 0}; otherwise, \code{event = 1} or \code{event = 2}, where \code{1} represents the first cause of failure, and \code{2} represents the second cause of failure. The current version of package only allows for two causes of failure.}
 }
@@ -27,6 +29,8 @@ The function \code{Surv2} provides a response data frame which is used in the fu
 \examples{
 attach(simdata)
 Surv2(v = v, u = u, event = c)
+attach(simdata_lt)
+Surv2(v = v, u = u, w = w, event = c)
 
 }
 \author{

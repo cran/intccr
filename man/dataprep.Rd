@@ -24,7 +24,7 @@ a data frame
 The function \code{dataprep} reshapes data from a long format to a ready-to-use format to be used directly in the function \code{ciregic}.
 }
 \details{
-The function \code{dataprep} provides a ready-to-use data format that can be directly used in the function \code{ciregic}. The returned data frame consists of \code{id}, \code{v}, \code{u}, \code{c}, and covariates as columns. The \code{v} and \code{u} indicate time window with the last observation time before the event and the first observation after the event. The \code{c} represents a type of event, for example, \code{c = 1} for the first cause of failure, \code{c = 2} for the second cause of failure, and \code{c = 0} for the right-censored. Individuals who have only one time record with right-censored event will be omitted because its time interval is \code{(0, Inf)}, and the lower bound \code{v} will be replaced by zero, for example \code{(0, v]}, if individuals are not right-censored and have only one time record.
+The function \code{dataprep} provides a ready-to-use data format that can be directly used in the function \code{ciregic}. The returned data frame consists of \code{id}, \code{v}, \code{u}, \code{c}, and covariates as columns. The \code{v} and \code{u} indicate time window with the last observation time before the event and the first observation after the event. The \code{c} represents a type of event, for example, \code{c = 1} for the first cause of failure, \code{c = 2} for the second cause of failure, and \code{c = 0} for the right-censored. For individuals having one time record with the event, the lower bound \code{v} will be replaced by zero, for example \code{(0, v]}. For individuals having one time record without the event, the upper bound \code{u} will be replaced by \code{Inf}, for example \code{(v, Inf]}.
 }
 \examples{
 library(intccr)
@@ -32,8 +32,8 @@ dataprep(data = longdata, ID = id, time = t, event = c, Z = c(z1, z2))
 
 }
 \author{
-Giorgos Bakoyannis, \email{gbakogia at iu dot edu}
-
 Jun Park, \email{jp84 at iu dot edu}
+
+Giorgos Bakoyannis, \email{gbakogia at iu dot edu}
 }
 \keyword{dataprep}

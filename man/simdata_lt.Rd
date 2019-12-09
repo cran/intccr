@@ -3,13 +3,22 @@
 \docType{data}
 \name{simdata_lt}
 \alias{simdata_lt}
-\title{Simulated left-truncated and interval-censored competing risks data - wide format}
-\format{A data frame with 275 unique individuals and 7 variables.}
+\title{Simulated left-truncated and interval-censored competing risks data with 2 covariates - wide format}
+\format{A data frame with 275 unique individuals and 7 variables.
+\describe{
+  \item{id}{subject id}
+  \item{w}{the left truncation time}
+  \item{v}{the last observation time prior to the event}
+  \item{u}{the first observation time after the event}
+  \item{c}{cause of failure with missing}
+  \item{z1}{binary variable}
+  \item{z2}{continuous variable}
+}}
 \usage{
-data(simdata_lt)
+simdata_lt
 }
 \description{
-Data containing an individual identificatio number, a left-truncated time, the last and first observation time prior to the event and after the event, cause of failure, and baseline covariates with 275 observations.
+The data containing the individual identification number, the left-truncated time, the last and first observation time prior to the event and after the event, cause of failure, and baseline covariates with 275 observations.
 }
 \examples{
 library(intccr)

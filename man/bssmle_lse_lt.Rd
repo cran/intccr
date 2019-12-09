@@ -11,10 +11,10 @@ bssmle_lse_lt(obj)
 }
 \value{
 The function \code{bssmle_lse_lt} returns a list of components:
-\item{Sigma}{estimated variance-covariance matrix of the estimated regression coefficients}
+\item{Sigma}{the estimated information matrix for the estimated regression coefficients}
 }
 \description{
-A least-squares estimator of the information matrix for the estimated regression coefficients
+Performs the least-squares methods to estimate the information matrix for the estimated regression coefficients
 }
 \details{
 The function \code{bssmle_lse_lt} estimates the information matrix for the estimated regression coefficients from the function \code{bssmle_lt} using the lease-squares method.
@@ -23,8 +23,8 @@ The function \code{bssmle_lse_lt} estimates the information matrix for the estim
 {Zhang, Y., Hua, L., and Huang, J. (2010), A spline-based semiparametric maximum likelihood estimation method for the Cox model with interval-censoed data. \emph{Scandinavian Journal of Statistics}, \strong{37}:338-354.}
 }
 \author{
-Giorgos Bakoyannis, \email{gbakogia at iu dot edu}
-
 Jun Park, \email{jp84 at iu dot edu}
+
+Giorgos Bakoyannis, \email{gbakogia at iu dot edu}
 }
 \keyword{bssmle_lse_lt}

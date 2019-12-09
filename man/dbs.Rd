@@ -27,14 +27,14 @@ The function \code{dbs} returns a component:
 \item{dMat}{B-spline matrix}
 }
 \description{
-takes the derivative of the B-splines
+Generates the derivative of the B-splines basis matrix.
 }
 \details{
 The function \code{dbs} performs derivatives of B-splines
 }
 \author{
-Giorgos Bakoyannis, \email{gbakogia at iu dot edu}
-
 Jun Park, \email{jp84 at iu dot edu}
+
+Giorgos Bakoyannis, \email{gbakogia at iu dot edu}
 }
 \keyword{dbs}
