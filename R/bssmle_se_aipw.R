@@ -9,6 +9,7 @@
 #' @param k a parameter that controls the number of knots in the B-spline with \eqn{0.5 \le }\code{k}\eqn{ \le 1}
 #' @param do.par using parallel computing for bootstrap calculation. If \code{do.par = TRUE}, parallel computing will be used during the bootstrap estimation of the variance-covariance matrix for the regression parameter estimates.
 #' @param nboot a number of bootstrap samples for estimating variances and covariances of the estimated regression coefficients. If \code{nboot = 0}, the function \code{ciregic} does dot perform bootstrap estimation of the variance matrix of the regression parameter estimates and returns \code{NA} in the place of the estimated variance matrix of the regression parameter estimates.
+#' @param w.cores a number of cores that are assigned (the default is \code{NULL})
 #' @keywords bssmle_aipw_se
 #' @import foreach parallel
 #' @importFrom doParallel registerDoParallel
@@ -20,7 +21,7 @@
 #' \item{Sigma}{an estimated bootstrap variance-covariance matrix of the estimated regression coefficients}
 
 
-bssmle_se_aipw <- function(formula, aux, data, alpha, k, do.par, nboot) {
+bssmle_se_aipw <- function(formula, aux, data, alpha, k, do.par, nboot, w.cores = NULL) {
   tmp <- list()
   for(i in 1:nboot){
     tmp[[i]] <- data[sample(dim(data)[1], replace = TRUE), ]
@@ -46,7 +47,17 @@ bssmle_se_aipw <- function(formula, aux, data, alpha, k, do.par, nboot) {
                       }
     close(pb)
   } else {
-    no.cores <- parallel::detectCores() - 1
+    if(is.null(w.cores)) {
+      no.cores <- parallel::detectCores() - 1
+    } else {
+      no.cores <- parallel::detectCores() - 1
+      if(w.cores > no.cores) {
+        no.cores <- parallel::detectCores() - 1
+        warning("The number of cores can't exeed to the available cores. We set the maximum number of available cores.")
+      } else {
+        no.cores <- w.cores
+      }
+    }
     clst <- parallel::makeCluster(no.cores)
     doParallel::registerDoParallel(clst)
 

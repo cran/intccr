@@ -98,10 +98,15 @@ bssmle_aipw <- function(formula, aux, data, alpha, k) {
   }
 
   ## Data for the probability of missingness
-  data.ipw <- tempdat[delta != 0, ]
+  if("sub" %in% ls()) {
+    data.ipw <- tempdat[sub == 1, ]
+  } else {
+    data.ipw <- tempdat[delta != 0, ]
+  }
+
   ## Data for the probability of cause of interest
   if("sub" %in% ls()) {
-    data.aipw <- tempdat[sub == 1, ]
+    data.aipw <- tempdat[sub == 1 & r == 1, ]
   } else {
     data.aipw <- tempdat[r == 1 & delta != 0, ]
   }
@@ -382,81 +387,11 @@ bssmle_aipw <- function(formula, aux, data, alpha, k) {
     unname(ui)
   }
 
-  heq_g0 <- function(x) {
-    b1 <- x[(2 * n + 1):(2 * n + q)]
-    b2 <- x[(2 * n + q + 1):(2 * n + 2 * q)]
-
-    ui <- rep(0, 2 * (n - 1))
-
-    cif1 <- function(xi, eta){
-      if(a1 > 0){
-        (1 + a1 * exp(xi + eta))^(-1 / a1)
-      } else if(a1 == 0){
-        exp(-exp(xi + eta))
-      }
-    }
-    cif2 <- function(xi, eta){
-      if(a2 > 0){
-        (1 + a2 * exp(xi + eta))^(-1 / a2)
-      } else if(a2 == 0){
-        exp(-exp(xi + eta))
-      }
-    }
-
-    for(i in 1:dim(comb)[1]){
-      eta1 <- b1 %*% t(comb[i,])
-      eta2 <- b2 %*% t(comb[i,])
-      minmax <- (cif1(xi = x[1], eta = eta1) + cif2(xi = x[(n + 1)], eta = eta2)) - 2
-      ui <- c(ui, minmax)
-    }
-    unname(ui)
-  }
-
-  heq_jac_g0 <- function(x) {
-    b1 <- x[(2 * n + 1):(2 * n + q)]
-    b2 <- x[(2 * n + q + 1):(2 * n + 2 * q)]
-    nBS <- 2 * n
-
-    ui <- matrix(rep(0, times = (nBS * (nBS - 2))), ncol = nBS, nrow = (nBS - 2), byrow = TRUE)
-
-    zero <- matrix(rep(0, times = (dim(ui)[1] * (2 * q))), ncol = (2 * q))
-    ui <- cbind(ui, zero)
-
-    line <- c(rep(0, times = n),
-              rep(0, times = n))
-
-    dcif1 <- function(xi, eta){
-      if(a1 > 0){
-        (1 + a1 * exp(xi + eta))^(-(1 / a1) - 1) * exp(xi + eta)
-      } else if(a1 == 0){
-        exp(-exp(xi + eta)) * exp(xi + eta)
-      }
-    }
-    dcif2 <- function(xi, eta){
-      if(a2 > 0){
-        (1 + a2 * exp(xi + eta))^(-(1 / a2) - 1) * exp(xi + eta)
-      } else if(a2 == 0){
-        exp(-exp(xi + eta)) * exp(xi + eta)
-      }
-    }
-
-    for(i in 1:dim(comb)[1]){
-      line_i <- c(line, unlist(comb[i,]), unlist(comb[i,]))
-      eta1 <- b1 %*% t(comb[i,])
-      eta2 <- b2 %*% t(comb[i,])
-      minmax <- line_i * (as.vector(dcif1(xi = x[1], eta = eta1)) + as.vector(dcif2(xi = x[(n + 1)], eta = eta2)))
-      ui <- rbind(ui, minmax)
-    }
-    unname(ui)
-  }
-
   est <- try(alabama::constrOptim.nl(par = b0,
                                      fn = nLL,
                                      gr = Grad,
                                      hin = eval_g0,
                                      hin.jac = eval_jac_g0,
-                                     heq = heq_g0,
-                                     heq.jac = heq_jac_g0,
                                      control.optim = list(maxit = 2000),
                                      control.outer = list(trace = FALSE)), silent = TRUE)
   if(class(est) != "try-error"){

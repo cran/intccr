@@ -4,7 +4,8 @@
 \alias{bssmle_se_aipw}
 \title{Bootstrap varince-covariance estimation for interval-censored competing risks data and missing cause of failure}
 \usage{
-bssmle_se_aipw(formula, aux, data, alpha, k, do.par, nboot)
+bssmle_se_aipw(formula, aux, data, alpha, k, do.par, nboot,
+  w.cores = NULL)
 }
 \arguments{
 \item{formula}{a formula object relating survival object \code{mSurv(v, u, event)} to a set of covariates}
@@ -20,6 +21,8 @@ bssmle_se_aipw(formula, aux, data, alpha, k, do.par, nboot)
 \item{do.par}{using parallel computing for bootstrap calculation. If \code{do.par = TRUE}, parallel computing will be used during the bootstrap estimation of the variance-covariance matrix for the regression parameter estimates.}
 
 \item{nboot}{a number of bootstrap samples for estimating variances and covariances of the estimated regression coefficients. If \code{nboot = 0}, the function \code{ciregic} does dot perform bootstrap estimation of the variance matrix of the regression parameter estimates and returns \code{NA} in the place of the estimated variance matrix of the regression parameter estimates.}
+
+\item{w.cores}{a number of cores that are assigned (the default is \code{NULL})}
 }
 \value{
 The function \code{bssmle_aipw_se} returns a list of components:
