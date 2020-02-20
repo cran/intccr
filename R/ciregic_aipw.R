@@ -10,6 +10,7 @@
 #' @param do.par an option to use parallel computing for bootstrap. If \code{do.par = TRUE}, parallel computing will be used during the bootstrap estimation of the variance-covariance matrix for the regression parameter estimates.
 #' @param nboot a number of bootstrap samples for estimating variances and covariances of the estimated regression coefficients. If \code{nboot = 0}, the function \code{ciregic_aipw} does not perform bootstrap estimation of the variance-covariance matrix of the regression parameter estimates and returns \code{NA} in the place of the estimated variance-covariance matrix of the regression parameter estimates.
 #' @param w.cores a number of cores that are assigned (the default is \code{NULL})
+#' @param ... further arguments
 #' @return The function \code{ciregic_aipw} provides an object of class \code{ciregic_aipw} with components:
 #' \item{varnames}{a vector containing variable names}
 #' \item{varnames.aux}{a vector containing auxiliary variable names}
@@ -63,10 +64,10 @@
 #' points(pred$t, pred$cif2, type = "l", col = 2)
 #'
 #' @export
-ciregic_aipw <- function(formula, aux = NULL, data, alpha, k = 1, do.par, nboot, w.cores = NULL) UseMethod("ciregic_aipw")
+ciregic_aipw <- function(formula, aux = NULL, data, alpha, k = 1, do.par, nboot, w.cores = NULL, ...) UseMethod("ciregic_aipw")
 
 #' @export
-ciregic_aipw.default <- function(formula, aux = NULL, data, alpha, k = 1, do.par, nboot, w.cores = NULL) {
+ciregic_aipw.default <- function(formula, aux = NULL, data, alpha, k = 1, do.par, nboot, w.cores = NULL, ...) {
   mc <- match.call()
 
   if (k < .5 | k > 1)

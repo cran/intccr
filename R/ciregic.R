@@ -8,7 +8,7 @@
 #' @param k a parameter that controls the number of knots in the B-spline with \eqn{0.5 \le }\code{k}\eqn{ \le 1}
 #' @param do.par an option to use parallel computing for bootstrap. If \code{do.par = TRUE}, parallel computing will be used during the bootstrap estimation of the variance-covariance matrix for the regression parameter estimates.
 #' @param nboot a number of bootstrap samples for estimating variances and covariances of the estimated regression coefficients. If \code{nboot = 0}, the function \code{ciregic} provides the variance estimator of the regression parameter estimates using the least-squares method and does not perform the bootstrap method.
-#' @param ... additional arguments
+#' @param ... further arguments
 #' @return The function \code{ciregic} provides an object of class \code{ciregic} with components:
 #' \item{varnames}{a vector containing variable names}
 #' \item{coefficients}{a vector of the regression coefficient estimates}
@@ -61,10 +61,10 @@
 #' plot(pred$t, pred$cif1, type = "l", ylim = c(0, 1))
 #' points(pred$t, pred$cif2, type = "l", col = 2)
 #' @export
-ciregic <- function(formula, data, alpha, k = 1, do.par, nboot) UseMethod("ciregic")
+ciregic <- function(formula, data, alpha, k = 1, do.par, nboot, ...) UseMethod("ciregic")
 
 #' @export
-ciregic.default <- function(formula, data, alpha, k = 1, do.par, nboot) {
+ciregic.default <- function(formula, data, alpha, k = 1, do.par, nboot, ...) {
   if (k < .5 | k > 1)
     stop("k must have a value between 0.5 and 1.")
 

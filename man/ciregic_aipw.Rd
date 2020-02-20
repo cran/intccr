@@ -5,7 +5,7 @@
 \title{Competing Risks Regression with Interval-Censored Data and Missing Cause of Failure}
 \usage{
 ciregic_aipw(formula, aux = NULL, data, alpha, k = 1, do.par, nboot,
-  w.cores = NULL)
+  w.cores = NULL, ...)
 }
 \arguments{
 \item{formula}{a formula object relating the survival object \code{Surv2(v, u, event)} to a set of covariates}
@@ -23,6 +23,8 @@ ciregic_aipw(formula, aux = NULL, data, alpha, k = 1, do.par, nboot,
 \item{nboot}{a number of bootstrap samples for estimating variances and covariances of the estimated regression coefficients. If \code{nboot = 0}, the function \code{ciregic_aipw} does not perform bootstrap estimation of the variance-covariance matrix of the regression parameter estimates and returns \code{NA} in the place of the estimated variance-covariance matrix of the regression parameter estimates.}
 
 \item{w.cores}{a number of cores that are assigned (the default is \code{NULL})}
+
+\item{...}{further arguments}
 }
 \value{
 The function \code{ciregic_aipw} provides an object of class \code{ciregic_aipw} with components:

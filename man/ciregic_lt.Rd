@@ -4,7 +4,7 @@
 \alias{ciregic_lt}
 \title{Competing Risks Regression with Left-truncated and Interval-Censored Data}
 \usage{
-ciregic_lt(formula, data, alpha, k = 1, do.par, nboot)
+ciregic_lt(formula, data, alpha, k = 1, do.par, nboot, ...)
 }
 \arguments{
 \item{formula}{a formula object relating the survival object \code{Surv2(v, u, w, event)} to a set of covariates}
@@ -19,7 +19,7 @@ ciregic_lt(formula, data, alpha, k = 1, do.par, nboot)
 
 \item{nboot}{a number of bootstrap samples for estimating variances and covariances of the estimated regression coefficients. If \code{nboot = 0}, the function \code{ciregic_lt} returns a closed-form variance estimator using the least-squares method and does not perform bootstrap estimation of the variance-covariance matrix of the regression parameter estimates. For \code{nboot} \eqn{\ge 1}, the function \code{ciregic_lt} returns the boostrap variance estimator of the regression parameter estimates.}
 
-\item{...}{additional arguments}
+\item{...}{further arguments}
 }
 \value{
 The function \code{ciregic_lt} provides an object of class \code{ciregic_lt} with components:

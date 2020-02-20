@@ -1,4 +1,4 @@
-acdec472b032a4c971d4a4d50d2f9135 *DESCRIPTION
+fa664a96153267d6a49243be2fe1a359 *DESCRIPTION
 bfddfbce17af67677c37991f43026fc2 *NAMESPACE
 8569cda45648e08a7fdb854f5fd75303 *R/Surv2.R
 a12e3702f256a38c0151787b668dcf03 *R/bsderivs.R
@@ -9,9 +9,9 @@ fcf24c03df21b329ada9be9d68c16864 *R/bssmle_lse_lt.R
 8f74baf4273a7dd6d413a3c3f6eaa8cc *R/bssmle_lt.R
 87790789e6f617d5a2869ca7287f3c6e *R/bssmle_se.R
 fba4eeac4c43f8c91a412d40282af337 *R/bssmle_se_aipw.R
-51470dc0e22890f734e2117f9d7fd758 *R/ciregic.R
-4b713d568e48c40dba53c8ae26dce4a4 *R/ciregic_aipw.R
-cc5326a4f40686672b2cd3e4bad11d04 *R/ciregic_lt.R
+5c50e00109d1a27c281118da9270c60d *R/ciregic.R
+e5b4a2068895af0acfa13c7272302e22 *R/ciregic_aipw.R
+1c9ca8e4ff342d449bdad8fb53c4fe14 *R/ciregic_lt.R
 2ca18cf172fb7fabee5e55d34fcfbe6f *R/dataprep.R
 f135f934fb799c42ced5353049b4f8a0 *R/dataprep_lt.R
 4a971975862df0cf992509b41772ea28 *R/longdata.R
@@ -47,9 +47,9 @@ abc7eeed53393bb83039366936c7b32e *man/bssmle_lse.Rd
 82cfc18d6e8bcd5d4184e6e23e3e8e87 *man/bssmle_lt.Rd
 914cfbe3ce27419e67911ac3cdb5b826 *man/bssmle_se.Rd
 2caf20779a3add1fdf1e1c38aa69cc1c *man/bssmle_se_aipw.Rd
-072b1393d0f61d5b3775c18cf55a9c4f *man/ciregic.Rd
-91bc502ebfc9ddd888d56c3952529261 *man/ciregic_aipw.Rd
-c3511b3d9eadefa581e57dcb2cad8fb4 *man/ciregic_lt.Rd
+9a2405436c57469d19132bf8578379ab *man/ciregic.Rd
+94fcc6dbd0ec98367690d9a9b9ab3be2 *man/ciregic_aipw.Rd
+a69ab6b303a0349656361a18112196bc *man/ciregic_lt.Rd
 4f32ae3933e3414267ead1b85b7bcbd8 *man/dataprep.Rd
 fbb30a80d4fe611df538c75c5b4f11b8 *man/dataprep_lt.Rd
 18e46b94c56e292635e8997e22213b03 *man/dbs.Rd

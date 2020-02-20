@@ -4,7 +4,7 @@
 \alias{ciregic}
 \title{Competing Risks Regression with Interval-Censored Data}
 \usage{
-ciregic(formula, data, alpha, k = 1, do.par, nboot)
+ciregic(formula, data, alpha, k = 1, do.par, nboot, ...)
 }
 \arguments{
 \item{formula}{a formula object relating the survival object \code{Surv2(v, u, event)} to a set of covariates}
@@ -19,7 +19,7 @@ ciregic(formula, data, alpha, k = 1, do.par, nboot)
 
 \item{nboot}{a number of bootstrap samples for estimating variances and covariances of the estimated regression coefficients. If \code{nboot = 0}, the function \code{ciregic} provides the variance estimator of the regression parameter estimates using the least-squares method and does not perform the bootstrap method.}
 
-\item{...}{additional arguments}
+\item{...}{further arguments}
 }
 \value{
 The function \code{ciregic} provides an object of class \code{ciregic} with components:
