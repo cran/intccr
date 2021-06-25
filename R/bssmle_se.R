@@ -13,7 +13,7 @@
 #' @import foreach parallel
 #' @importFrom doParallel registerDoParallel
 #' @importFrom utils txtProgressBar setTxtProgressBar
-#' @details The function \code{bssmle_se} estimates bootstrap standard errors for the estimated regression coefficients from the function \code{bssmle} or \code{bssmle_lt}.
+#' @details The function \code{bssmle_se} estimates bootstrap standard errors for the estimated regression coefficients from the function \code{bssmle}, \code{bssmle_lt}, ro \code{bssmle_ltir}.
 #' @return The function \code{bssmle_se} returns a list of components:
 #' \item{notconverged}{a list of number of bootstrap samples that did not converge}
 #' \item{numboot}{a number of bootstrap converged}

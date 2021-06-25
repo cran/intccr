@@ -19,6 +19,10 @@
 #' @export
 
 Surv2 <- function(v, u, w = NULL, sub = NULL, event) {
+  if(is.null(w)) {
+    if (sum(v >= u) > 0)
+      stop("Left interval time >= right interval time")
+  }
   if (!is.null(w)) {
     if (min(v >= w) == 0)
       stop("Left truncation time > left interval time")
@@ -31,8 +35,6 @@ Surv2 <- function(v, u, w = NULL, sub = NULL, event) {
     stop("Must have an event argument")
   if (!is.numeric(v) | !is.numeric(u))
     stop("Time variable(s) is(are) not numeric")
-  if (sum(v >= u) > 0)
-    stop("Left interval time >= right interval time")
   if(anyNA(event)) {
     if(min(na.omit(event) %in% 0:2) == 0)
       stop("Event values outside permissible range {0, 1, 2}")

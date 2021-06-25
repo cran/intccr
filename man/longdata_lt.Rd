@@ -4,7 +4,9 @@
 \name{longdata_lt}
 \alias{longdata_lt}
 \title{Simulated left-truncated and interval-censored competing risks data - long format}
-\format{A data frame with 275 unique individuals and 6 variables.}
+\format{
+A data frame with 275 unique individuals and 6 variables.
+}
 \usage{
 longdata_lt
 }

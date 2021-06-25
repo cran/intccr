@@ -4,8 +4,15 @@
 \alias{bs.derivs}
 \title{Derivative of B-spline}
 \usage{
-bs.derivs(x, derivs = 0, df = NULL, knots = NULL, degree = 3,
-  intercept = FALSE, Boundary.knots = range(x))
+bs.derivs(
+  x,
+  derivs = 0,
+  df = NULL,
+  knots = NULL,
+  degree = 3,
+  intercept = FALSE,
+  Boundary.knots = range(x)
+)
 }
 \arguments{
 \item{x}{object of B-splines}

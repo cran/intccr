@@ -4,7 +4,9 @@
 \name{longdata}
 \alias{longdata}
 \title{Simulated interval-censored competing risks data - long format}
-\format{A data frame with 868 rows and 5 variables.}
+\format{
+A data frame with 868 rows and 5 variables.
+}
 \usage{
 longdata
 }

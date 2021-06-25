@@ -56,9 +56,9 @@ bssmle_lt <- function(formula, data, alpha, k = 1) {
 
   ## B-spline basis matrix
   t <- c(Tw, Tv, Tu[delta > 0])
-  nk <- floor(k * length(t)^(1/3))
+  nk <- unique(floor(k * length(t)^(1/3)))
   max <- nk + 1
-  knots <- quantile(t, seq(0, 1, by = 1 / (nk + 1)))[2:max]
+  knots <- unique(quantile(t[t < max(t) & t > min(t)], seq(0, 1, by = 1 / (nk + 1)))[2:max])
   Bv <- splines::bs(Tv, knots = knots, degree = 3, intercept = TRUE,
                     Boundary.knots = c(min(t), max(t)))
 
@@ -114,7 +114,7 @@ bssmle_lt <- function(formula, data, alpha, k = 1) {
     b1 <- b[(2 * n + 1):(2 * n + q)]
     b2 <- b[(2 * n + q + 1):(2 * n + 2 * q)]
 
-    # Create cumulative incidences
+    ## Create cumulative incidences
     BS1u <- Bu %*% phi1
     BS1v <- Bv %*% phi1
     BS1w <- Bw %*% phi1
@@ -143,15 +143,15 @@ bssmle_lt <- function(formula, data, alpha, k = 1) {
       ci2u <- 1 - exp(-exp(BS2u + bz_2))
     }
 
-    # ci1u and ci2u are not involved in the
-    # likelihood when d == 0. These values
-    # will be modified to avoid the problem of
-    # 0*log(ci1u-ci1v) = NaN and 0*log(ci2u-ci2v) = NaN
-    # (both should be 0 here)
+    ## ci1u and ci2u are not involved in the
+    ## likelihood when d == 0. These values
+    ## will be modified to avoid the problem of
+    ## 0*log(ci1u-ci1v) = NaN and 0*log(ci2u-ci2v) = NaN
+    ## (both should be 0 here)
     ci1u[ci1u == ci1v & d == 0] <- ci1u[ci1u == ci1v & d == 0] + 0.001
     ci2u[ci2u == ci2v & d == 0] <- ci2u[ci2u == ci2v & d == 0] + 0.001
 
-    #Calculate the loglikelihood
+    ## Calculate the loglikelihood
     ill <- d1_1 * log(ci1u) + d2_1 * log(ci2u) +
       d1 * log(ci1u - ci1v) + d2 * log(ci2u - ci2v) +
       (1 - d) * log(1 - (ci1v + ci2v)) - dw * log(1 - (ci1w + ci2w))
@@ -168,7 +168,7 @@ bssmle_lt <- function(formula, data, alpha, k = 1) {
     b1 <- b[(2 * n + 1):(2 * n + q)]
     b2 <- b[(2 * n + q+1):(2 * n + 2 * q)]
 
-    #Create cumulative incidences
+    ## Create cumulative incidences
     BS1u <- as.vector(Bu %*% phi1)
     BS1v <- as.vector(Bv %*% phi1)
     BS1w <- as.vector(Bw %*% phi1)
@@ -197,16 +197,16 @@ bssmle_lt <- function(formula, data, alpha, k = 1) {
       ci2u <- 1 - exp(-exp(BS2u + bz_2))
     }
 
-    # ci1u and ci2u are not involved in the
-    # likelihood when d==0. These values
-    # will be modified to avoid the problem of
-    # 0*log(ci1u-ci1v)=NaN and 0*log(ci2u-ci2v)=NaN
-    # (both should be 0 here)
+    ## ci1u and ci2u are not involved in the
+    ## likelihood when d==0. These values
+    ## will be modified to avoid the problem of
+    ## 0*log(ci1u-ci1v)=NaN and 0*log(ci2u-ci2v)=NaN
+    ## (both should be 0 here)
     ci1u[ci1u == ci1v & d == 0] <- ci1u[ci1u == ci1v & d == 0] + 0.001
     ci2u[ci2u == ci2v & d == 0] <- ci2u[ci2u == ci2v & d == 0] + 0.001
 
-    # Create derivative matrix w.r.t. theta
-    # Upper time
+    ## Create derivative matrix w.r.t. theta
+    ## Upper time
     zero <- matrix(rep(0, times = (length(Tu) * q)), ncol = q)
     dB1u <- Bu
     dB1u <- cbind(dB1u, matrix(rep(0, times = (n * length(Tu))), ncol = n))
@@ -215,7 +215,7 @@ bssmle_lt <- function(formula, data, alpha, k = 1) {
     dB2u <- cbind(matrix(rep(0, times = (n * length(Tu))), ncol = n), dB2u)
     dB2u <- cbind(dB2u, zero, Z)
 
-    # Lower time
+    ## Lower time
     dB1v <- Bv
     dB1v <- cbind(dB1v, matrix(rep(0, times = (n * length(Tu))), ncol = n))
     dB1v <- cbind(dB1v, Z, zero)
@@ -223,7 +223,7 @@ bssmle_lt <- function(formula, data, alpha, k = 1) {
     dB2v <- cbind(matrix(rep(0, times = (n * length(Tu))), ncol = n), dB2v)
     dB2v <- cbind(dB2v, zero, Z)
 
-    # Left truncation time
+    ## Left truncation time
     dB1w <- Bw
     dB1w <- cbind(dB1w, matrix(rep(0, times = (n * length(Tu))), ncol = n))
     dB1w <- cbind(dB1w, Z, zero)
@@ -266,7 +266,7 @@ bssmle_lt <- function(formula, data, alpha, k = 1) {
 
     ui <- c(diff(x[1:n], lag = 1), diff(x[(n + 1):(2 * n)], lag = 1))
 
-    ## evaluate cif at the last constrol point of B spline
+    ## Evaluate cif at the last constrol point of B spline
     cif1 <- function(xi, eta){
       if(a1 > 0){
         (1 + a1 * exp(xi + eta))^(-1 / a1)
@@ -282,7 +282,7 @@ bssmle_lt <- function(formula, data, alpha, k = 1) {
       }
     }
 
-    ##Boundedness constraints for the last control point
+    ## Boundedness constraints for the last control point
     for(i in 1:dim(comb)[1]){
       eta1 <- b1 %*% t(comb[i,])
       eta2 <- b2 %*% t(comb[i,])
@@ -352,7 +352,7 @@ bssmle_lt <- function(formula, data, alpha, k = 1) {
     ## Monotonicity constraints
     ui <- rep(0, 2 * (n - 1))
 
-    ## evaluate cif at the last constrol point of B spline
+    ## Evaluate cif at the last constrol point of B spline
     cif1 <- function(xi, eta){
       if(a1 > 0){
         (1 + a1 * exp(xi + eta))^(-1 / a1)
@@ -368,7 +368,7 @@ bssmle_lt <- function(formula, data, alpha, k = 1) {
       }
     }
 
-    ##Boundedness constraints
+    ## Boundedness constraints
     for(i in 1:dim(comb)[1]){
       eta1 <- b1 %*% t(comb[i,])
       eta2 <- b2 %*% t(comb[i,])
@@ -452,9 +452,6 @@ bssmle_lt <- function(formula, data, alpha, k = 1) {
                 Bw = Bw,
                 Bv = Bv,
                 Bu = Bu,
-                dBw = dBw,
-                dBv = dBv,
-                dBu = dBu,
                 dmat = cbind(d, d1, d2, d1_1, d2_1, dw))
   } else {
     res <- list(beta = beta,

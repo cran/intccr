@@ -4,8 +4,17 @@
 \alias{ciregic_aipw}
 \title{Competing Risks Regression with Interval-Censored Data and Missing Cause of Failure}
 \usage{
-ciregic_aipw(formula, aux = NULL, data, alpha, k = 1, do.par, nboot,
-  w.cores = NULL, ...)
+ciregic_aipw(
+  formula,
+  aux = NULL,
+  data,
+  alpha,
+  k = 1,
+  do.par,
+  nboot,
+  w.cores = NULL,
+  ...
+)
 }
 \arguments{
 \item{formula}{a formula object relating the survival object \code{Surv2(v, u, event)} to a set of covariates}

@@ -4,8 +4,7 @@
 \alias{bssmle_se_aipw}
 \title{Bootstrap varince-covariance estimation for interval-censored competing risks data and missing cause of failure}
 \usage{
-bssmle_se_aipw(formula, aux, data, alpha, k, do.par, nboot,
-  w.cores = NULL)
+bssmle_se_aipw(formula, aux, data, alpha, k, do.par, nboot, w.cores = NULL)
 }
 \arguments{
 \item{formula}{a formula object relating survival object \code{mSurv(v, u, event)} to a set of covariates}

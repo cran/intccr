@@ -4,7 +4,9 @@
 \name{pseudo.HIV.long}
 \alias{pseudo.HIV.long}
 \title{Artificial HIV dataset}
-\format{A data frame with 22710 rows and 6 variables.}
+\format{
+A data frame with 22710 rows and 6 variables.
+}
 \usage{
 pseudo.HIV.long
 }

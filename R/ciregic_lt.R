@@ -1,5 +1,5 @@
 #' Competing Risks Regression with Left-truncated and Interval-Censored Data
-#' @description The function \code{ciregic_lt} performs semiparametric regression on cumulative incidence function with left-truncated and interval-censored competing risks data. It fits the proportional subdistribution hazards model (Fine-Gray model), the proportional odds model, and other models that belong to the class of semiparametric generalized odds rate transformation models. The lease-square method is implemented to estimate the standard error of the regression coefficients.
+#' @description The function \code{ciregic_lt} performs semiparametric regression on cumulative incidence function with left-truncated and interval-censored competing risks data. It fits the proportional subdistribution hazards model (Fine-Gray model), the proportional odds model, and other models that belong to the class of semiparametric generalized odds rate transformation models. The least-square method is implemented to estimate the standard error of the regression coefficients.
 #' @author Jun Park, \email{jp84 at iu dot edu}
 #' @author Giorgos Bakoyannis, \email{gbakogia at iu dot edu}
 #' @param formula a formula object relating the survival object \code{Surv2(v, u, w, event)} to a set of covariates
@@ -82,7 +82,8 @@ ciregic_lt.default <- function(formula, data, alpha, k = 1, do.par, nboot, ...) 
       n <- (length(est$beta) - 2 * q) / 2
       beta <- est$beta[(2 * n + 1):(2 * n + 2 * q)]
       gamma <- est$beta[1:(2 * n)]
-      temp <- paste(rep(est$varnames, 2), c(rep("event type 1", q), rep("event type 2", q)), sep = ",")
+      temp <- paste(rep(est$varnames, 2),
+                    c(rep("event type 1", q), rep("event type 2", q)), sep = ",")
       rownames(Sigma) <- colnames(Sigma) <- temp
     } else {
       Sigma <- bssmle_lse_lt(obj = est)
@@ -92,21 +93,22 @@ ciregic_lt.default <- function(formula, data, alpha, k = 1, do.par, nboot, ...) 
       n <- (length(est$beta) - 2 * q) / 2
       beta <- est$beta[(2 * n + 1):(2 * n + 2 * q)]
       gamma <- est$beta[1:(2 * n)]
-      temp <- paste(rep(est$varnames, 2), c(rep("event type 1", q), rep("event type 2", q)), sep = ",")
+      temp <- paste(rep(est$varnames, 2),
+                    c(rep("event type 1", q), rep("event type 2", q)), sep = ",")
       rownames(Sigma) <- colnames(Sigma) <- temp
     }
-    res<-list(varnames = est$varnames,
-              coefficients = beta,
-              gamma = gamma,
-              vcov = Sigma,
-              alpha = est$alpha,
-              k = k,
-              loglikelihood = est$loglikelihood,
-              convergence = est$convergence,
-              tms = est$tms,
-              Bv = est$Bv,
-              numboot = numboot,
-              notcoverged = notcoverged)
+    res <- list(varnames = est$varnames,
+                coefficients = beta,
+                gamma = gamma,
+                vcov = Sigma,
+                alpha = est$alpha,
+                k = k,
+                loglikelihood = est$loglikelihood,
+                convergence = est$convergence,
+                tms = est$tms,
+                Bv = est$Bv,
+                numboot = numboot,
+                notcoverged = notcoverged)
     res$call <- match.call()
 
     class(res) <- "ciregic_lt"
@@ -119,18 +121,18 @@ ciregic_lt.default <- function(formula, data, alpha, k = 1, do.par, nboot, ...) 
     n <- (length(est$beta) - 2 * q) / 2
     beta <- est$beta[(2 * n + 1):(2 * n + 2 * q)]
     gamma <- est$beta[1:(2 * n)]
-    res<-list(varnames = est$varnames,
-              coefficients = beta,
-              gamma = gamma,
-              vcov = Sigma,
-              alpha = est$alpha,
-              k = k,
-              loglikelihood = est$loglikelihood,
-              convergence = est$convergence,
-              tms = est$tms,
-              Bv = est$Bv,
-              numboot = numboot,
-              notcoverged = notcoverged)
+    res <- list(varnames = est$varnames,
+                coefficients = beta,
+                gamma = gamma,
+                vcov = Sigma,
+                alpha = est$alpha,
+                k = k,
+                loglikelihood = est$loglikelihood,
+                convergence = est$convergence,
+                tms = est$tms,
+                Bv = est$Bv,
+                numboot = numboot,
+                notcoverged = notcoverged)
     res$call <- match.call()
 
     class(res) <- "ciregic_lt"
@@ -173,7 +175,6 @@ print.ciregic_lt <- function(x, ...){
   }
 }
 
-
 #' Variance-covariance matrix of \code{ciregic_lt}
 #' @description \code{vcov} method for class \code{ciregic_lt}
 #' @param object an object of class \code{ciregic_lt}, which is a result of a call to \code{ciregic_lt}
@@ -188,7 +189,6 @@ print.ciregic_lt <- function(x, ...){
 vcov.ciregic_lt <- function(object, ...){
   object$vcov
 }
-
 
 #' Summary of \code{ciregic_lt}
 #' @description \code{summary} method for class \code{ciregic_lt}

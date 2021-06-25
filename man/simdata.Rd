@@ -4,7 +4,8 @@
 \name{simdata}
 \alias{simdata}
 \title{Simulated interval-censored competing risks data with 2 covariates - wide format}
-\format{A data frame with 200 rows and 6 variables.
+\format{
+A data frame with 200 rows and 6 variables.
 \describe{
   \item{id}{subject id}
   \item{v}{the last observation time prior to the event}
@@ -12,7 +13,8 @@
   \item{c}{cause of failure with missing}
   \item{z1}{binary variable}
   \item{z2}{continuous variable}
-}}
+}
+}
 \usage{
 simdata
 }

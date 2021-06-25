@@ -4,7 +4,9 @@
 \name{fit}
 \alias{fit}
 \title{Output of \code{ciregic}}
-\format{A list of components.}
+\format{
+A list of components.
+}
 \usage{
 fit
 }

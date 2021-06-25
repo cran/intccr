@@ -4,7 +4,9 @@
 \name{fit_lt}
 \alias{fit_lt}
 \title{Output of \code{ciregic_lt}}
-\format{A list of components.}
+\format{
+A list of components.
+}
 \usage{
 fit_lt
 }

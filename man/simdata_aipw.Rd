@@ -4,7 +4,8 @@
 \name{simdata_aipw}
 \alias{simdata_aipw}
 \title{Simulated interval censored data with 2 covariates in the presence of \eqn{50\%} of missing cause of failure - wide format}
-\format{A data frame with 200 rows and 7 variables:
+\format{
+A data frame with 200 rows and 7 variables:
 \describe{
   \item{id}{subject id}
   \item{v}{the last observation time prior to the event}
@@ -13,7 +14,8 @@
   \item{z1}{binary variable}
   \item{z2}{continuous variable}
   \item{a}{auxiliary variable}
-}}
+}
+}
 \usage{
 simdata_aipw
 }

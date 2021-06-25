@@ -4,7 +4,8 @@
 \name{simdata_lt}
 \alias{simdata_lt}
 \title{Simulated left-truncated and interval-censored competing risks data with 2 covariates - wide format}
-\format{A data frame with 275 unique individuals and 7 variables.
+\format{
+A data frame with 275 unique individuals and 7 variables.
 \describe{
   \item{id}{subject id}
   \item{w}{the left truncation time}
@@ -13,7 +14,8 @@
   \item{c}{cause of failure with missing}
   \item{z1}{binary variable}
   \item{z2}{continuous variable}
-}}
+}
+}
 \usage{
 simdata_lt
 }

@@ -96,20 +96,20 @@ ciregic_aipw.default <- function(formula, aux = NULL, data, alpha, k = 1, do.par
       beta <- est$beta[(2 * n + 1):(2 * n + 2 * q)]
       gamma <- est$beta[1:(2 * n)]
     }
-    res<-list(varnames = est$varnames,
-              varnames.aux = mc$aux,
-              coefficients = beta,
-              gamma = gamma,
-              vcov = Sigma,
-              alpha = est$alpha,
-              k = k,
-              loglikelihood = est$loglikelihood,
-              convergence = est$convergence,
-              tms = est$tms,
-              Bv = est$Bv,
-              numboot = numboot,
-              notcoverged = notcoverged,
-              call = mc)
+    res <- list(varnames = est$varnames,
+                varnames.aux = mc$aux,
+                coefficients = beta,
+                gamma = gamma,
+                vcov = Sigma,
+                alpha = est$alpha,
+                k = k,
+                loglikelihood = est$loglikelihood,
+                convergence = est$convergence,
+                tms = est$tms,
+                Bv = est$Bv,
+                numboot = numboot,
+                notcoverged = notcoverged,
+                call = mc)
 
     class(res) <- "ciregic_aipw"
     res
@@ -121,20 +121,20 @@ ciregic_aipw.default <- function(formula, aux = NULL, data, alpha, k = 1, do.par
     n <- (length(est$beta) - 2 * q) / 2
     beta <- est$beta[(2 * n + 1):(2 * n + 2 * q)]
     gamma <- est$beta[1:(2 * n)]
-    res<-list(varnames = est$varnames,
-              varnames.aux = mc$aux,
-              coefficients = beta,
-              gamma = gamma,
-              vcov = Sigma,
-              alpha = est$alpha,
-              k = k,
-              loglikelihood = est$loglikelihood,
-              convergence = est$convergence,
-              tms = est$tms,
-              Bv = est$Bv,
-              numboot = numboot,
-              notcoverged = notcoverged,
-              call = mc)
+    res <- list(varnames = est$varnames,
+                varnames.aux = mc$aux,
+                coefficients = beta,
+                gamma = gamma,
+                vcov = Sigma,
+                alpha = est$alpha,
+                k = k,
+                loglikelihood = est$loglikelihood,
+                convergence = est$convergence,
+                tms = est$tms,
+                Bv = est$Bv,
+                numboot = numboot,
+                notcoverged = notcoverged,
+                call = mc)
 
     class(res) <- "ciregic_aipw"
     res

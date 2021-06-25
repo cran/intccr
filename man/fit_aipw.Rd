@@ -4,7 +4,8 @@
 \name{fit_aipw}
 \alias{fit_aipw}
 \title{Output of \code{ciregic_aipw}}
-\format{A list of 14:
+\format{
+A list of 14:
 \describe{
   \item{call}{a matched call}
   \item{varnames}{a vector containing variable names}
@@ -19,7 +20,8 @@
   \item{tms}{a vector of the minimum and maximum observation times}
   \item{Bv}{a list containing the B-splines basis functions evaluated at \code{v}}
   \item{notconverged}{a list of number of bootstrap samples not converged}
-}}
+}
+}
 \usage{
 fit_aipw
 }

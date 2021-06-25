@@ -31,7 +31,7 @@ The function \code{bssmle_se} returns a list of components:
 Bootstrap varince estimation for the estimated regression coefficients
 }
 \details{
-The function \code{bssmle_se} estimates bootstrap standard errors for the estimated regression coefficients from the function \code{bssmle} or \code{bssmle_lt}.
+The function \code{bssmle_se} estimates bootstrap standard errors for the estimated regression coefficients from the function \code{bssmle}, \code{bssmle_lt}, ro \code{bssmle_ltir}.
 }
 \author{
 Giorgos Bakoyannis, \email{gbakogia at iu dot edu}
