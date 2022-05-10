@@ -36,8 +36,8 @@ Bootstrap varince estimation for the estimated regression coefficients
 The function \code{bssmle_aipw_se} estimates bootstrap standard errors for the estimated regression coefficients from the function \code{bssmle}.
 }
 \author{
-Giorgos Bakoyannis, \email{gbakogia at iu dot edu}
+Jun Park, \email{jun.park@alumni.iu.edu}
 
-Jun Park, \email{jp84 at iu dot edu}
+Giorgos Bakoyannis, \email{gbakogia@iu.edu}
 }
 \keyword{bssmle_aipw_se}

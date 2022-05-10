@@ -98,8 +98,8 @@ points(pred$t, pred$cif2, type = "l", col = 2)
 \code{\link[intccr]{summary.ciregic_aipw}} for the summarized results and \code{\link[intccr]{predict.ciregic_aipw}} for value of the predicted cumulative incidence functions. \code{coef} and \code{vcov} are the generic functions. dataprep function for reshaping data from a long format to a suitable format to be used in the function \code{ciregic_aipw}.
 }
 \author{
-Jun Park, \email{jp84 at iu dot edu}
+Jun Park, \email{jun.park@alumni.iu.edu}
 
-Giorgos Bakoyannis, \email{gbakogia at iu dot edu}
+Giorgos Bakoyannis, \email{gbakogia@iu.edu}
 }
 \keyword{ciregic_aipw}

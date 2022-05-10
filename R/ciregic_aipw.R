@@ -1,7 +1,7 @@
 #' Competing Risks Regression with Interval-Censored Data and Missing Cause of Failure
 #' @description The function \code{ciregic_aipw} performs semiparametric regression on cumulative incidence function with interval-censored competing risks data in the presence of missing cause of failure. It fits the proportional subdistribution hazards model (Fine-Gray model), the proportional odds model, and other models that belong to the class of semiparametric generalized odds rate transformation models. The estimates have double robustness property, which means that the estimators are consistent even if either the model for the probability of missingness or the model for the probability of the cause of failure is misspecified under the missing at random assumption.
-#' @author Jun Park, \email{jp84 at iu dot edu}
-#' @author Giorgos Bakoyannis, \email{gbakogia at iu dot edu}
+#' @author Jun Park, \email{jun.park@alumni.iu.edu}
+#' @author Giorgos Bakoyannis, \email{gbakogia@iu.edu}
 #' @param formula a formula object relating the survival object \code{Surv2(v, u, event)} to a set of covariates
 #' @param aux auxiliary variable(s) that may be associated with the missingness and the outcome of interest
 #' @param data a data frame that includes the variables named in the formula argument

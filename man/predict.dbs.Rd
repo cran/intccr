@@ -21,8 +21,8 @@ Evaluates the derivative of the B-splines basis matrix at given values.
 The function \code{predict} is a generic function of \code{bs.derivs}
 }
 \author{
-Giorgos Bakoyannis, \email{gbakogia at iu dot edu}
+Giorgos Bakoyannis, \email{gbakogia@iu.edu}
 
-Jun Park, \email{jp84 at iu dot edu}
+Jun Park, \email{jp84@alumni.iu.edu}
 }
 \keyword{predict}

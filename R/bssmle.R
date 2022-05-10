@@ -1,7 +1,7 @@
 #' B-spline Sieve Maximum Likelihood Estimation
 #' @description Routine that performs B-spline sieve maximum likelihood estimation with linear and nonlinear inequality/equality constraints
-#' @author Giorgos Bakoyannis, \email{gbakogia at iu dot edu}
-#' @author Jun Park, \email{jp84 at iu dot edu}
+#' @author Giorgos Bakoyannis, \email{gbakogia@iu.edu}
+#' @author Jun Park, \email{jun.park@alumni.iu.edu}
 #' @param formula a formula object relating survival object \code{Surv2(v, u, event)} to a set of covariates
 #' @param data a data frame that includes the variables named in the formula argument
 #' @param alpha \eqn{\alpha = (\alpha1, \alpha2)} contains parameters that define the link functions from class of generalized odds-rate transformation models. The components \eqn{\alpha1} and \eqn{\alpha2} should both be \eqn{\ge 0}. If \eqn{\alpha1 = 0}, the user assumes the proportional subdistribution hazards model or the Fine-Gray model for the cause of failure 1. If \eqn{\alpha2 = 1}, the user assumes the proportional odds model for the cause of failure 2.
@@ -372,7 +372,7 @@ bssmle <- function(formula, data, alpha, k = 1) {
                                      control.optim = list(maxit = 2000),
                                      control.outer = list(trace = FALSE)), silent = TRUE)
 
-  if(class(est) != "try-error"){
+  if(is.null(attr(est, "class"))) {
     if(est$convergence == 0){
       beta <- est$par
     } else {

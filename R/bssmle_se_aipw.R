@@ -1,7 +1,7 @@
 #' Bootstrap varince-covariance estimation for interval-censored competing risks data and missing cause of failure
 #' @description Bootstrap varince estimation for the estimated regression coefficients
-#' @author Giorgos Bakoyannis, \email{gbakogia at iu dot edu}
-#' @author Jun Park, \email{jp84 at iu dot edu}
+#' @author Jun Park, \email{jun.park@alumni.iu.edu}
+#' @author Giorgos Bakoyannis, \email{gbakogia@iu.edu}
 #' @param formula a formula object relating survival object \code{mSurv(v, u, event)} to a set of covariates
 #' @param aux auxiliary variables that may be associated with the missingness and the outcome of interest
 #' @param data a data frame that includes the variables named in the formula argument

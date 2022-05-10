@@ -1,5 +1,7 @@
 #' Wald test for \code{ciregic} and \code{ciregic_lt}
 #' @description \code{waldtest} for class \code{ciregic} or \code{ciregic_lt}. This provides the result of Wald test for the fitted model from the function \code{ciregic} or \code{ciregic_lt}.
+#' @author Jun Park, \email{jun.park@alumni.iu.edu}
+#' @author Giorgos Bakoyannis, \email{gbakogia@iu.edu}
 #' @param obj1 an object of the fitted model in \code{ciregic} or \code{ciregic_lt}
 #' @param obj2 an object of the fitted model in \code{ciregic} or \code{ciregic_lt}, the default is \code{NULL}
 #' @param ... further arguments

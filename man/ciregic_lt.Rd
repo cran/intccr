@@ -85,8 +85,8 @@ points(pred$t, pred$cif2, type = "l", col = 2)
 \code{\link[intccr]{summary.ciregic_lt}} for the summarized results and \code{\link[intccr]{predict.ciregic_lt}} for value of the predicted cumulative incidence functions. \code{coef} and \code{vcov} are the generic functions. \code{\link[intccr]{dataprep}} for reshaping data from a long format to a suitable format to be used in the function \code{ciregic_lt}.
 }
 \author{
-Jun Park, \email{jp84 at iu dot edu}
+Jun Park, \email{jun.park@alumni.iu.edu}
 
-Giorgos Bakoyannis, \email{gbakogia at iu dot edu}
+Giorgos Bakoyannis, \email{gbakogia@iu.edu}
 }
 \keyword{ciregic_lt}

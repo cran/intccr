@@ -1,7 +1,7 @@
 #' Competing Risks Regression with Left-truncated and Interval-Censored Data
 #' @description The function \code{ciregic_lt} performs semiparametric regression on cumulative incidence function with left-truncated and interval-censored competing risks data. It fits the proportional subdistribution hazards model (Fine-Gray model), the proportional odds model, and other models that belong to the class of semiparametric generalized odds rate transformation models. The least-square method is implemented to estimate the standard error of the regression coefficients.
-#' @author Jun Park, \email{jp84 at iu dot edu}
-#' @author Giorgos Bakoyannis, \email{gbakogia at iu dot edu}
+#' @author Jun Park, \email{jun.park@alumni.iu.edu}
+#' @author Giorgos Bakoyannis, \email{gbakogia@iu.edu}
 #' @param formula a formula object relating the survival object \code{Surv2(v, u, w, event)} to a set of covariates
 #' @param data a data frame that includes the variables named in the formula argument
 #' @param alpha \eqn{\alpha = (\alpha1, \alpha2)} contains parameters that define the link functions from class of generalized odds-rate transformation models. The components \eqn{\alpha1} and \eqn{\alpha2} should both be \eqn{\ge 0}. If \eqn{\alpha1 = 0}, the user assumes the proportional subdistribution hazards model or the Fine-Gray model for the cause of failure 1. If \eqn{\alpha2 = 1}, the user assumes the proportional odds model for the cause of failure 2.

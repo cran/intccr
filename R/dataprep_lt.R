@@ -1,7 +1,7 @@
 #' Data preparation
 #' @description The function \code{dataprep_lt} reshapes data from a long format to a ready-to-use format to be used directly in the function \code{ciregic_lt}.
-#' @author Jun Park, \email{jp84 at iu dot edu}
-#' @author Giorgos Bakoyannis, \email{gbakogia at iu dot edu}
+#' @author Jun Park, \email{jun.park@alumni.iu.edu}
+#' @author Giorgos Bakoyannis, \email{gbakogia@iu.edu}
 #' @param data a data frame that includes the variables named in the \code{ID}, \code{time}, \code{event}, and \code{z} arguments
 #' @param ID a variable indicating individuals' ID
 #' @param W a vector of left-truncated time points

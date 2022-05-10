@@ -1,7 +1,7 @@
 #' Least-Squares Estimator of the Information Matrix
 #' @description Performs the least-squares methods to estimate the information matrix for the estimated regression coefficients
-#' @author Jun Park, \email{jp84 at iu dot edu}
-#' @author Giorgos Bakoyannis, \email{gbakogia at iu dot edu}
+#' @author Jun Park, \email{jun.park@alumni.iu.edu}
+#' @author Giorgos Bakoyannis, \email{gbakogia@iu.edu}
 #' @param obj a list of objectives from \code{bssmle}
 #' @keywords bssmle_lse
 #' @importFrom MASS ginv

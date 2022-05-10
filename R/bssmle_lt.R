@@ -1,7 +1,7 @@
 #' B-spline Sieve Maximum Likelihood Estimation for Left-Truncated and Interval-Censored Competing Risks Data
 #' @description Routine that performs B-spline sieve maximum likelihood estimation with linear and nonlinear inequality/equality constraints
-#' @author Jun Park, \email{jp84 at iu dot edu}
-#' @author Giorgos Bakoyannis, \email{gbakogia at iu dot edu}
+#' @author Jun Park, \email{jun.park@alumni.iu.edu}
+#' @author Giorgos Bakoyannis, \email{gbakogia@iu.edu}
 #' @param formula a formula object relating survival object \code{Surv2(w, v, u, event)} to a set of covariates
 #' @param data a data frame that includes the variables named in the formula argument
 #' @param alpha \eqn{\alpha = (\alpha1, \alpha2)} contains parameters that define the link functions from class of generalized odds-rate transformation models. The components \eqn{\alpha1} and \eqn{\alpha2} should both be \eqn{\ge 0}. If \eqn{\alpha1 = 0}, the user assumes the proportional subdistribution hazards model or the Fine-Gray model for the event type 1. If \eqn{\alpha2 = 1}, the user assumes the proportional odds model for the event type 2.
@@ -65,13 +65,6 @@ bssmle_lt <- function(formula, data, alpha, k = 1) {
   Tu[delta == 0] <- max(t)
   Bu <- predict(Bv, Tu)
   Bw <- predict(Bv, Tw)
-
-  ## First derivative of B-splines
-  dBv0 <- bs.derivs(Tv, derivs = 1, knots = knots, degree = 3, intercept = TRUE,
-                    Boundary.knots = c(min(t), max(t)))
-  dBv <- predict(dBv0, Tv)
-  dBu <- predict(dBv0, Tu)
-  dBw <- predict(dBv0, Tw)
 
   n <- dim(Bu)[2]
   q <- dim(Z)[2]
@@ -428,7 +421,7 @@ bssmle_lt <- function(formula, data, alpha, k = 1) {
                                      control.optim = list(maxit = 2000),
                                      control.outer = list(trace = FALSE)), silent = TRUE)
 
-  if(class(est) != "try-error"){
+  if(is.null(attr(est, "class"))) {
     if(est$convergence == 0){
       beta <- est$par
     } else {

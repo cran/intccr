@@ -1,7 +1,7 @@
 #' B-spline Sieve Maximum Likelihood Estimation for Interval-Censored Competing Risks Data and Missing Cause of Failure
 #' @description Routine that performs B-spline sieve maximum likelihood estimation with linear and nonlinear inequality and equality constraints
-#' @author Jun Park, \email{jp84 at iu dot edu}
-#' @author Giorgos Bakoyannis, \email{gbakogia at iu dot edu}
+#' @author Jun Park, \email{jun.park@alumni.iu.edu}
+#' @author Giorgos Bakoyannis, \email{gbakogia@iu.edu}
 #' @param formula a formula object relating survival object \code{Surv2(v, u, event)} to a set of covariates
 #' @param aux auxiliary variables that may be associated with the missingness and the outcome of interest
 #' @param data a data frame that includes the variables named in the formula argument
@@ -149,7 +149,6 @@ bssmle_aipw <- function(formula, aux, data, alpha, k) {
   d1_1_tilde <- ifelse(d == 1 & delta > 0, (1 / weight) * d1_1 - ((1 - weight) / weight) * d1_1_p1, d1_1_p1)
   d2_1_tilde <- ifelse(d == 1 & delta > 0, (1 / weight) * d2_1 - ((1 - weight) / weight) * d2_1_p1, d2_1_p1)
   d_tilde <- (d1_tilde + d2_tilde + d1_1_tilde + d2_1_tilde)
-  ### End #################################################################################################
 
   a1 <- alpha[1]
   a2 <- alpha[2]
@@ -469,7 +468,7 @@ bssmle_aipw <- function(formula, aux, data, alpha, k) {
                                      heq.jac = heq_jac_g0,
                                      control.optim = list(maxit = 2000),
                                      control.outer = list(trace = FALSE)), silent = TRUE)
-  if(class(est) != "try-error"){
+  if(is.null(attr(est, "class"))) {
     if(est$convergence == 0){
       beta <- est$par
     } else {

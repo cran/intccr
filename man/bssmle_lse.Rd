@@ -23,8 +23,8 @@ The function \code{bssmle_lse} estimates the information matrix for the estimate
 {Zhang, Y., Hua, L., and Huang, J. (2010), A spline-based semiparametric maximum likelihood estimation method for the Cox model with interval-censoed data. \emph{Scandinavian Journal of Statistics}, \strong{37}:338-354.}
 }
 \author{
-Jun Park, \email{jp84 at iu dot edu}
+Jun Park, \email{jun.park@alumni.iu.edu}
 
-Giorgos Bakoyannis, \email{gbakogia at iu dot edu}
+Giorgos Bakoyannis, \email{gbakogia@iu.edu}
 }
 \keyword{bssmle_lse}

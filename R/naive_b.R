@@ -1,7 +1,7 @@
 #' Initial values for the sieve maximum likelihood estimation
 #' @description The function \code{naive_b} provides a vector of initial values for the B-spline sieve maximum likelihood estimation.
-#' @author Giorgos Bakoyannis, \email{gbakogia at iu dot edu}
-#' @author Jun Park, \email{jp84 at iu dot edu}
+#' @author Giorgos Bakoyannis, \email{gbakogia@iu.edu}
+#' @author Jun Park, \email{jun.park@alumni.iu.edu}
 #' @param data a data frame that includes the variables named in each argument
 #' @param w a left-truncation time (default is \code{w = NULL}.)
 #' @param v the last observation time prior to the failure

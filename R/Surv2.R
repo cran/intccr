@@ -1,7 +1,7 @@
 #' Creating data frame
 #' @description The function \code{Surv2} generates the survival object to be treated as the response from \code{ciregic}.
-#' @author Giorgos Bakoyannis, \email{gbakogia at iu dot edu}
-#' @author Jun Park, \email{jp84 at iu dot edu}
+#' @author Jun Park, \email{jun.park@alumni.iu.edu}
+#' @author Giorgos Bakoyannis, \email{gbakogia@iu.edu}
 #' @param v the last observation time prior to the failure; \eqn{0\le v \le u}
 #' @param u the first observation time after the failure; \eqn{u \ge 0}
 #' @param w a left truncation time or delayed entry time. The default setting is \code{w = NULL} for non left-truncated data.

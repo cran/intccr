@@ -42,3 +42,8 @@ waldtest(obj1 = fit, obj2 = fit.nested)
 \seealso{
 The fitted semiparametric regression on cumulative incidence function with interval-censored competing risks data \code{\link[intccr]{ciregic}} and left-truncated and interval-censored competing risks data \code{\link[intccr]{ciregic_lt}}
 }
+\author{
+Jun Park, \email{jun.park@alumni.iu.edu}
+
+Giorgos Bakoyannis, \email{gbakogia@iu.edu}
+}

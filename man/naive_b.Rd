@@ -36,8 +36,8 @@ attach(simdata)
 intccr:::naive_b(data = simdata, v = v, u = u, c = c, q = 2)
 }
 \author{
-Giorgos Bakoyannis, \email{gbakogia at iu dot edu}
+Giorgos Bakoyannis, \email{gbakogia@iu.edu}
 
-Jun Park, \email{jp84 at iu dot edu}
+Jun Park, \email{jun.park@alumni.iu.edu}
 }
 \keyword{naive_b}

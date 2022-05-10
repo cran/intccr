@@ -39,8 +39,8 @@ Routine that performs B-spline sieve maximum likelihood estimation with linear a
 The function \code{bssmle} performs B-spline sieve maximum likelihood estimation.
 }
 \author{
-Giorgos Bakoyannis, \email{gbakogia at iu dot edu}
+Giorgos Bakoyannis, \email{gbakogia@iu.edu}
 
-Jun Park, \email{jp84 at iu dot edu}
+Jun Park, \email{jun.park@alumni.iu.edu}
 }
 \keyword{bssmle}
